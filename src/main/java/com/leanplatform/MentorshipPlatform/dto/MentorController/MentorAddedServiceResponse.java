@@ -1,0 +1,16 @@
+package com.leanplatform.MentorshipPlatform.dto.MentorController;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class MentorAddedServiceResponse {
+    private String statusCode;
+    private String responseMessage;
+    private MentorAddsServices mentorAddsServices;
+}

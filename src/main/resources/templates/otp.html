@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>OTP Verification</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Enter the 6-digit OTP sent to your phone:</h1>
+    <form id="otpForm" th:object="${otpNumber}">
+        <input id="otp" th:action="@{/verifyOTP}" name="otp" placeholder="Enter OTP" required pattern="[0-9]{6}" th:field="*{otpNumber}">
+        <button type="button" id="verifyOTP" disabled>Verify OTP</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('otp').addEventListener('input', function() {
+        var otp = this.value.replace(/\D/g, ''); // Remove non-digits
+        if (otp.length === 6) {
+            document.getElementById('verifyOTP').disabled = false;
+        } else {
+            document.getElementById('verifyOTP').disabled = true;
+        }
+    });
+
+    // document.getElementById('verifyOTP').addEventListener('click', function() {
+    //     alert('OTP Verified Successfully!');
+    //
+    // });
+</script>
+</body>
+</html>

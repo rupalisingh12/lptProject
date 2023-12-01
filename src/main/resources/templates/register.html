@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Phone Number Verification</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="tel"] {
+            padding: 10px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Enter your phone number:</h1>
+    <form id="phoneForm" th:action="@{/sendOTP}" method="post" th:object="${phoneNum}">
+        <input id="phoneNumber" name="phoneNumber" placeholder="Enter 10-digit phone number" required pattern="[0-9]{10}" th:field="*{phoneNumber}" />
+        <button type="submit" id="sendOTP">Send OTP</button>
+    </form>
+</div>
+
+
+<script>
+    document.getElementById('phoneNumber').addEventListener('input', function() {
+        var phoneNumber = this.value.replace(/\D/g, ''); // Remove non-digits
+        var sendOTPButton = document.getElementById('sendOTP');
+
+        if (phoneNumber.length === 10) {
+            sendOTPButton.disabled = false;
+        } else {
+            sendOTPButton.disabled = true;
+        }
+    });
+
+    document.getElementById('sendOTP').addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent form submission
+        var phoneNumber = document.getElementById('phoneNumber').value;
+        window.location.href = 'otp.html?phoneNumber=' + phoneNumber;
+    });
+</script>
+</body>
+</html>
