@@ -49,12 +49,14 @@ public class SessionServiceImpl implements SessionService {
         Optional<Mentee> optionalMentee = menteeRepository.findById(sessionBookingObject.getMenteeId());
         if (optionalAvailability.isPresent() && optionalMentee.isPresent()){
             Session newSession = new Session();
+            Availability existingAvailability= optionalAvailability.get();
             newSession.setAvailabilityId(sessionBookingObject.getAvailabilityId());
             newSession.setMenteeId(sessionBookingObject.getMenteeId());
+            newSession.setMentorId(existingAvailability.getMentorId());
             sessionRepository.save(newSession);
 
             //Flag the availability object as true, because it is booked now.
-            Availability existingAvailability = optionalAvailability.get();
+
             existingAvailability.setIsBooked(true);
             availabilityRepository.save(existingAvailability);
         }else {

@@ -105,8 +105,7 @@ public class MentorController {
 
     @GetMapping("/searchMentors")
     public ResponseEntity<MentorSearchResponseObject> searchMentors(@RequestBody SearchCriteria criteria) {
-        if (criteria == null ||
-        criteria.getCompanyName() == null){
+        if (criteria == null){
             return new ResponseEntity<>(new MentorSearchResponseObject
                     (
                             "0",

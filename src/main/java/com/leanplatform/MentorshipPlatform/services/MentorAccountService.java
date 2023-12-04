@@ -5,9 +5,14 @@ import com.leanplatform.MentorshipPlatform.dto.AdminController.FetchDesiredReque
 import com.leanplatform.MentorshipPlatform.dto.AdminController.MentorRequestListResponse;
 import com.leanplatform.MentorshipPlatform.dto.AdminController.RequestToBeUpdated;
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.*;
+import com.leanplatform.MentorshipPlatform.dto.MentorController.MentorSearchResponseDto;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public interface MentorAccountService {
     ResponseEntity<MentorRequestResponse> creatingMentorAccount(MentorRequestObject mentorRequestObject);
@@ -29,4 +34,8 @@ public interface MentorAccountService {
     ResponseEntity<MentorRequestDeletedResponse> deleteMentorRequest(DeleteMentorRequestObject deleteMentorRequestObject);
 
     boolean isPhoneNumberAlreadyExists(String phoneNo);
+    ResponseEntity<RegisteredMentorsResponse> getAllRegisteredMentors();
+    ResponseEntity<RegisteredMentorsResponse> getRegisteredMentorsCreatedPreviousDay(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd);
+    ResponseEntity<RegisteredMentorsResponse> getRegisteredMentorsCreatedPreviousWeek(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd);
+
 }

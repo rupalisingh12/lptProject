@@ -5,7 +5,10 @@ import com.leanplatform.MentorshipPlatform.dto.AdminController.AdminAddsDetailsR
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.DeleteMentorRequestObject;
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorRequestDeletedResponse;
 import com.leanplatform.MentorshipPlatform.dto.MentorController.*;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponse;
+import com.leanplatform.MentorshipPlatform.entities.Mentor;
 import org.springframework.http.ResponseEntity;
+import java.time.LocalDateTime;
 
 import java.util.List;
 
@@ -24,6 +27,10 @@ public interface MentorService {
     ResponseEntity<DisplayMentorResponse> displayMentor(DisplayMentorObject displayMentorObject);
 
     ResponseEntity<MentorRequestDeletedResponse> deleteMentor(DeleteMentorRequestObject deleteMentorRequestObject);
+    ResponseEntity<ActiveMentorsResponse>getActiveMentorsCreatedPreviousDay(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd );
+    ResponseEntity<ActiveMentorsResponse>getAllActiveMentors();
+    ResponseEntity<ActiveMentorsResponse>getAllActiveMentorsCreatedPreviousWeek(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd );
+
 
 
 }

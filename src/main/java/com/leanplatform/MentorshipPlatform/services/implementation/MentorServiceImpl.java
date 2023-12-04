@@ -1,16 +1,22 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
+import com.beust.ah.A;
 import com.leanplatform.MentorshipPlatform.dto.AdminController.AddFurtherDetails;
 import com.leanplatform.MentorshipPlatform.dto.AdminController.AdminAddsDetailsResponse;
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.DeleteMentorRequestObject;
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorRequestDeletedResponse;
 import com.leanplatform.MentorshipPlatform.dto.MentorController.*;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponse;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponse;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponseDTO;
 import com.leanplatform.MentorshipPlatform.entities.Mentor;
 import com.leanplatform.MentorshipPlatform.entities.MentorRequest;
 import com.leanplatform.MentorshipPlatform.entities.ServicesByMentors;
 import com.leanplatform.MentorshipPlatform.entities.ServicesOffered;
 import com.leanplatform.MentorshipPlatform.mappers.MentorToMentorSearchResponseMapper;
 import com.leanplatform.MentorshipPlatform.mappers.ServicesByMentorsMapper;
+import com.leanplatform.MentorshipPlatform.mappers.StatsMapper;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository;
 import com.leanplatform.MentorshipPlatform.repositories.ServicesByMentorsRepository;
 import com.leanplatform.MentorshipPlatform.repositories.ServicesOfferedRepository;
@@ -20,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -88,8 +95,7 @@ public class MentorServiceImpl implements MentorService {
     }
 
     public ResponseEntity<MentorSearchResponseObject> searchMentors(SearchCriteria criteria) {
-        if (criteria == null ||
-                criteria.getCompanyName() == null) {
+        if (criteria == null) {
             return new ResponseEntity<>(new MentorSearchResponseObject
                     (
                             "0",
@@ -109,7 +115,7 @@ public class MentorServiceImpl implements MentorService {
                 criteria.getYearsOfExperience()
         );
 
-        if (mentors.isEmpty()){
+        if (mentors.isEmpty()) {
             return new ResponseEntity<>(new MentorSearchResponseObject
                     (
                             "1",
@@ -124,11 +130,11 @@ public class MentorServiceImpl implements MentorService {
         List<MentorSearchResponseDto> priorTolast = new ArrayList<>();
         for (Mentor mentor : mentors) {
             MentorSearchResponseDto mentorSearchResponseDto = (MentorToMentorSearchResponseMapper.convertEntityToDto(mentor));
-            if (mentorSearchResponseDto.getCurrentPlaceOfEmployment().equals(criteria.getCompanyName())){
+            if (mentorSearchResponseDto.getCurrentPlaceOfEmployment().equals(criteria.getCompanyName())) {
                 current.add(mentorSearchResponseDto);
             } else if (mentorSearchResponseDto.getLastPlaceOfEmployment().equals(criteria.getCompanyName())) {
                 last.add(mentorSearchResponseDto);
-            }else {
+            } else {
                 priorTolast.add(mentorSearchResponseDto);
             }
         }
@@ -203,7 +209,7 @@ public class MentorServiceImpl implements MentorService {
             }
 
             mentorRepository.save(existingMentor);
-        }else {
+        } else {
             return new ResponseEntity<>(new MentorUpdatesAccountResponse
                     (
                             "0",
@@ -237,7 +243,7 @@ public class MentorServiceImpl implements MentorService {
         }
         Optional<Mentor> optionalMentor = mentorRepository.findById(displayMentorObject.getMentor_id());
         DisplayMentorResponse displayMentorResponse = new DisplayMentorResponse();
-        if (optionalMentor.isPresent()){
+        if (optionalMentor.isPresent()) {
             Mentor existingMentor = optionalMentor.get();
             displayMentorResponse.setStatusCode("1");
             displayMentorResponse.setResponseMessage("Mentor Page displayed Successfully !");
@@ -248,7 +254,7 @@ public class MentorServiceImpl implements MentorService {
             List<ServicesByMentors> servicesByMentors = servicesByMentorsRepository.getDesiredMentorServices(displayMentorObject.getMentor_id());
             List<ServicesByMentorDto> servicesByMentorDtos = ServicesByMentorsMapper.convertEntityToDto(servicesByMentors);
             displayMentorResponse.setServicesByMentorsDto(servicesByMentorDtos);
-        }else {
+        } else {
             return new ResponseEntity<>(new DisplayMentorResponse
                     (
                             "0",
@@ -268,30 +274,96 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public ResponseEntity<MentorRequestDeletedResponse> deleteMentor(DeleteMentorRequestObject deleteMentorRequestObject) {
         if (deleteMentorRequestObject == null ||
-                deleteMentorRequestObject.getMentorId() == null ){
+                deleteMentorRequestObject.getMentorId() == null) {
 
             return new ResponseEntity<>(new MentorRequestDeletedResponse
                     (
                             "0",
                             "Invalid Object - Null Object received"
-                    ),HttpStatus.BAD_REQUEST);
+                    ), HttpStatus.BAD_REQUEST);
         }
         Optional<Mentor> optionalMentor = mentorRepository.findById(deleteMentorRequestObject.getMentorId());
-        if (optionalMentor.isPresent()){
+        if (optionalMentor.isPresent()) {
             Mentor existingMentor = optionalMentor.get();
             mentorRepository.delete(existingMentor);
-        }else {
+        } else {
             return new ResponseEntity<>(new MentorRequestDeletedResponse
                     (
                             "0",
                             "Mentor with the given ID does not exist."
-                    ),HttpStatus.NOT_FOUND);
+                    ), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(new MentorRequestDeletedResponse
                 (
                         "1",
                         "Mentor  Successfully Deleted."
-                ),HttpStatus.NO_CONTENT);
+                ), HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity<ActiveMentorsResponse> getAllActiveMentors() {
+        try {
+            List<Mentor> activeMentors = mentorRepository.findAll();
+            List<ActiveMentorsResponseDTO> activeMentorsResponseDTOS = StatsMapper.convertEntityToDtoActive(activeMentors);
+            return new ResponseEntity<>(new ActiveMentorsResponse(
+                    "1",
+                    "Total no of Active Mentors " + activeMentorsResponseDTOS.size(), activeMentorsResponseDTOS), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ActiveMentorsResponse(
+                    "0",
+                    "Error: " + e.getLocalizedMessage(),
+                    null
+            ), HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
+
+
+    @Override
+    public ResponseEntity<ActiveMentorsResponse>getActiveMentorsCreatedPreviousDay(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd ){
+        try{
+            List<Mentor>mentor=mentorRepository.findByCreatedAtBetween(yesterdayStart,yesterdayEnd);
+            if(mentor.isEmpty()){
+                return new ResponseEntity<>(new ActiveMentorsResponse("0","No mentors found for previous day",null),HttpStatus.NOT_FOUND);
+            }
+            List<ActiveMentorsResponseDTO>activeMentorsResponseDTOS=StatsMapper.convertEntityToDtoActive(mentor);
+            return new ResponseEntity<>( new ActiveMentorsResponse
+                    ("1",
+                            "Total no of Active Mentors previous day"+activeMentorsResponseDTOS.size(),
+                            activeMentorsResponseDTOS),HttpStatus.CREATED);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>
+                    (new ActiveMentorsResponse
+                            ("0","Error"+e.getLocalizedMessage(),
+                                    null),HttpStatus.BAD_REQUEST);
+
+
+        }
+    }
+    @Override
+    public ResponseEntity<ActiveMentorsResponse>getAllActiveMentorsCreatedPreviousWeek(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd ){
+        try{
+            List<Mentor>mentor=mentorRepository.findByCreatedAtBetween(yesterdayStart,yesterdayEnd);
+            if(mentor.isEmpty()){
+                return new ResponseEntity<>(new ActiveMentorsResponse
+                        ("0",
+                                "No mentors found for previous day",
+                                null),HttpStatus.NOT_FOUND);
+            }
+            List<ActiveMentorsResponseDTO>activeMentorsResponseDTOS=StatsMapper.convertEntityToDtoActive(mentor);
+            return new ResponseEntity<>(new ActiveMentorsResponse
+                    ("1",
+                            "Total no of Active Mentor previous week"+activeMentorsResponseDTOS.size(),
+                            activeMentorsResponseDTOS),HttpStatus.CREATED);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(new ActiveMentorsResponse
+                    ("0","Error"+e.getLocalizedMessage(),
+                            null),HttpStatus.BAD_REQUEST);
+
+        }
     }
 
 }

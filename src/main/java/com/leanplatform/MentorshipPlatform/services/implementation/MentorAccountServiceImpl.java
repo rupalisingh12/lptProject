@@ -6,11 +6,14 @@ import com.leanplatform.MentorshipPlatform.dto.AdminController.MentorRequestList
 import com.leanplatform.MentorshipPlatform.dto.AdminController.RequestToBeUpdated;
 import com.leanplatform.MentorshipPlatform.dto.AvailabilityController.AdminChecksRequestsDto;
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.*;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponse;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponseDTO;
 import com.leanplatform.MentorshipPlatform.entities.Mentor;
 import com.leanplatform.MentorshipPlatform.entities.MentorRequest;
 import com.leanplatform.MentorshipPlatform.enums.MentorEnums;
 import com.leanplatform.MentorshipPlatform.enums.RequestAction;
 import com.leanplatform.MentorshipPlatform.mappers.MentorMapper;
+import com.leanplatform.MentorshipPlatform.mappers.StatsMapper;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRequestRepository;
 import com.leanplatform.MentorshipPlatform.services.AdminChecksRequestsDtoService;
@@ -21,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -263,7 +267,97 @@ public class MentorAccountServiceImpl implements MentorAccountService {
                             "1",
                             "Mentor Request Successfully Deleted."
                     ),HttpStatus.OK);
+
+
+
+
+    }
+    @Override
+    public ResponseEntity<RegisteredMentorsResponse> getAllRegisteredMentors(){
+        List<MentorRequest> registeredMentors = mentorRequestRepository.findAll();
+        if(registeredMentors.isEmpty()){
+            return new ResponseEntity<>(new RegisteredMentorsResponse(
+                    "1",
+                    "No registered mentors found ",
+                    null),HttpStatus.NOT_FOUND);
+        }
+        List<RegisteredMentorsResponseDTO>registeredMentorsResponseDTOS= StatsMapper.convertEntityToDto(registeredMentors);
+        return new ResponseEntity<>(new RegisteredMentorsResponse
+                (
+                        "1",
+                        "Total no of registered mentors are "+registeredMentorsResponseDTOS.size(),
+                        registeredMentorsResponseDTOS
+                ),HttpStatus.OK);
+
+
+
+    }
+    @Override
+    public ResponseEntity<RegisteredMentorsResponse> getRegisteredMentorsCreatedPreviousDay(LocalDateTime yesterdayStart,LocalDateTime yesterdayEnd) {
+
+        try {
+            // Query mentors created within the specified date range
+            List<MentorRequest> mentors = mentorRequestRepository.findByCreatedAtBetween(yesterdayStart,yesterdayEnd);
+
+            if(mentors.isEmpty()){
+                return new ResponseEntity<>(new RegisteredMentorsResponse(
+                        "0",
+                        "No registered mentors found ",
+                        null),HttpStatus.NOT_FOUND);
+            }
+            // Convert entities to DTOs using StatsMapper
+            List<RegisteredMentorsResponseDTO> mentorsResponseDTOS = StatsMapper.convertEntityToDto(mentors);
+
+            // Return the response
+            return new ResponseEntity<>(new RegisteredMentorsResponse(
+                    "1",
+                    "Total no of mentors registered Previous Day: " + mentorsResponseDTOS.size(),
+                    mentorsResponseDTOS
+            ), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new RegisteredMentorsResponse(
+                    "0",
+                    "Error: " + e.getLocalizedMessage(),
+                    null
+            ), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @Override
+    public ResponseEntity<RegisteredMentorsResponse> getRegisteredMentorsCreatedPreviousWeek(
+            LocalDateTime fromTimestamp, LocalDateTime toTimestamp) {
+
+        try {
+            // Query mentors created within the specified date range
+            List<MentorRequest> mentors = mentorRequestRepository.findByCreatedAtBetween(fromTimestamp, toTimestamp);
+            if(mentors.isEmpty()){
+                return new ResponseEntity<>(new RegisteredMentorsResponse(
+                        "1",
+                        "No registered mentors found ",
+                        null),HttpStatus.NOT_FOUND);
+            }
+
+            // Convert entities to DTOs using StatsMapper
+            List<RegisteredMentorsResponseDTO> mentorsResponseDTOS = StatsMapper.convertEntityToDto(mentors);
+
+            // Return the response
+            return new ResponseEntity<>(new RegisteredMentorsResponse(
+                    "1",
+                    "Total no of mentors registered in the previous week: " + mentorsResponseDTOS.size(),
+                    mentorsResponseDTOS
+            ), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new RegisteredMentorsResponse(
+                    "0",
+                    "Error: " + e.getLocalizedMessage(),
+                    null
+            ), HttpStatus.BAD_REQUEST);
+        }
     }
 
 
 }
+
+
+
+
+

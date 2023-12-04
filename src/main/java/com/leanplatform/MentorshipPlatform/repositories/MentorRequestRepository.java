@@ -1,13 +1,17 @@
 package com.leanplatform.MentorshipPlatform.repositories;
 
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorRequestObject;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponse;
 import com.leanplatform.MentorshipPlatform.entities.MentorRequest;
 import com.leanplatform.MentorshipPlatform.enums.MentorEnums;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.time.LocalDateTime;
 
+
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,4 +26,7 @@ public interface MentorRequestRepository extends JpaRepository<MentorRequest, UU
     Optional<MentorRequest> findByEmail(String email);
 
     Optional<MentorRequest> findByPhoneNo(String phoneNo);
+    List<MentorRequest>findByCreatedAtBetween(LocalDateTime yesterdayStart,LocalDateTime yesterdayEnd);
+
+
 }

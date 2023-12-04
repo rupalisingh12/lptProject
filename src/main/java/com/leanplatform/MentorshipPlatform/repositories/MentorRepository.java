@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 @Repository
@@ -36,4 +37,10 @@ public interface MentorRepository extends JpaRepository<Mentor, UUID> {
 
     @Query("SELECT m.lastName FROM Mentor m WHERE m.mentor_id = :mentorId")
     String getLastName(UUID mentorId);
+
+    List<Mentor>findByCreatedAtBetween(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd);
+
+
+
+
 }
