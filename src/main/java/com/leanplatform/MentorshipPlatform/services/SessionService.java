@@ -19,4 +19,8 @@ public interface SessionService {
     ResponseEntity<SessionsListResponse> getUpcomingSessions(SessionsListRequest sessionsListRequest);
 
     ResponseEntity<SessionsListResponse> getFinishedSessions(SessionsListRequest sessionsListRequest);
+
+
+
+
 }

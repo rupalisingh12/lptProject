@@ -34,8 +34,6 @@ public interface MentorAccountService {
     ResponseEntity<MentorRequestDeletedResponse> deleteMentorRequest(DeleteMentorRequestObject deleteMentorRequestObject);
 
     boolean isPhoneNumberAlreadyExists(String phoneNo);
-    ResponseEntity<RegisteredMentorsResponse> getAllRegisteredMentors();
-    ResponseEntity<RegisteredMentorsResponse> getRegisteredMentorsCreatedPreviousDay(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd);
-    ResponseEntity<RegisteredMentorsResponse> getRegisteredMentorsCreatedPreviousWeek(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd);
+
 
 }

@@ -1,41 +1,39 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
 import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponse;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMenteeRespone;
 import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponse;
-import com.leanplatform.MentorshipPlatform.services.MentorAccountService;
-import com.leanplatform.MentorshipPlatform.services.MentorService;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.SessionDoneMentorsResponse;
+import com.leanplatform.MentorshipPlatform.services.OverallStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 
 @RestController
 @RequestMapping("/stats")
-public class OverallStats {
+public class OverallStatsController {
+
     @Autowired
-    private MentorAccountService mentorAccountService;
-    @Autowired
-    private MentorService mentorService;
+    private OverallStatsService overallStatsService;
    //to get overall registered mentors
     @GetMapping("/registeredMentors")
     public ResponseEntity<RegisteredMentorsResponse>getAllTheRegisteredMentors() {
         // return  mentorAccountService.getAllRegisteredMentors();
         try {
-            return mentorAccountService.getAllRegisteredMentors();
+            return overallStatsService.getAllRegisteredMentors();
         } catch (Exception e) {
             return new ResponseEntity<>(new RegisteredMentorsResponse
                     (
                             "0",
                             "Error: " + e.getLocalizedMessage(),
                             null
-                    ), HttpStatus.BAD_REQUEST);
+                    ), HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }
@@ -49,13 +47,13 @@ public class OverallStats {
                 LocalDateTime yesterdayEnd = today.withHour(0).withMinute(0).withSecond(0).withNano(0);
 
                 // Call the service method to get mentors created on the previous day
-                return mentorAccountService.getRegisteredMentorsCreatedPreviousDay(yesterdayStart,yesterdayEnd );
+                return overallStatsService.getRegisteredMentorsCreatedPreviousDay(yesterdayStart,yesterdayEnd );
             } catch (Exception e) {
                 return new ResponseEntity<>(new RegisteredMentorsResponse(
                         "0",
                         "Error: " + e.getLocalizedMessage(),
                         null
-                ), HttpStatus.BAD_REQUEST);
+                ), HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
         // to get registred mentors in previous week
@@ -68,13 +66,13 @@ public class OverallStats {
             LocalDateTime lastWeekEnd = today.withHour(0).withMinute(0).withSecond(0).withNano(0);
 
             // Call the service method to get mentors created in the last week
-            return mentorAccountService.getRegisteredMentorsCreatedPreviousWeek(lastWeekStart, lastWeekEnd);
+            return overallStatsService.getRegisteredMentorsCreatedPreviousWeek(lastWeekStart, lastWeekEnd);
         } catch (Exception e) {
             return new ResponseEntity<>(new RegisteredMentorsResponse(
                     "0",
                     "Error: " + e.getLocalizedMessage(),
                     null
-            ), HttpStatus.BAD_REQUEST);
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -82,7 +80,7 @@ public class OverallStats {
         @GetMapping("/activeMentors")
         public ResponseEntity<ActiveMentorsResponse>getAllActiveMentor(){
             try{
-                return mentorService.getAllActiveMentors();
+                return overallStatsService.getAllActiveMentors();
 
 
             }
@@ -91,7 +89,7 @@ public class OverallStats {
                         (new ActiveMentorsResponse
                                       ("0",
                                         "Error:"+e.getLocalizedMessage(),
-                                        null),HttpStatus.BAD_REQUEST);
+                                        null),HttpStatus.INTERNAL_SERVER_ERROR);
 
             }
 
@@ -105,13 +103,13 @@ public class OverallStats {
                 LocalDateTime yesterdayEnd = today.withHour(0).withMinute(0).withSecond(0).withNano(0);
 
                 // Call the service method to get mentors created on the previous day
-                return mentorService.getActiveMentorsCreatedPreviousDay(yesterdayStart,yesterdayEnd );
+                return overallStatsService.getActiveMentorsCreatedPreviousDay(yesterdayStart,yesterdayEnd );
             } catch (Exception e) {
                 return new ResponseEntity<>(new ActiveMentorsResponse(
                         "0",
                         "Error: " + e.getLocalizedMessage(),
                         null
-                ), HttpStatus.BAD_REQUEST);
+                ), HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
         @GetMapping("/activeMentorsPreviousWeek")
@@ -120,20 +118,83 @@ public class OverallStats {
             LocalDateTime today = LocalDateTime.now();
             LocalDateTime lastWeekStart = today.minusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
             LocalDateTime lastWeekEnd = today.withHour(0).withMinute(0).withSecond(0).withNano(0);
-             return mentorService.getAllActiveMentorsCreatedPreviousWeek(lastWeekStart,lastWeekEnd);
+             return overallStatsService.getAllActiveMentorsCreatedPreviousWeek(lastWeekStart,lastWeekEnd);
 
         }
         catch(Exception e){
             return new ResponseEntity<>(new ActiveMentorsResponse
                     ("0","Error:"+e.getLocalizedMessage(),
-                            null),HttpStatus.BAD_REQUEST);
+                            null),HttpStatus.INTERNAL_SERVER_ERROR);
 
             }
         }
+        @GetMapping("/sessionMentors")
+        public ResponseEntity<SessionDoneMentorsResponse>getALlTheMentorWhoHasDoneSession() {
+            try {
+               return overallStatsService.getAlltheMentorsDoneSession();
+
+            } catch (Exception e){
+                return new ResponseEntity<>(new SessionDoneMentorsResponse
+                        ("0","Error:"+e.getLocalizedMessage(),
+                                null),HttpStatus.INTERNAL_SERVER_ERROR);
+
+            }
 
 
+        }
+        @GetMapping("/sessionMentorsPreviousDay")
+    public ResponseEntity<SessionDoneMentorsResponse>getAllTheMentorWhoHasDoneSessionPreviousDay(){
+        try{
 
+                // Calculate timestamps for the previous day
+                LocalDateTime today = LocalDateTime.now();
+                LocalDateTime yesterdayStart = today.minusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+                LocalDateTime yesterdayEnd = today.withHour(0).withMinute(0).withSecond(0).withNano(0);
+                return overallStatsService.getAllTheMentorWhoHasDoneSessionPreviousDay(yesterdayStart,yesterdayEnd);
+            }
+              catch(Exception e){
+
+                return new ResponseEntity<>(new SessionDoneMentorsResponse
+                        ("0","Error:"+e.getLocalizedMessage(),
+                                null),HttpStatus.INTERNAL_SERVER_ERROR);
+
+            }
+
+        }
+//        @GetMapping("/sessionMentorsPreviousWeek")
+//    public ResponseEntity<SessionDoneMentorsResponse>getAllTheMentorsWhoHasDoneSessionPreviousWeek(){
+//        try{
+//            LocalDateTime today = LocalDateTime.now();
+//            LocalDateTime lastWeekStart = today.minusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
+//            LocalDateTime lastWeekEnd = today.withHour(0).withMinute(0).withSecond(0).withNano(0);
+//            return overallStatsService.
+//
+//        }
+//        catch{
+//
+//            }
+//        }
+    @GetMapping("/registeredMentee")
+    public ResponseEntity<RegisteredMenteeRespone>getALlThementee(){
+        try{
+            return overallStatsService.getResgisteredMentee();
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(new RegisteredMenteeRespone
+                    ("0","Error:"+e.getLocalizedMessage(),
+                            null),HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
+        }
     }
+
+
+
+
+
+
+
 
 
 

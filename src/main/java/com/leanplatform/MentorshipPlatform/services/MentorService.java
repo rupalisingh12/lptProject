@@ -27,10 +27,5 @@ public interface MentorService {
     ResponseEntity<DisplayMentorResponse> displayMentor(DisplayMentorObject displayMentorObject);
 
     ResponseEntity<MentorRequestDeletedResponse> deleteMentor(DeleteMentorRequestObject deleteMentorRequestObject);
-    ResponseEntity<ActiveMentorsResponse>getActiveMentorsCreatedPreviousDay(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd );
-    ResponseEntity<ActiveMentorsResponse>getAllActiveMentors();
-    ResponseEntity<ActiveMentorsResponse>getAllActiveMentorsCreatedPreviousWeek(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd );
-
-
 
 }

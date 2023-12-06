@@ -20,4 +20,5 @@ public interface MenteeRepository extends JpaRepository<Mentee , UUID> {
     Optional<Object> findByEmail(String email);
 
     Optional<Object> findByPhoneNo(String phoneNo);
+
 }
