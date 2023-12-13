@@ -1,9 +1,6 @@
 package com.leanplatform.MentorshipPlatform.mappers;
 
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponseDTO;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMenteeDTOResponse;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponseDTO;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredDoneMentorsResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.*;
 import com.leanplatform.MentorshipPlatform.entities.Mentee;
 import com.leanplatform.MentorshipPlatform.entities.Mentor;
 import com.leanplatform.MentorshipPlatform.entities.MentorRequest;
@@ -101,8 +98,47 @@ public class StatsMapper {
         }
         return registeredMentorsResponseDTOS;
     }
+    public static List<SessionDoneMenteeResponseDTO>convertEntityToDTOmenteeSessionDone(List<Mentee>mentee){
+        List<SessionDoneMenteeResponseDTO> sessionDoneMenteeResponseDTOS = new ArrayList<>();
+        for (int i = 0; i < mentee.size(); i++) {
+            Mentee mentee1 = mentee.get(i);
+            SessionDoneMenteeResponseDTO responseDTO = new SessionDoneMenteeResponseDTO();
+            responseDTO.setFirstName(mentee1.getFirstName());
+            responseDTO.setLastName(mentee1.getLastName());
+            responseDTO.setPhoneNo(mentee1.getPhoneNo());
+            // responseDTO.setResume(mentee1.getResume());
+            responseDTO.setEmail(mentee1.getEmail());
+            responseDTO.setAge(mentee1.getAge());
+            // responseDTO.setLinkedIn_link(mentee1.getLinkedIn_link());
+            //responseDTO.setYearsOfExperience(mentee1.getYearsOfExperience());
+            responseDTO.setEducationalQualification(mentee1.getEducationalQualification());
+            //  responseDTO.setOverAllRating(mentee1.getOverAllRating());
+            sessionDoneMenteeResponseDTOS.add(responseDTO);
 
+        }
+        return sessionDoneMenteeResponseDTOS;
     }
+
+    public static List<TotalSessionResponseDTO> convertdtoTodto(List<ServiceSessionCountDTO> serviceSessionCounts) {
+        List<TotalSessionResponseDTO> totalSessionResponsedto = new ArrayList<>();
+
+        for (int i = 0; i < serviceSessionCounts.size(); i++) {
+            ServiceSessionCountDTO dto = serviceSessionCounts.get(i);
+            TotalSessionResponseDTO totalSessionResponseDTO=new TotalSessionResponseDTO();
+            totalSessionResponseDTO.setServiceOffered(dto.getServiceOffered());
+            totalSessionResponseDTO.setSessionCount(dto.getSessionCount());
+            totalSessionResponsedto.add(totalSessionResponseDTO);
+        }
+
+        // You might have other logic to set additional properties in TotalSessionResponse
+
+        return totalSessionResponsedto;
+    }
+
+//
+
+
+}
 
 
 

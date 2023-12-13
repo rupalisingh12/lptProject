@@ -28,4 +28,19 @@ public interface AvailabilityRepository extends JpaRepository<Availability, UUID
     LocalDate getSlotDate(UUID availabilityId);
     @Query("SELECT a.dayOfTheWeek FROM Availability a WHERE a.availabilityId = :availabilityId")
     DaysOfTheWeek getDayOfTheWeek(UUID availabilityId);
+    @Query("SELECT a.availabilityId FROM Availability a WHERE date(CONCAT(a.date, ' ', a.endTime)) < CURRENT_TIMESTAMP")
+    List<UUID> findAvailabilityIdsBeforeCurrentTime();
+//
+@Query(value = "SELECT a.availability_id FROM availability a WHERE a.date = CURRENT_DATE - INTERVAL '1 day'", nativeQuery = true)
+List<UUID> findAvailabilityIdsYesterday();
+    @Query(value = "SELECT a.availability_id FROM availability a WHERE a.date >= CURRENT_DATE - INTERVAL '7 days' AND a.date < CURRENT_DATE", nativeQuery = true)
+    List<UUID>findAvailabilityIdsInPreviousWeek();
+
+
+
+
+
+
+
+
 }

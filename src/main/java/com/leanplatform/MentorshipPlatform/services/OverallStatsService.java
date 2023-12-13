@@ -1,9 +1,6 @@
 package com.leanplatform.MentorshipPlatform.services;
 
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponse;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMenteeRespone;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponse;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.SessionDoneMentorsResponse;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.*;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
@@ -19,6 +16,15 @@ public interface OverallStatsService {
     ResponseEntity<SessionDoneMentorsResponse>getAllTheMentorWhoHasDoneSessionPreviousDay(LocalDateTime yesterdayStart,LocalDateTime yesterdayEnd);
 //    ResponseEntity<SessionDoneMentorsResponse>getA
     ResponseEntity<RegisteredMenteeRespone>getResgisteredMentee();
+    ResponseEntity<SessionDoneMentorsResponse>getAllTheMentorwhoDidSessionPreviousWeek(LocalDateTime lastWeekStart,LocalDateTime lastWeekEnd);
+//    ResponseEntity<RegisteredMenteeRespone>getAllTheMenteeWhoHasDoneSession();
+    ResponseEntity<RegisteredMenteeRespone> getMenteeWhoRegisteredPreviousDay(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd);
+    ResponseEntity<RegisteredMenteeRespone>getAllTheMenteWhoRegisteredPreviousWeek(LocalDateTime lastWeekStart,LocalDateTime lastWeekEnd);
+    ResponseEntity<SessionDoneMenteeResponse>getAllthementeeWhoHasDoneSession();
+   ResponseEntity<SessionDoneMenteeResponse>getMenteeWhoDoneSessionPreviousDay(LocalDateTime yesterdayStart,LocalDateTime yesterdayEnd);
+   ResponseEntity<SessionDoneMenteeResponse>getMenteeWhoDoneSessionPreviousWeek(LocalDateTime lastWeekStart,LocalDateTime lastWeekEnd);
+  ResponseEntity<TotalSessionResponse>getAllTheNoSessionHappened();
+
 
 
 

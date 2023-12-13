@@ -39,8 +39,8 @@ public interface MentorRepository extends JpaRepository<Mentor, UUID> {
     String getLastName(UUID mentorId);
 
     List<Mentor>findByCreatedAtBetween(LocalDateTime yesterdayStart, LocalDateTime yesterdayEnd);
-    @Query("SELECT m FROM Mentor m WHERE m.mentor_id IN :mentorIds")
-    List<Mentor> findMentorsByMentorIds(@Param("mentorIds") List<UUID> mentorIds);
+    @Query("SELECT DISTINCT m FROM Mentor m WHERE m.mentor_id IN :mentorIds")
+    List<Mentor> findDistinctMentorsByMentorIds(@Param("mentorIds") List<UUID> mentorIds);
 
 
 
