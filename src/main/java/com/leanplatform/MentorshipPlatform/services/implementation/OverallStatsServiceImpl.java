@@ -61,7 +61,7 @@ public class OverallStatsServiceImpl implements OverallStatsService {
         if (mentors.isEmpty()) {
             return new ResponseEntity<>(new RegisteredMentorsResponse(
                     "0",
-                    "No registered mentors found ",
+                    "No registered mentors found for previpus day",
                     null), HttpStatus.NOT_FOUND);
         }
         // Convert entities to DTOs using StatsMapper
@@ -86,7 +86,7 @@ public class OverallStatsServiceImpl implements OverallStatsService {
         if (mentors.isEmpty()) {
             return new ResponseEntity<>(new RegisteredMentorsResponse(
                     "0",
-                    "No registered mentors found ",
+                    "No registered mentors found for previous week ",
                     null), HttpStatus.NOT_FOUND);
         }
 
@@ -126,7 +126,7 @@ public class OverallStatsServiceImpl implements OverallStatsService {
         if (mentor.isEmpty()) {
             return new ResponseEntity<>(new ActiveMentorsResponse
                     ("0",
-                            "No mentors found for previous day",
+                            "No active mentors found for previous day",
                             null), HttpStatus.NOT_FOUND);
         }
         List<ActiveMentorsResponseDTO> activeMentorsResponseDTOS = StatsMapper.convertEntityToDtoActive(mentor);
@@ -145,7 +145,7 @@ public class OverallStatsServiceImpl implements OverallStatsService {
         if (mentor.isEmpty()) {
             return new ResponseEntity<>(new ActiveMentorsResponse
                     ("0",
-                            "No mentors found for previous day",
+                            "No active mentors found for previous week",
                             null), HttpStatus.NOT_FOUND);
         }
         List<ActiveMentorsResponseDTO> activeMentorsResponseDTOS = StatsMapper.convertEntityToDtoActive(mentor);
@@ -170,7 +170,7 @@ public class OverallStatsServiceImpl implements OverallStatsService {
         List<RegisteredDoneMentorsResponseDTO> sessionDoneMentorsResponseDTOS = StatsMapper.convertEntityToDtoSession(mentorDoneSession);
         return new ResponseEntity<>(new SessionDoneMentorsResponse
                 ("1",
-                        "Total no of Mentor " + sessionDoneMentorsResponseDTOS.size(),
+                        "Total no of Mentor who has done session" + sessionDoneMentorsResponseDTOS.size(),
                         sessionDoneMentorsResponseDTOS), HttpStatus.CREATED);
 
 
@@ -183,13 +183,13 @@ public class OverallStatsServiceImpl implements OverallStatsService {
         List<Mentor> mentorDoneSession = mentorRepository.findDistinctMentorsByMentorIds(mentorIdsList);
         if (mentorDoneSession.isEmpty()) {
             return new ResponseEntity<>(new SessionDoneMentorsResponse
-                    ("0", "No mentor that has done a session yesterday found for ",
+                    ("0", "No mentor  found ",
                             null), HttpStatus.NOT_FOUND);
         }
         List<RegisteredDoneMentorsResponseDTO> sessionDoneMentorsResponseDTOS = StatsMapper.convertEntityToDtoSession(mentorDoneSession);
         return new ResponseEntity<>(new SessionDoneMentorsResponse
                 ("1",
-                        "Total no of Active Mentor previous week" + sessionDoneMentorsResponseDTOS.size(),
+                        "Total no of mentor who has done session previous day" + sessionDoneMentorsResponseDTOS.size(),
                         sessionDoneMentorsResponseDTOS), HttpStatus.CREATED);
 
 
@@ -204,13 +204,13 @@ public class OverallStatsServiceImpl implements OverallStatsService {
             return new ResponseEntity<>(
                     new SessionDoneMentorsResponse(
                             "0",
-                            "No mentor that has done a session last week found ",
+                            "No mentor found ",
                             null), HttpStatus.NOT_FOUND);
         }
         List<RegisteredDoneMentorsResponseDTO> sessionDoneMentorsResponseDTOS = StatsMapper.convertEntityToDtoSession(mentorDoneSession);
         return new ResponseEntity<>(new SessionDoneMentorsResponse
                 ("1",
-                        "Total no of Active Mentor previous week" + sessionDoneMentorsResponseDTOS.size(),
+                        "Total no of mentors who has done session previous week" + sessionDoneMentorsResponseDTOS.size(),
                         sessionDoneMentorsResponseDTOS), HttpStatus.CREATED);
 
     }
@@ -228,7 +228,7 @@ public class OverallStatsServiceImpl implements OverallStatsService {
         List<RegisteredMenteeDTOResponse> registeredMenteeDTOResponses = StatsMapper.convertEntityToDTOmentee(mentee);
         return new ResponseEntity<>(new RegisteredMenteeRespone
                 ("1",
-                        "Total no of Active Mentor previous week" + registeredMenteeDTOResponses.size(),
+                        "Total no of registered mentee" + registeredMenteeDTOResponses.size(),
                         registeredMenteeDTOResponses), HttpStatus.OK);
     }
 
@@ -244,7 +244,7 @@ public class OverallStatsServiceImpl implements OverallStatsService {
         List<RegisteredMenteeDTOResponse> registeredMenteeDTOResponses = StatsMapper.convertEntityToDTOmentee(mentee);
         return new ResponseEntity<>(new RegisteredMenteeRespone
                 ("1",
-                        "Total no of Active Mentor previous week" + registeredMenteeDTOResponses.size(),
+                        "Total no of mentee who has done registration previous day" + registeredMenteeDTOResponses.size(),
                         registeredMenteeDTOResponses), HttpStatus.OK);
     }
 
@@ -261,7 +261,7 @@ public class OverallStatsServiceImpl implements OverallStatsService {
         List<RegisteredMenteeDTOResponse> registeredMenteeDTOResponses = StatsMapper.convertEntityToDTOmentee(mentee);
         return new ResponseEntity<>(new RegisteredMenteeRespone
                 ("1",
-                        "Total no of mentee previous week" + registeredMenteeDTOResponses.size(),
+                        "Total no of mentee who has done a registration previous week" + registeredMenteeDTOResponses.size(),
                         registeredMenteeDTOResponses), HttpStatus.OK);
 
     }
@@ -275,13 +275,13 @@ public class OverallStatsServiceImpl implements OverallStatsService {
             return new ResponseEntity<>(
                     new SessionDoneMenteeResponse(
                             "0",
-                            "No mentee has done a registration previous day",
+                            "No mentee has done session previous day",
                             null), HttpStatus.NOT_FOUND);
         }
         List<SessionDoneMenteeResponseDTO> sessionDoneMenteeResponseDTOS = StatsMapper.convertEntityToDTOmenteeSessionDone(mentees);
         return new ResponseEntity<>(new SessionDoneMenteeResponse
                 ("1",
-                        "Total no of Active Mentor previous week" + sessionDoneMenteeResponseDTOS.size(),
+                        "Total no of mentee who has done session previous day" + sessionDoneMenteeResponseDTOS.size(),
                         sessionDoneMenteeResponseDTOS), HttpStatus.OK);
     }
 
@@ -326,32 +326,69 @@ public class OverallStatsServiceImpl implements OverallStatsService {
     @Override
     public ResponseEntity<TotalSessionResponse> getAllTheNoSessionHappened() {
         List<UUID> availabilityList = availabilityRepository.findAvailabilityIdsBeforeCurrentTime();
+        List<UUID>availabilityList1=sessionRepository.getAllAvailabilityIds();
         List<Object[]> serviceSessionCounts = sessionRepository.getSessionCountsByService(availabilityList);
-        for (Object[] row : serviceSessionCounts) {
-            System.out.println(row[0]);
-            System.out.println(row[1]);
-        }
-//        if (serviceSessionCounts.isEmpty()) {
-//            return new ResponseEntity<>
-//                    (new TotalSessionResponse
-//                            ("0",
-//                                    "No session has happened", null), HttpStatus.NOT_FOUND);
-////            }
-//     //   List<TotalSessionResponseDTO>totalSessionResponseDTOS=StatsMapper.convertdtoTodto(serviceSessionCounts);
-//            return new ResponseEntity<>(new TotalSessionResponse
-//                    (
-//                            "1",
-//                            "Total no of sessions has happened " +
-//                                    "",null),HttpStatus.OK);
 //
-//
-////   }
-//        }
-        return new ResponseEntity<>
+        if (serviceSessionCounts.isEmpty()) {
+            return new ResponseEntity<>
                     (new TotalSessionResponse
-                           ("0",
-                                 "No session has happened", null), HttpStatus.NOT_FOUND);
+                            ("0",
+                                    "No session has happened", null), HttpStatus.NOT_FOUND);
+           }
+            List<TotalSessionResponseDTO> totalSessionResponseDTOS = StatsMapper.convertdtoTodtoObject(serviceSessionCounts);
+            return new ResponseEntity<>(new TotalSessionResponse
+                    (
+                            "1",
+                            "Total no of sessions has happened " +availabilityList1.size()+
+                                    "", totalSessionResponseDTOS), HttpStatus.OK);
+
+
+//   }
         }
+        @Override
+    public ResponseEntity<TotalSessionResponse>getAllTheNoSessionHappenedPreviousDay(){
+            List<UUID> availabilityList = availabilityRepository.findAvailabilityIdsForYesterday();
+            List<UUID>availabilityList1=sessionRepository.getAllAvailabilityIds();
+            List<Object[]> serviceSessionCounts = sessionRepository.getSessionCountsByService(availabilityList);
+            if (serviceSessionCounts.isEmpty()) {
+                return new ResponseEntity<>
+                        (new TotalSessionResponse
+                                ("0",
+                                        "No session has happened", null), HttpStatus.NOT_FOUND);
+            }
+            List<TotalSessionResponseDTO> totalSessionResponseDTOS = StatsMapper.convertdtoTodtoObject(serviceSessionCounts);
+            return new ResponseEntity<>(new TotalSessionResponse
+                    (
+                            "1",
+                            "Total no of sessions has happened previous day " +availabilityList1.size()+
+                                    "", totalSessionResponseDTOS), HttpStatus.OK);
+
+
+//   }
+
+
+        }
+        @Override
+    public ResponseEntity<TotalSessionResponse>getAllTheNoSessionHappenedPreviousWeek(){
+            List<UUID> availabilityList =availabilityRepository.findAvailabilityIdsForPreviousWeek();
+            List<UUID>availabilityList1=sessionRepository.getAllAvailabilityIds();
+            List<Object[]> serviceSessionCounts = sessionRepository.getSessionCountsByService(availabilityList);
+            if (serviceSessionCounts.isEmpty()) {
+                return new ResponseEntity<>
+                        (new TotalSessionResponse
+                                ("0",
+                                        "No session has happened", null), HttpStatus.NOT_FOUND);
+            }
+            List<TotalSessionResponseDTO> totalSessionResponseDTOS = StatsMapper.convertdtoTodtoObject(serviceSessionCounts);
+            return new ResponseEntity<>(new TotalSessionResponse
+                    (
+                            "1",
+                            "Total no of sessions has happened previous week " +availabilityList1.size()+
+                                    "", totalSessionResponseDTOS), HttpStatus.OK);
+
+
+        }
+
 
     }
 

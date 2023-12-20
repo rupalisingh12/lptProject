@@ -38,7 +38,7 @@ public class SessionServiceImpl implements SessionService {
     public ResponseEntity<SessionBookedResponse> createNewSession(SessionBookingObject sessionBookingObject) {
         if (sessionBookingObject == null ||
                 sessionBookingObject.getMenteeId() == null ||
-                sessionBookingObject.getAvailabilityId() == null){
+                sessionBookingObject.getAvailabilityId() == null || sessionBookingObject.getServiceId()==null){
             return new ResponseEntity<>(new SessionBookedResponse
                     (
                             "0",
@@ -52,7 +52,9 @@ public class SessionServiceImpl implements SessionService {
             Availability existingAvailability= optionalAvailability.get();
             newSession.setAvailabilityId(sessionBookingObject.getAvailabilityId());
             newSession.setMenteeId(sessionBookingObject.getMenteeId());
+            newSession.setServiceId(sessionBookingObject.getServiceId());
             newSession.setMentorId(existingAvailability.getMentorId());
+
             sessionRepository.save(newSession);
 
             //Flag the availability object as true, because it is booked now.

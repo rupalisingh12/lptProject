@@ -119,23 +119,27 @@ public class StatsMapper {
         return sessionDoneMenteeResponseDTOS;
     }
 
-    public static List<TotalSessionResponseDTO> convertdtoTodto(List<ServiceSessionCountDTO> serviceSessionCounts) {
-        List<TotalSessionResponseDTO> totalSessionResponsedto = new ArrayList<>();
-
-        for (int i = 0; i < serviceSessionCounts.size(); i++) {
-            ServiceSessionCountDTO dto = serviceSessionCounts.get(i);
+    public static List<TotalSessionResponseDTO> convertdtoTodtoObject(List<Object[]> serviceSessionCounts) {
+        List<TotalSessionResponseDTO>totalSessionResponseDTOS=new ArrayList<>();
+        for(int i=0;i<serviceSessionCounts.size();i++){
+            Object[] objects=serviceSessionCounts.get(i);
             TotalSessionResponseDTO totalSessionResponseDTO=new TotalSessionResponseDTO();
-            totalSessionResponseDTO.setServiceOffered(dto.getServiceOffered());
-            totalSessionResponseDTO.setSessionCount(dto.getSessionCount());
-            totalSessionResponsedto.add(totalSessionResponseDTO);
+            totalSessionResponseDTO.setServiceOffered(objects[0].toString());
+            Object sessionCountObject = objects[1];
+            // Perform type cast to long
+            long sessionCount = (sessionCountObject instanceof Number) ? ((Number) sessionCountObject).longValue() : 0L;
+            // Now set the session count in your totalSessionResponseDTO
+            totalSessionResponseDTO.setSessionCount(sessionCount);
+            totalSessionResponseDTOS.add(totalSessionResponseDTO);
+
         }
 
-        // You might have other logic to set additional properties in TotalSessionResponse
 
-        return totalSessionResponsedto;
+        return totalSessionResponseDTOS;
     }
 
-//
+
+
 
 
 }

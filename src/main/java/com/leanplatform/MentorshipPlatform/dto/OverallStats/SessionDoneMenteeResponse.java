@@ -11,7 +11,7 @@ import java.util.List;
 public class SessionDoneMenteeResponse {
     private String statusCode;
     private String responseMessage;
-    private List<SessionDoneMenteeResponseDTO> listOfRegisteredMentors;
+    private List<SessionDoneMenteeResponseDTO> listOfMentee;
 
 
 

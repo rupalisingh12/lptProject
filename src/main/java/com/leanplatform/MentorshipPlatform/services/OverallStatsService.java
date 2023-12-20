@@ -24,6 +24,8 @@ public interface OverallStatsService {
    ResponseEntity<SessionDoneMenteeResponse>getMenteeWhoDoneSessionPreviousDay(LocalDateTime yesterdayStart,LocalDateTime yesterdayEnd);
    ResponseEntity<SessionDoneMenteeResponse>getMenteeWhoDoneSessionPreviousWeek(LocalDateTime lastWeekStart,LocalDateTime lastWeekEnd);
   ResponseEntity<TotalSessionResponse>getAllTheNoSessionHappened();
+  ResponseEntity<TotalSessionResponse>getAllTheNoSessionHappenedPreviousDay();
+  ResponseEntity<TotalSessionResponse>getAllTheNoSessionHappenedPreviousWeek();
 
 
 

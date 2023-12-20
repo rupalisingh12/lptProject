@@ -46,6 +46,8 @@ public interface SessionRepository extends JpaRepository<Session, UUID> {
             nativeQuery = true
     )
     List<Object[]> getSessionCountsByService(@Param("availabilityList") List<UUID> availabilityList);
+    @Query(value = "SELECT availability_id FROM session", nativeQuery = true)
+    List<UUID> getAllAvailabilityIds();
 
 
 

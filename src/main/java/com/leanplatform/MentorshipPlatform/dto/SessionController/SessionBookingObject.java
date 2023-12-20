@@ -14,4 +14,6 @@ import java.util.UUID;
 public class SessionBookingObject {
     private UUID menteeId;
     private UUID availabilityId;
+    private UUID   serviceId;
+
 }

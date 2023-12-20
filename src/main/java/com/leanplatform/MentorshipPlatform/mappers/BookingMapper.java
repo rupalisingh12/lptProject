@@ -1,0 +1,57 @@
+package com.leanplatform.MentorshipPlatform.mappers;
+
+import com.leanplatform.MentorshipPlatform.dto.BookingController.CreateBookingDTO;
+import com.leanplatform.MentorshipPlatform.entities.Booking;
+import com.leanplatform.MentorshipPlatform.entities.UserEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookingMapper {
+    public static CreateBookingDTO convertEntityToDto(Booking booking,UserEntity userEntity){
+        CreateBookingDTO createBookingDTO = new CreateBookingDTO();
+        createBookingDTO.setUserId(userEntity.getUserId());
+        createBookingDTO.setDescription(booking.getDescription());
+        createBookingDTO.setEventTypeId(booking.getEventTypeId());
+        createBookingDTO.setTitle(booking.getTitle());
+        createBookingDTO.setStartTime(booking.getStartTime());
+        createBookingDTO.setEndTime(booking.getEndTime());
+        createBookingDTO.setStatus(booking.getStatus());
+       // createBookingDTO.setAttendees(booking.getAttendees());
+        //createBookingDTO.setLocation(booking.getLocation());
+        return createBookingDTO;
+    }
+    public static List<CreateBookingDTO> convertEntityToDto1(List<Booking>bookingList){
+        List<CreateBookingDTO> createBookingDTO=new ArrayList<>();
+        CreateBookingDTO createBookingDTO1=new CreateBookingDTO();
+        for(int i=0;i<bookingList.size();i++){
+            Booking bookingElement=bookingList.get(i);
+            createBookingDTO1.setDescription(bookingElement.getDescription());
+            createBookingDTO1.setBookingId(bookingElement.getBookingId());
+            createBookingDTO1.setUserId(bookingElement.getUserId());
+           ;
+            createBookingDTO1.setTitle(bookingElement.getTitle());
+            createBookingDTO1.setStartTime(bookingElement.getStartTime());
+            createBookingDTO1.setEndTime(bookingElement.getEndTime());
+            createBookingDTO1.setEventTypeId(bookingElement.getEventTypeId());
+//            createBookingDTO1.setAttendees(bookingElement.getAttendees());
+//            createBookingDTO1.setUser(bookingElement.getUser());
+            createBookingDTO1.setBookingId(bookingElement.getBookingId());
+            createBookingDTO1.setUserId(bookingElement.getUserId());
+            createBookingDTO1.setDescription(bookingElement.getDescription());
+            createBookingDTO1.setTitle(bookingElement.getTitle());
+            createBookingDTO1.setStartTime(bookingElement.getStartTime());
+            createBookingDTO1.setEndTime(bookingElement.getEndTime());
+            createBookingDTO1.setEventTypeId(bookingElement.getEventTypeId());
+//            createBookingDTO1.setAttendees(bookingElement.getAttendees());
+//            createBookingDTO1.setUser(bookingElement.getUser());
+            createBookingDTO.add(createBookingDTO1);
+        }
+        return createBookingDTO;
+
+
+
+
+    }
+
+}

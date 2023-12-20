@@ -13,5 +13,5 @@ import java.util.List;
 public class RegisteredMenteeRespone {
     private String statusCode;
     private String responseMessage;
-    private List<RegisteredMenteeDTOResponse> listOfRegisteredMentors;
+    private List<RegisteredMenteeDTOResponse> listOfMentee;
 }

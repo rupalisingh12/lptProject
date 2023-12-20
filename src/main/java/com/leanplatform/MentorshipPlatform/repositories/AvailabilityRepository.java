@@ -35,12 +35,21 @@ public interface AvailabilityRepository extends JpaRepository<Availability, UUID
 List<UUID> findAvailabilityIdsYesterday();
     @Query(value = "SELECT a.availability_id FROM availability a WHERE a.date >= CURRENT_DATE - INTERVAL '7 days' AND a.date < CURRENT_DATE", nativeQuery = true)
     List<UUID>findAvailabilityIdsInPreviousWeek();
+//    @Query(value = "SELECT availability_id FROM Availability WHERE DATE_TRUNC('day', date) = DATE_TRUNC('day', NOW() - INTERVAL '1 day')", nativeQuery = true)
+//    List<UUID> findAvailabilityIdsForYesterday();
+//@Query(value = "SELECT availability_id FROM Availability WHERE DATE_TRUNC('day', date) = DATE_TRUNC('day', NOW() - INTERVAL '1 day')", nativeQuery = true)
+//List<UUID> findAvailabilityIdsForYesterday();
+    @Query(value = "SELECT availability_id FROM Availability WHERE DATE_TRUNC('day', date) = CURRENT_DATE - INTERVAL '1 day'", nativeQuery = true)
+    List<UUID> findAvailabilityIdsForYesterday();
 
 
-
-
-
-
-
-
+    @Query(value = "SELECT availability_id FROM Availability WHERE date >= CURRENT_DATE - INTERVAL '7 days' AND date < CURRENT_DATE", nativeQuery = true)
+    List<UUID> findAvailabilityIdsForPreviousWeek();
 }
+
+
+
+
+
+
+

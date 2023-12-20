@@ -18,7 +18,7 @@ public class SessionController {
     public ResponseEntity<SessionBookedResponse> createNewSession(@RequestBody SessionBookingObject sessionBookingObject){
         if (sessionBookingObject == null ||
         sessionBookingObject.getMenteeId() == null ||
-        sessionBookingObject.getAvailabilityId() == null){
+        sessionBookingObject.getAvailabilityId() == null || sessionBookingObject.getServiceId()==null){
             return new ResponseEntity<>(new SessionBookedResponse
                     (
                             "0",

@@ -281,6 +281,34 @@ public class OverallStatsController {
 
         }
     }
+    @GetMapping("NoOfSessionPreviousDay")
+    public ResponseEntity<TotalSessionResponse>getNoOfSessionHappenedPreviousDay(){
+        try {
+            return overallStatsService.getAllTheNoSessionHappenedPreviousDay();
+        }
+        catch (Exception e){
+            return new ResponseEntity<>
+                    (new TotalSessionResponse
+                            ("0","Error"+e.getLocalizedMessage(),
+                                    null),HttpStatus.INTERNAL_SERVER_ERROR);
+
+
+        }
+    }
+    @GetMapping("NoOfSessiomPreviousWeek")
+    public ResponseEntity<TotalSessionResponse>getNoOfSessionHappenedPreviousWeek(){
+        try{
+            return overallStatsService.getAllTheNoSessionHappenedPreviousWeek();
+        }
+        catch(Exception e){
+            return new ResponseEntity<>
+                    (new TotalSessionResponse
+                            ("0","Error"+e.getLocalizedMessage(),
+                                    null),HttpStatus.INTERNAL_SERVER_ERROR);
+
+
+        }
+    }
 
 //
 ////
