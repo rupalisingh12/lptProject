@@ -61,32 +61,45 @@ public class BookingServiceImpl implements BookingService {
        Booking booking1= bookingRepository.save(booking);
        attendee1.setBookingId(booking1.getBookingId());
        attendeeRepository.save(attendee1);
+      Attendee attendee=attendeeRepository.findByBookingId(booking1.getBookingId());
+
 
         //UUID locationID=location.save(bookingRequest.getLoction());
       //  booking.setLocationId(locationID);
         UserEntity userE= userRepository.findByUserId(userId);
-       CreateBookingDTO createBookingDTO1= BookingMapper.convertEntityToDto(booking,userE);
+       CreateBookingDTO createBookingDTO1= BookingMapper.convertEntityToDto(booking,userE,attendee);
         return new ResponseEntity<>(new
                 CreateBookingResponse("1",
                 "Booking Created",createBookingDTO1 ), HttpStatus.OK);
     }
-//    @Override
-//    public ResponseEntity<GetBookingResponse>getBookings(UUID userId){
-//        List<Booking> bookingList=bookingRepository.findAllByUserId(userId);
-//      List<CreateBookingDTO>createBookingDTO=  BookingMapper.convertEntityToDto1(bookingList);
-//        return new ResponseEntity<>(new
-//                GetBookingResponse("1",
-//                "Booking Created",createBookingDTO ), HttpStatus.OK);
-//    }
-//    @Override
-//    public ResponseEntity<GetBookingResponse>getBooking(UUID bookingId,UUID userId){
-//       // List<Booking> bookingList=bookingRepository.findByBookingIdAndUserId(userId);
-//        List<CreateBookingDTO>createBookingDTO=  BookingMapper.convertEntityToDto1(bookingList);
-//        return new ResponseEntity<>(new
-//                GetBookingResponse("1",
-//                "Booking Created",createBookingDTO ), HttpStatus.OK);
-//
-//    }
+    @Override
+    public ResponseEntity<GetBookingResponse>getBookings(UUID userId){
+        List<Booking> bookingList=bookingRepository.findAllByUserId(userId);
+      List<CreateBookingDTO>createBookingDTO=  BookingMapper.convertEntityToDto1(bookingList);
+        return new ResponseEntity<>(new
+                GetBookingResponse("1",
+                "Booking List is",createBookingDTO ), HttpStatus.OK);
+    }
+    @Override
+    public ResponseEntity<CreateBookingResponse>getBooking(UUID bookingId,UUID userId){
+       Booking booking=bookingRepository.findByBookingIdAndUserId(userId,bookingId);
+       if(booking!=null) {
+           Attendee attendee = attendeeRepository.findByBookingId(booking.getBookingId());
+           UserEntity userEntity = userRepository.findByUserId(userId);
+           CreateBookingDTO createBookingDTO = BookingMapper.convertEntityToDto(booking, userEntity, attendee);
+
+           return new ResponseEntity<>(new
+                   CreateBookingResponse("1",
+                   "Booking Created", createBookingDTO), HttpStatus.OK);
+       }
+       else{
+           return new ResponseEntity<>(new
+                   CreateBookingResponse("1",
+                   "Booking Created",null), HttpStatus.OK);
+
+       }
+
+    }
 //    @Override
 //    public ResponseEntity<CreateBookingResponse>deleteBooking(UUID bookingId, UUID userId){
 //        List<Booking> bookingList=bookingRepository.findByBookingIdAndUserId(userId);

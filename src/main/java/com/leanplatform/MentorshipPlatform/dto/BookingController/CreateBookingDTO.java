@@ -26,7 +26,7 @@ public class CreateBookingDTO {
     private LocalDateTime endTime;
     private BookingEnums Status;
     private UUID eventTypeId; //(This is coming from EventType table);
-  //  private List<Attendee> attendees;
+  private Attendee attendee;
    // private ArrayList<UserEntity>user;
 
 

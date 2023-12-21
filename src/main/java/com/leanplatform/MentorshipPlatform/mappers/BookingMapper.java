@@ -1,6 +1,7 @@
 package com.leanplatform.MentorshipPlatform.mappers;
 
 import com.leanplatform.MentorshipPlatform.dto.BookingController.CreateBookingDTO;
+import com.leanplatform.MentorshipPlatform.entities.Attendee;
 import com.leanplatform.MentorshipPlatform.entities.Booking;
 import com.leanplatform.MentorshipPlatform.entities.UserEntity;
 
@@ -8,12 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookingMapper {
-    public static CreateBookingDTO convertEntityToDto(Booking booking,UserEntity userEntity){
+    public static CreateBookingDTO convertEntityToDto(Booking booking, UserEntity userEntity, Attendee attendee){
         CreateBookingDTO createBookingDTO = new CreateBookingDTO();
         createBookingDTO.setUserId(userEntity.getUserId());
         createBookingDTO.setDescription(booking.getDescription());
         createBookingDTO.setEventTypeId(booking.getEventTypeId());
         createBookingDTO.setTitle(booking.getTitle());
+        createBookingDTO.setAttendee(attendee);
         createBookingDTO.setStartTime(booking.getStartTime());
         createBookingDTO.setEndTime(booking.getEndTime());
         createBookingDTO.setStatus(booking.getStatus());
@@ -53,5 +55,19 @@ public class BookingMapper {
 
 
     }
+//    public static CreateBookingDTO convertEntityToDtoGetBooking(Booking booking){
+//        CreateBookingDTO createBookingDTO = new CreateBookingDTO();
+//        createBookingDTO.setUserId(userEntity.getUserId());
+//        createBookingDTO.setDescription(booking.getDescription());
+//        createBookingDTO.setEventTypeId(booking.getEventTypeId());
+//        createBookingDTO.setTitle(booking.getTitle());
+//        createBookingDTO.setAttendee(attendee);
+//        createBookingDTO.setStartTime(booking.getStartTime());
+//        createBookingDTO.setEndTime(booking.getEndTime());
+//        createBookingDTO.setStatus(booking.getStatus());
+//        // createBookingDTO.setAttendees(booking.getAttendees());
+//        //createBookingDTO.setLocation(booking.getLocation());
+//        return createBookingDTO;
+//    }
 
 }

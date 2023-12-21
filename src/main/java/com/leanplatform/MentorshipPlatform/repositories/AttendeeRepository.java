@@ -9,4 +9,8 @@ import java.util.UUID;
 
 @Repository
 public interface AttendeeRepository extends JpaRepository<Attendee, UUID> {
+
+       Attendee findByBookingId(UUID bookingId);
+
+
 }

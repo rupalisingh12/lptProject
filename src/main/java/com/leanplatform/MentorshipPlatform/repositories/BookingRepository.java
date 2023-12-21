@@ -12,7 +12,8 @@ import java.util.UUID;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findAllByUserId(UUID userId);
-  //  List<Booking> findByBookingIdAndUserId(UUID userId);
+    @Query("SELECT b FROM Booking b WHERE b.bookingId = :bookingId AND b.userId = :userId")
+      Booking findByBookingIdAndUserId(@Param("bookingId") UUID bookingId, @Param("userId") UUID userId);
 //    @Query("DELETE FROM Booking b WHERE b.userId = :userId AND b.bookingId = :bookingId")
 //    void deleteByUserIdAndBookingId(@Param("bookingId") UUID bookingId, @Param("userId") UUID userId);
     Booking save (Booking booking);

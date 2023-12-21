@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface BookingService {
 
     public ResponseEntity<CreateBookingResponse>createAbooking(BookingRequest bookingRequest, UUID userId);
-//    public ResponseEntity<GetBookingResponse>getBookings(UUID userId);
-//    public ResponseEntity<GetBookingResponse>getBooking(UUID bookingId,UUID userId);
+   public ResponseEntity<GetBookingResponse>getBookings(UUID userId);
+    public ResponseEntity<CreateBookingResponse>getBooking(UUID bookingId,UUID userId);
 //    public ResponseEntity<CreateBookingResponse>deleteBooking(UUID bookingId, UUID userId);
 }

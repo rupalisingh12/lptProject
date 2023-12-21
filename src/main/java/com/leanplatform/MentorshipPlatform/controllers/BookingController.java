@@ -41,31 +41,31 @@ public class BookingController {
         }
     }
 
-//    @GetMapping("/getAllBookings")
-//    public ResponseEntity<GetBookingResponse> getAllBooking(@RequestParam(name = "userId") UUID userId) {
+    @GetMapping("/getAllBookings")
+    public ResponseEntity<GetBookingResponse> getAllBooking(@RequestParam(name = "userId") UUID userId) {
+        try {
+            return bookingService.getBookings(userId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new GetBookingResponse
+                    (
+                            "0",
+                            "Caught in catch block",
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("/bookings/{bookingId}")
+    public ResponseEntity<CreateBookingResponse> getBookingById(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId) {
 //        try {
-//            return bookingService.getBookings(userId);
+            return bookingService.getBooking(bookingId, userId);
 //        } catch (Exception e) {
-//            return new ResponseEntity<>(new GetBookingResponse
-//                    (
-//                            "0",
-//                            "Caught in catch block",
-//                            null
-//                    ), HttpStatus.BAD_REQUEST);
+//            return new ResponseEntity<>(new CreateBookingResponse("0", "Caught in catch block", null), HttpStatus.BAD_REQUEST);
 //        }
-//
-//    }
-//
-//    @GetMapping("/bookings/{bookingId}")
-//    public ResponseEntity<GetBookingResponse> getBookingById(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId) {
-//        try {
-//            return bookingService.getBooking(bookingId, userId);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(new GetBookingResponse("0", "Caught in catch block", null), HttpStatus.BAD_REQUEST);
-//        }
-//
-//
-//    }
+
+
+    }
 //    @DeleteMapping("bookings/{bookingId}")
 //    public ResponseEntity<CreateBookingResponse>deleteBookings(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId){
 //        try {

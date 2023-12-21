@@ -25,7 +25,7 @@ public class Schedule {
     private UUID scheduleId;
     private UUID userId;
     private String name;
-    private UUID availabilityId;
+
 
 
 
