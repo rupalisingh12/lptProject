@@ -11,8 +11,8 @@ import java.util.UUID;
 @Setter
 @Getter
 public class UserGetResponseDto {
-    private String user_name;
-    private String name;
+    private String userName;
+    private String fullName;
     private String email;
     private String bio;
     private String avatar;

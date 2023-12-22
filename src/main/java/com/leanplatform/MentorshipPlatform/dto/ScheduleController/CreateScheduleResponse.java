@@ -13,6 +13,6 @@ import lombok.Setter;
 public class CreateScheduleResponse {
     private String statusCode;
     private String responseMessage;
-    private CreateBookingDTO createBookingDTO;
+    private CreateScheduleResponseDTO createBookingDTO;
 
 }

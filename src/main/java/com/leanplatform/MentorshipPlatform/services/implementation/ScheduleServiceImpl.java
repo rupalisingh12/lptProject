@@ -1,19 +1,90 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
+import com.leanplatform.MentorshipPlatform.dto.AdminController.AdminAddsDetailsResponse;
+import com.leanplatform.MentorshipPlatform.dto.MenteeController.MenteeModified;
 import com.leanplatform.MentorshipPlatform.dto.ScheduleController.CreateScheduleResponse;
+import com.leanplatform.MentorshipPlatform.dto.ScheduleController.CreateScheduleResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.ScheduleController.GetAllScheduleResponse;
+import com.leanplatform.MentorshipPlatform.entities.AvailabilityNew;
+import com.leanplatform.MentorshipPlatform.entities.Schedule;
+import com.leanplatform.MentorshipPlatform.entities.UserEntity;
+import com.leanplatform.MentorshipPlatform.mappers.ScheduleMapper;
+import com.leanplatform.MentorshipPlatform.repositories.AvailabilityNewRepository;
+import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository;
+import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.ScheduleService;
+import jakarta.validation.constraints.Null;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
-//    @Override
-//   public ResponseEntity<CreateScheduleResponse> createSchedules(UUID bookingId){
-//
-//
-//
-//   }
+   @Autowired UserRepository userRepository;
+   @Autowired AvailabilityNewRepository availabilityNewRepository;
+   @Autowired ScheduleRepository scheduleRepository;
 
-}
+
+
+  @Override
+   public ResponseEntity<CreateScheduleResponse> createSchedules(UUID userId) {
+     Schedule schedule=new Schedule();
+     schedule.setUserId(userId);
+    UserEntity userEntity= userRepository.findByUserId(userId);
+    schedule.setName(userEntity.getName());
+     Schedule schedule1=scheduleRepository.save(schedule);
+
+    List<AvailabilityNew> availabilityNewList=availabilityNewRepository.findByScheduleId(schedule1.getScheduleId());
+      CreateScheduleResponseDTO createScheduleResponsedto=ScheduleMapper.convertEntityToDTO( schedule,availabilityNewList);
+
+
+
+      return new ResponseEntity<>(new CreateScheduleResponse(
+                      "1",
+                      "Schedule created",createScheduleResponsedto
+              ), HttpStatus.CREATED);
+  }
+  @Override
+  public ResponseEntity<GetAllScheduleResponse> getSchedules(UUID userId){
+      List<Schedule>schedule1=scheduleRepository.findByUserId( userId);
+      List<CreateScheduleResponseDTO>createScheduleResponseDTOS=new ArrayList<>();
+     for(int i=0;i<schedule1.size();i++){
+         Schedule schedule=schedule1.get(i);
+         List<AvailabilityNew> availabilityNewList=availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
+         CreateScheduleResponseDTO createScheduleResponsedto=ScheduleMapper.convertEntityToDTO( schedule,availabilityNewList);
+         createScheduleResponseDTOS.add(createScheduleResponsedto);
+
+     }
+      return new ResponseEntity<>(new GetAllScheduleResponse(
+              "1",
+              "Schedule created",createScheduleResponseDTOS
+      ), HttpStatus.CREATED);
+
+  }
+  @Override
+ public ResponseEntity<CreateScheduleResponse>getSchdeule(UUID userId, UUID scheduleId) {
+      Schedule schedule = scheduleRepository.findByScheduleIdAndUserId(scheduleId, userId);
+      List<AvailabilityNew> availabilityNewList = availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
+      CreateScheduleResponseDTO createScheduleResponsedto = ScheduleMapper.convertEntityToDTO(schedule, availabilityNewList);
+      return new ResponseEntity<>(new CreateScheduleResponse(
+              "1",
+              "Schedule created", createScheduleResponsedto
+      ), HttpStatus.CREATED);
+  }
+
+
+
+
+
+
+
+  }
+
+
+

@@ -5,15 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreateScheduleResponseDTO {
-    private UUID scheduleId;
-    private UUID userId;
-    private String name;
-    private AvailabilityNewDTO availabiltyNewDTO;
+public class GetAllScheduleResponse {
+    private String statusCode;
+    private String responseMessage;
+    private List<CreateScheduleResponseDTO> createBookingDTO;
 }

@@ -5,15 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreateScheduleResponseDTO {
-    private UUID scheduleId;
-    private UUID userId;
-    private String name;
-    private AvailabilityNewDTO availabiltyNewDTO;
+public class TimeSlots {
+    private String startTime;
+    private String endTime;
 }

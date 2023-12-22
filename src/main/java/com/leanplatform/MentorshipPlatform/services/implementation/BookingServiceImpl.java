@@ -45,7 +45,7 @@ public class BookingServiceImpl implements BookingService {
         UserEntity userEntity=userRepository.findByUserId(userId);
         String name=userEntity.getName();
         String name1=bookingRequest.getResponse().getName();
-        booking.setTitle(name+ "between"+name1);
+        booking.setTitle(name+ "_between_"+name1);
         //to put startTime
         booking.setStartTime(bookingRequest.getStart());
         //to put endTime

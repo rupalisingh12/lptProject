@@ -14,8 +14,8 @@ public class UserMapper {
         if (usersList.isPresent()) {
             UserEntity userEntity = usersList.get();
             UserGetResponseDto userGetResponseDto = new UserGetResponseDto();
-            userGetResponseDto.setUser_name(userEntity.getUser_name());
-            userGetResponseDto.setName(userEntity.getName());
+//            userGetResponseDto.setUser_name(userEntity.getUser_name());
+//            userGetResponseDto.setName(userEntity.getName());
             userGetResponseDto.setAvatar(userEntity.getAvatar());
             userGetResponseDto.setBio(userEntity.getBio());
             userGetResponseDto.setEmail(userEntity.getEmail());
