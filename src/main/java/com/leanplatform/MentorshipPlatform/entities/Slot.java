@@ -18,7 +18,8 @@ import java.util.List;
 public class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private long slotId;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
 }

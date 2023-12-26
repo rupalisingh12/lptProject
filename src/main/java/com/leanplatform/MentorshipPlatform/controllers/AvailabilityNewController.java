@@ -20,19 +20,19 @@ public class AvailabilityNewController {
     @Autowired AvailabilityNewService availabilityNewService;
     @PostMapping("/addAvailability")
     public ResponseEntity<CreateAvailabilityNewResponse>addAvailability(@RequestParam("scheduleId") UUID scheduleId, @RequestBody CreateAvailabilityNewRequest createAvailabilityNewRequest) {
-        try {
+//        try {
             return availabilityNewService.addAnAvailability(scheduleId, createAvailabilityNewRequest);
 
-        } catch (Exception e) {
-            return new ResponseEntity<>(new CreateAvailabilityNewResponse
-                    (
-                            "0",
-                            "Failed the on the generation of the DTOs and was caught in side catch block" + e.getLocalizedMessage(),
-                            null
-                    ), HttpStatus.BAD_REQUEST);
-
-
-        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(new CreateAvailabilityNewResponse
+//                    (
+//                            "0",
+//                            "Failed the on the generation of the DTOs and was caught in side catch block" + e.getLocalizedMessage(),
+//                            null
+//                    ), HttpStatus.BAD_REQUEST);
+//
+//
+//        }
     }
 //    @GetMapping("/allAvailabilities")
 //    public ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailabilities(@RequestParam(name="scheduleId")UUID scheduleId,@RequestParam(name="userId")UUID userId,

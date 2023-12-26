@@ -14,6 +14,7 @@ import com.leanplatform.MentorshipPlatform.mappers.AvailabilityNewMapper;
 import com.leanplatform.MentorshipPlatform.repositories.AvailabilityNewRepository;
 import com.leanplatform.MentorshipPlatform.repositories.BookingRepository;
 import com.leanplatform.MentorshipPlatform.repositories.DaysRepository;
+import com.leanplatform.MentorshipPlatform.repositories.SlotRepository;
 import com.leanplatform.MentorshipPlatform.services.AvailabilityNewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 @Service
@@ -33,6 +35,8 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
     DaysRepository daysRepository;
     @Autowired
     BookingRepository bookingRepository;
+    @Autowired
+    SlotRepository slotRepository;
     public ResponseEntity<CreateAvailabilityNewResponse> addAnAvailability(UUID scheduleId, CreateAvailabilityNewRequest createAvailabilityNewRequest) {
         if(createAvailabilityNewRequest==null || createAvailabilityNewRequest.getDays()==null || createAvailabilityNewRequest.getEndTime()==null || createAvailabilityNewRequest.getStartTime()==null ||
                 createAvailabilityNewRequest.getScheduleId()==null ){
@@ -44,7 +48,14 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
         }
         LocalDateTime startTime =createAvailabilityNewRequest.getStartTime();
         LocalDateTime endTime=createAvailabilityNewRequest.getEndTime();
-        List<Long>listOfSlots=AvailabilityNewMapper.convertStartTimeEndTimeIntoSlots(startTime,endTime);
+        LocalTime startTime1 = startTime.toLocalTime();
+        LocalTime endTime1 = endTime.toLocalTime();
+
+
+
+
+        List<Long>listOfSlots=slotRepository.findSlotIdsByTimeRange(startTime1,endTime1);
+//        List<Long>listOfSlots=AvailabilityNewMapper.convertStartTimeEndTimeIntoSlots(startTime,endTime);
         List<Long>listOfDays=createAvailabilityNewRequest.getDays();
         AvailabilityNew availabilityNew=null;
         for(int i=0;i<listOfDays.size();i++){
