@@ -2,6 +2,7 @@ package com.leanplatform.MentorshipPlatform.services;
 
 import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.CreateAvailabilityNewRequest;
 import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.CreateAvailabilityNewResponse;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.GetAllAvailabilitiesResponse;
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorRequestObject;
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorRequestResponse;
 import com.leanplatform.MentorshipPlatform.services.implementation.AvailabilityNewServiceImpl;
@@ -16,6 +17,6 @@ public interface AvailabilityNewService {
 
 
      ResponseEntity<CreateAvailabilityNewResponse> addAnAvailability(UUID scheduleId, CreateAvailabilityNewRequest createAvailabilityNewRequest) ;
-
+//     ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailability(UUID scheduleId,UUID userId,UUID eventTypeId,UUID dateTo,UUID dateFrom);
 
 }

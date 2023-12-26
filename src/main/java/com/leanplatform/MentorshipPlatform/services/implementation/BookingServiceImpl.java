@@ -34,7 +34,8 @@ public class BookingServiceImpl implements BookingService {
         if (bookingRequest == null ||
                 bookingRequest.getEventTypeId() == null ||bookingRequest.getStart()==null ||
                 bookingRequest.getDescription()==null || bookingRequest.getResponse()==null) {
-            return new ResponseEntity<>(new CreateBookingResponse("0", "Invalid Request", null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>
+                    (new CreateBookingResponse("0", "Invalid Request", null), HttpStatus.BAD_REQUEST);
         }
         CreateBookingDTO createBookingDTO = new CreateBookingDTO();
         Booking booking = new Booking();
@@ -114,6 +115,7 @@ public class BookingServiceImpl implements BookingService {
 //
 //    }
 //
+
 
 
     }

@@ -14,8 +14,7 @@ import java.util.UUID;
 @Getter
 public class CreateAvailabilityNewResponseDTO {
     private UUID availabilityId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private Long days;
     private UUID scheduleId;
-    private List<Long> days;
+    private List<Long>slotIds;
 }

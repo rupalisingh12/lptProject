@@ -2,13 +2,17 @@ package com.leanplatform.MentorshipPlatform.controllers;
 
 import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.CreateAvailabilityNewRequest;
 import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.CreateAvailabilityNewResponse;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.GetAllAvailabilitiesResponse;
 import com.leanplatform.MentorshipPlatform.dto.BookingController.BookingRequest;
 import com.leanplatform.MentorshipPlatform.dto.MentorController.MentorSearchResponseObject;
 import com.leanplatform.MentorshipPlatform.services.AvailabilityNewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.UUID;
 @RestController
 @RequestMapping("/AvailabilityNew")
@@ -30,6 +34,22 @@ public class AvailabilityNewController {
 
         }
     }
+//    @GetMapping("/allAvailabilities")
+//    public ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailabilities(@RequestParam(name="scheduleId")UUID scheduleId,@RequestParam(name="userId")UUID userId,
+//                                                                            @RequestParam(name="eventTypeId")UUID eventTypeId,@RequestParam(name="dateFrom") LocalDate dateFrom,@RequestParam(name="dateTo")LocalDate dateTo){
+//
+//     try{
+//         return availabilityNewService.getAllAvailability(scheduleId,userId,eventTypeId,dateTo,dateFrom);
+//
+//     }
+//     catch(Exception e){
+//
+//        }
+//
+//
+//
+//
+//    }
 
 
 }

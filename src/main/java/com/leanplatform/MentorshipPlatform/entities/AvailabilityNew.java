@@ -22,9 +22,9 @@ public class AvailabilityNew {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID availabilityId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
     private UUID scheduleId;
+    private Long day;
+    private List<Long>slotIds;
 
 
 
