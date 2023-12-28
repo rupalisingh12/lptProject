@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -24,8 +25,9 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findBookingsBetweenDates(
             @Param("startDateTime") LocalDateTime startDateTime,
             @Param("endDateTime") LocalDateTime endDateTime);
+    @Query("SELECT b. FROM Booking b WHERE b.scheduleId=;scheduleId AND b.date=;date")
+    Booking findAllByUserIdAndDate(@Param("scheduleId") UUID scheduleId, @Param("date") LocalDate date );
+
 }
-
-
 
 

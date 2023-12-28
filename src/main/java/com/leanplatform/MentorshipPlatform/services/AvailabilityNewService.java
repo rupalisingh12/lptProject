@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.UUID;
 @Service
 public interface AvailabilityNewService {
@@ -17,6 +18,6 @@ public interface AvailabilityNewService {
 
 
      ResponseEntity<CreateAvailabilityNewResponse> addAnAvailability(UUID scheduleId, CreateAvailabilityNewRequest createAvailabilityNewRequest) ;
-//     ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailability(UUID scheduleId,UUID userId,UUID eventTypeId,UUID dateTo,UUID dateFrom);
+//     ResponseEntity<GetAllAvailabilitiesResponse>kgetAllAvailability(String userName, UUID userId, UUID eventTypeId, LocalDate dateTo, LocalDate dateFrom);
 
 }

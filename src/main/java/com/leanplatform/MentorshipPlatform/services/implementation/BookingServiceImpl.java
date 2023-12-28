@@ -18,9 +18,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -29,6 +32,7 @@ public class BookingServiceImpl implements BookingService {
     @Autowired LocationRepository location;
     @Autowired AttendeeRepository attendeeRepository;
     @Autowired EventTypesRepository eventTypesRepository;
+    @Autowired SlotRepository slotRepository;
     @Override
     public ResponseEntity<CreateBookingResponse>createAbooking(BookingRequest bookingRequest, UUID userId) {
         if (bookingRequest == null ||
@@ -37,6 +41,7 @@ public class BookingServiceImpl implements BookingService {
             return new ResponseEntity<>
                     (new CreateBookingResponse("0", "Invalid Request", null), HttpStatus.BAD_REQUEST);
         }
+
         CreateBookingDTO createBookingDTO = new CreateBookingDTO();
         Booking booking = new Booking();
         booking.setUserId(userId);
@@ -46,13 +51,24 @@ public class BookingServiceImpl implements BookingService {
         UserEntity userEntity=userRepository.findByUserId(userId);
         String name=userEntity.getName();
         String name1=bookingRequest.getResponse().getName();
-        booking.setTitle(name+ "_between_"+name1);
+        booking.setTitle(name+ " _between_ "+name1);
         //to put startTime
         booking.setStartTime(bookingRequest.getStart());
+        //put date
+        LocalDate date=bookingRequest.getStart().toLocalDate();
+        booking.setDate(date);
         //to put endTime
         Integer length1= eventTypesRepository.findEventTypeLengthByEventId(bookingRequest.getEventTypeId());
         LocalDateTime endTime=bookingRequest.getStart().plusMinutes(length1);
         booking.setEndTime(endTime);
+        LocalTime startTime1 = bookingRequest.getStart().toLocalTime();
+        LocalTime endTime1 = endTime.toLocalTime();
+
+        Set<Long> listOfSlots=slotRepository.findSlotIdsByTimeRange(startTime1,endTime1);
+        //slotIds
+        booking.setSlotIds(listOfSlots);
+
+
         //put attendees
         Attendee attendee1=new Attendee();
         attendee1.setEmail(bookingRequest.getResponse().getEmail());

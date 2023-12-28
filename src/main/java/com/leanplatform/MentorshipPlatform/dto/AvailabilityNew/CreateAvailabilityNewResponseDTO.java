@@ -13,8 +13,8 @@ import java.util.UUID;
 @Setter
 @Getter
 public class CreateAvailabilityNewResponseDTO {
-    private UUID availabilityId;
-    private Long days;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private UUID scheduleId;
-    private List<Long>slotIds;
+    private List<Long> days;
 }

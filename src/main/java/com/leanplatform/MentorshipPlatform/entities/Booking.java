@@ -7,9 +7,11 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.boot.Metadata;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 @Entity
 @Table
@@ -32,7 +34,10 @@ public class Booking {
    // private List<Attendee> attendees;( the coloumn of a table can not be a list)
   // private UUID metaDataId;
    private  BookingEnums status;
+   private LocalDate date;
    private UUID locationId;
+   private Set<Long> slotIds;
+
 
   //  private BookingEnums status;
 

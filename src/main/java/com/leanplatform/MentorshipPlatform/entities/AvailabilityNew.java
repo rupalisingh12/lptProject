@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -24,7 +25,7 @@ public class AvailabilityNew {
     private UUID availabilityId;
     private UUID scheduleId;
     private Long day;
-    private List<Long>slotIds;
+    private Set<Long> slotIds;
 
 
 

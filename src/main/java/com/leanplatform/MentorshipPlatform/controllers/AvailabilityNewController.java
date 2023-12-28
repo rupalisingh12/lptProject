@@ -35,18 +35,18 @@ public class AvailabilityNewController {
 //        }
     }
 //    @GetMapping("/allAvailabilities")
-//    public ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailabilities(@RequestParam(name="scheduleId")UUID scheduleId,@RequestParam(name="userId")UUID userId,
+//    public ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailabilities(@RequestParam(name="userName")String userName,@RequestParam(name="userId")UUID userId,
 //                                                                            @RequestParam(name="eventTypeId")UUID eventTypeId,@RequestParam(name="dateFrom") LocalDate dateFrom,@RequestParam(name="dateTo")LocalDate dateTo){
 //
 //     try{
-//         return availabilityNewService.getAllAvailability(scheduleId,userId,eventTypeId,dateTo,dateFrom);
+//         return availabilityNewService.getAllAvailability(userName,userId,eventTypeId,dateTo,dateFrom);
 //
 //     }
 //     catch(Exception e){
 //
 //        }
-//
-//
+////
+////
 //
 //
 //    }

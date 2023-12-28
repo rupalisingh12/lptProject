@@ -19,10 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -40,7 +37,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     schedule.setName(userEntity.getName());
      Schedule schedule1=scheduleRepository.save(schedule);
 
-    List<AvailabilityNew> availabilityNewList=availabilityNewRepository.findByScheduleId(schedule1.getScheduleId());
+
+
+
+   List<AvailabilityNew> availabilityNewList=availabilityNewRepository.findByScheduleId(schedule1.getScheduleId());
+   //List<AvailabilityNew>list= (List<AvailabilityNew>) availabilityNewList.get();
+     // List<AvailabilityNew> extractedList = availabilityNewList.orElse( Collections.emptyList());
+
+
       CreateScheduleResponseDTO createScheduleResponsedto=ScheduleMapper.convertEntityToDTO( schedule,availabilityNewList);
 
 
