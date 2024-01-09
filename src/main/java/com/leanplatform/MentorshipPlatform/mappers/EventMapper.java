@@ -14,7 +14,7 @@ public class EventMapper {
         CreateEventDTO createEventDTO=new CreateEventDTO();
         for(int i=0;i<eventType.size();i++){
             EventType element=eventType.get(i);
-            createEventDTO.setEventId(element.getEventId());
+            createEventDTO.setId(element.getEventId());
             createEventDTO.setScheduleId(element.getScheduleId());
             createEventDTO.setDescription(element.getDescription());
             createEventDTO.setTitle(element.getTitle());
@@ -32,7 +32,7 @@ public class EventMapper {
 
         CreateEventDTO createEventDTO=new CreateEventDTO();
 
-            createEventDTO.setEventId(eventType.getEventId());
+            createEventDTO.setId(eventType.getEventId());
             createEventDTO.setScheduleId(eventType.getScheduleId());
             createEventDTO.setDescription(eventType.getDescription());
             createEventDTO.setTitle(eventType.getTitle());

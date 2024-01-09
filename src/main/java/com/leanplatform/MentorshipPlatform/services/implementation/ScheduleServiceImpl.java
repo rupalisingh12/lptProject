@@ -2,9 +2,7 @@ package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.AdminController.AdminAddsDetailsResponse;
 import com.leanplatform.MentorshipPlatform.dto.MenteeController.MenteeModified;
-import com.leanplatform.MentorshipPlatform.dto.ScheduleController.CreateScheduleResponse;
-import com.leanplatform.MentorshipPlatform.dto.ScheduleController.CreateScheduleResponseDTO;
-import com.leanplatform.MentorshipPlatform.dto.ScheduleController.GetAllScheduleResponse;
+import com.leanplatform.MentorshipPlatform.dto.ScheduleController.*;
 import com.leanplatform.MentorshipPlatform.entities.AvailabilityNew;
 import com.leanplatform.MentorshipPlatform.entities.Schedule;
 import com.leanplatform.MentorshipPlatform.entities.UserEntity;
@@ -72,7 +70,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
   }
   @Override
- public ResponseEntity<CreateScheduleResponse>getSchdeule(UUID userId, UUID scheduleId) {
+ public ResponseEntity<CreateScheduleResponse>getSchdeule(UUID scheduleId,UUID userId) {
       Schedule schedule = scheduleRepository.findByScheduleIdAndUserId(scheduleId, userId);
       List<AvailabilityNew> availabilityNewList = availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
       CreateScheduleResponseDTO createScheduleResponsedto = ScheduleMapper.convertEntityToDTO(schedule, availabilityNewList);
@@ -80,7 +78,23 @@ public class ScheduleServiceImpl implements ScheduleService {
               "1",
               "Schedule created", createScheduleResponsedto
       ), HttpStatus.CREATED);
+
   }
+    public ResponseEntity<DeleteSchedule>deleteSchedule(UUID scheduleId, UUID userId){
+        Schedule schedule = scheduleRepository.findByScheduleIdAndUserId(scheduleId, userId);
+        List<AvailabilityNew> availabilityNewList = availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
+        scheduleRepository.delete(schedule);
+        for(int i=0;i<availabilityNewList.size();i++) {
+            availabilityNewRepository.delete(availabilityNewList.get(i));
+        }
+        DeleteScheduleDTO deleteScheduleDTO=ScheduleMapper.convertEntityToDTO1(schedule,availabilityNewList);
+        return new ResponseEntity<>(new DeleteSchedule(
+                "1",
+                "Schedule deleted", deleteScheduleDTO
+        ), HttpStatus.CREATED);
+
+
+    }
 
 
 

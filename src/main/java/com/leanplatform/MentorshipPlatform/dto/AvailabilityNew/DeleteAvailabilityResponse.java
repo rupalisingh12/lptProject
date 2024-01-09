@@ -1,4 +1,4 @@
-package com.leanplatform.MentorshipPlatform.dto.BookingController;
+package com.leanplatform.MentorshipPlatform.dto.AvailabilityNew;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,11 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreateBookingResponse {
+public class DeleteAvailabilityResponse {
     private String statusCode;
     private String responseMessage;
-    private CreateBookingDTO Booking;
-
-
-
+   // private DeleteAvailabilityNewDTO deleteAvailabilityNewDTO;
 }

@@ -9,11 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreateBookingResponse {
+public class DeleteBookingRespone {
     private String statusCode;
     private String responseMessage;
-    private CreateBookingDTO Booking;
-
 
 
 }

@@ -15,8 +15,8 @@ public interface ScheduleRepository  extends JpaRepository<Schedule, UUID> {
     Schedule save (Schedule schedule);
   List< Schedule> findByUserId(UUID userId);
     Schedule findByScheduleIdAndUserId(UUID scheduleId, UUID userId);
-    @Query("SELECT m.userId FROM Schedule m. WHERE m.scheduleId=:scheduleId")
-    UUID findByScheduleId(UUID scheduleId1);
+//    @Query("SELECT m.userId FROM Schedule m. WHERE m.scheduleId=:scheduleId")
+//    UUID findByScheduleId(UUID scheduleId1);
 
 
 }

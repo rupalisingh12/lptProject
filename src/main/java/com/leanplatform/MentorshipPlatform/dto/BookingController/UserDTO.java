@@ -9,11 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreateBookingResponse {
-    private String statusCode;
-    private String responseMessage;
-    private CreateBookingDTO Booking;
-
-
+public class UserDTO {
+    private String name;
+    private String email;
 
 }

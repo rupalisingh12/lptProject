@@ -3,6 +3,7 @@ package com.leanplatform.MentorshipPlatform.dto.BookingController;
 import com.leanplatform.MentorshipPlatform.entities.Attendee;
 import com.leanplatform.MentorshipPlatform.entities.UserEntity;
 import com.leanplatform.MentorshipPlatform.enums.BookingEnums;
+import com.twilio.rest.chat.v1.service.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class CreateBookingDTO {
-    private UUID bookingId;
+    private UUID id;
     private UUID userId;
     private String description;
     private String title;
@@ -26,7 +27,8 @@ public class CreateBookingDTO {
     private LocalDateTime endTime;
     private BookingEnums Status;
     private UUID eventTypeId; //(This is coming from EventType table);
-  private Attendee attendee;
+    private UserDTO user;
+  private List<Attendee> attendees;
    // private ArrayList<UserEntity>user;
 
 

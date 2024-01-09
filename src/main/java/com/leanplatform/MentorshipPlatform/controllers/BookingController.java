@@ -1,8 +1,6 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
-import com.leanplatform.MentorshipPlatform.dto.BookingController.BookingRequest;
-import com.leanplatform.MentorshipPlatform.dto.BookingController.CreateBookingResponse;
-import com.leanplatform.MentorshipPlatform.dto.BookingController.GetBookingResponse;
+import com.leanplatform.MentorshipPlatform.dto.BookingController.*;
 import com.leanplatform.MentorshipPlatform.dto.MentorController.MentorAddedServiceResponse;
 import com.leanplatform.MentorshipPlatform.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +20,8 @@ public class BookingController {
     @PostMapping("/addBooking")
     public ResponseEntity<CreateBookingResponse> createBooking(@RequestParam(name = "userId") UUID userId, @RequestBody BookingRequest bookingRequest) {
         if (bookingRequest == null ||
-                bookingRequest.getEventTypeId() == null ||bookingRequest.getStart()==null ||
-                bookingRequest.getDescription()==null || bookingRequest.getResponse()==null) {
+                bookingRequest.getEventTypeId() == null || bookingRequest.getStart() == null ||
+                bookingRequest.getDescription() == null || bookingRequest.getResponse() == null) {
             return new ResponseEntity<>
                     (new CreateBookingResponse
                             ("0",
@@ -58,21 +56,38 @@ public class BookingController {
 
     @GetMapping("/bookings/{bookingId}")
     public ResponseEntity<CreateBookingResponse> getBookingById(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId) {
-//        try {
+        try {
             return bookingService.getBooking(bookingId, userId);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(new CreateBookingResponse("0", "Caught in catch block", null), HttpStatus.BAD_REQUEST);
-//        }
+        } catch (Exception e) {
+            return new ResponseEntity<>(new CreateBookingResponse("0", "Caught in catch block", null), HttpStatus.BAD_REQUEST);
+        }
 
 
     }
-//    @DeleteMapping("bookings/{bookingId}")
-//    public ResponseEntity<CreateBookingResponse>deleteBookings(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId){
-//        try {
-//            return bookingService.deleteBooking(bookingId, userId);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(new CreateBookingResponse("0", "Caught in catch block", null), HttpStatus.BAD_REQUEST);
-//        }
-//    }
+
+    @PutMapping("/updateBooking/{bookingId}")
+    public ResponseEntity<CreateBookingResponse> updateBooking(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId,@RequestBody UpdateBookingRequest updateBookingRequest) {
+
+
+     try {
+          return bookingService.updateBooking(bookingId,userId,updateBookingRequest);
+    } catch(Exception e)
+
+    {
+        return new ResponseEntity<>(new CreateBookingResponse("0", "Caught in catch block", null), HttpStatus.BAD_REQUEST);
+    }
+}
+
+
+
+    @DeleteMapping("bookings/{bookingId}")
+    public ResponseEntity<DeleteBookingRespone>deleteBookings(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId){
+        try {
+            return bookingService.deleteBooking(bookingId, userId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new DeleteBookingRespone("0", "Caught in catch block"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
 

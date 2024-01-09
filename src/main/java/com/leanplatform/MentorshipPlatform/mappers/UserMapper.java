@@ -8,22 +8,24 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserMapper {
-    public static List<UserGetResponseDto>convertUserEntityToDto(Optional<UserEntity> usersList){
-        List<UserGetResponseDto> response = new ArrayList<>();
-
+    public static UserGetResponseDto convertUserEntityToDto(Optional<UserEntity> usersList){
+      //  UserGetResponseDto response = new UserGetResponseDto();
+        UserGetResponseDto userGetResponseDto = new UserGetResponseDto();
         if (usersList.isPresent()) {
             UserEntity userEntity = usersList.get();
-            UserGetResponseDto userGetResponseDto = new UserGetResponseDto();
-//            userGetResponseDto.setUser_name(userEntity.getUser_name());
-//            userGetResponseDto.setName(userEntity.getName());
+         //   UserGetResponseDto userGetResponseDto = new UserGetResponseDto();
+            userGetResponseDto.setUsername(userEntity.getUserName());
+           userGetResponseDto.setName(userEntity.getName());
             userGetResponseDto.setAvatar(userEntity.getAvatar());
             userGetResponseDto.setBio(userEntity.getBio());
             userGetResponseDto.setEmail(userEntity.getEmail());
+            userGetResponseDto.setCreatedDate(userEntity.getCreatedAt());
+            userGetResponseDto.setId(userEntity.getUserId());
             userGetResponseDto.setDefaultScheduleId(userEntity.getDefaultScheduleId());
-            response.add(userGetResponseDto);
+
 
 
     }
-        return response;
+        return userGetResponseDto;
     }
 }

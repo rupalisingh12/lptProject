@@ -1,21 +1,22 @@
 package com.leanplatform.MentorshipPlatform.dto.AvailabilityNew;
 
 import com.leanplatform.MentorshipPlatform.mappers.Slot;
-import com.leanplatform.MentorshipPlatform.mappers.SlotTimeDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class GetAllAvailabilitiesResponse {
-    private String statusCode;
-    private String responseMessage;
-    private List<SlotTimeDate> createAvailabilityNewResponseDTO;
-    private List<Day>workingHours;
+public class UpdateAvailabilityNewResponseDTO {
+    List<Slot> mon;
+    List<Slot>tue;
+    List<Slot>wed;
+    List<Slot>thur;
+    List<Slot>fri;
+    List<Slot>sat;
+    List<Slot>sun;
 }

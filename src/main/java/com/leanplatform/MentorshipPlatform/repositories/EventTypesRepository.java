@@ -22,7 +22,8 @@ public interface EventTypesRepository extends JpaRepository<EventType, UUID> {
     void deleteByUserIdAndEventId(@Param("eventId") UUID eventId, @Param("userId") UUID userId);
     @Query("SELECT e.length FROM EventType e WHERE e.eventId = :eventId")
     Integer findEventTypeLengthByEventId(@Param("eventId") UUID eventId);
-    @Query("SELECT e.scheduleId FROM EventTyps e WHERE e.eventId=:eventId")
+    @Query("SELECT e.scheduleId FROM EventType e WHERE e.eventId=:eventId")
     UUID findScheduleIdByEventTypeId(@Param("eventId")UUID eventId);
+   // EventType findByEventTypeId(UUID eventTypeId);
 }
 

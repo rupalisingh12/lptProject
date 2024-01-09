@@ -14,5 +14,5 @@ import java.util.List;
 public class GetAllEventResponse {
     private String statusCode;
     private String responseMessage;
-    private List<CreateEventDTO> createEvent;
+    private List<CreateEventDTO> EventType;
 }

@@ -1,6 +1,7 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
 import com.leanplatform.MentorshipPlatform.dto.ScheduleController.CreateScheduleResponse;
+import com.leanplatform.MentorshipPlatform.dto.ScheduleController.DeleteSchedule;
 import com.leanplatform.MentorshipPlatform.dto.ScheduleController.GetAllScheduleResponse;
 import com.leanplatform.MentorshipPlatform.dto.ServicesOfferedController.AddServiceResponse;
 import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository;
@@ -58,7 +59,21 @@ public class ScheduleController {
 
         }
     }
+    @DeleteMapping("/deleteScheduleId{scheduleId}")
+    public ResponseEntity<DeleteSchedule>deleteSchedule(@PathVariable UUID scheduleId,@RequestParam(name = "userId") UUID userId){
+        try {
+            return scheduleService.deleteSchedule(scheduleId,userId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new DeleteSchedule
+                    (
+                            "0",
+                            "Caught in catch block",
+                            null
+                    ), HttpStatus.BAD_REQUEST);
 
+        }
+
+    }
 //
 //}
 }

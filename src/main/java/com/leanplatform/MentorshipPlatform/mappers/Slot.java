@@ -1,19 +1,17 @@
-package com.leanplatform.MentorshipPlatform.dto.AvailabilityNew;
+package com.leanplatform.MentorshipPlatform.mappers;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-@ToString
-@Data
 public class Slot {
-    private Long slotId;
     private LocalTime startTime;
     private LocalTime endTime;
-
-
 
 }

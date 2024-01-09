@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public  interface AvailabilityNewRepository extends JpaRepository<AvailabilityNew, UUID> {
@@ -21,6 +22,11 @@ public  interface AvailabilityNewRepository extends JpaRepository<AvailabilityNe
     //  List<AvailabilityNew> findByStartTimeBetweenAndEndTimeBetween(LocalDateTime startTime,LocalDateTime endTime);
 //    @Query("SELECT m. AvailabilityNew FROM AvailabilityNew m. WHERE m.scheduleId=:scheduleID AND m.day=:day ")
 //    AvailabilityNew findByScheduleIdAndDay(@Param("scheduleId")UUID schduleId,@Param ("day")Long day1);
+    @Query("SELECT y.day FROM AvailabilityNew y WHERE y.scheduleId = :scheduleId")
+    List<Long> findAllDayByScheduleId(@Param("scheduleId") UUID scheduleId);
+
+
+
 
 
 

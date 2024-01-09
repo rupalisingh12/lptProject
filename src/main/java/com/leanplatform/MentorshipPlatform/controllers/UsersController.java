@@ -1,5 +1,6 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
+import com.leanplatform.MentorshipPlatform.dto.MentorController.MentorAddedServiceResponse;
 import com.leanplatform.MentorshipPlatform.dto.UserController.UserGetResponse;
 import com.leanplatform.MentorshipPlatform.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,16 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/allUsers")
+    @GetMapping("/getUser")
     public ResponseEntity<UserGetResponse> getUser(@RequestParam(name="userId") UUID userId){
+        if (userId == null ) {
+            return new ResponseEntity<>(new UserGetResponse
+                    (
+                            "0",
+                            "Invalid Request",
+                            null
+                    ),HttpStatus.BAD_REQUEST);
+        }
         try{
             return userService.getUsers(userId);
 

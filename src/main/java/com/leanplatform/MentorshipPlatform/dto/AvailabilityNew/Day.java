@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
-import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class GetAllAvailabilitiesResponseDTO {
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-
+public class Day {
+    private List<Long> day;
 }

@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<UserGetResponse> getUsers(UUID userId){
         Optional<UserEntity> usersList=userRepository.findById(userId);
          if(usersList.isPresent()){
-             List<UserGetResponseDto> userGetResponseDtoList=UserMapper.convertUserEntityToDto(usersList);
+             UserGetResponseDto userGetResponseDtoList=UserMapper.convertUserEntityToDto(usersList);
              return new ResponseEntity<>(new UserGetResponse(
                      "1","The required user details are"
                      ,userGetResponseDtoList),HttpStatus.OK);

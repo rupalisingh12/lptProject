@@ -1,9 +1,6 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
-import com.leanplatform.MentorshipPlatform.dto.EventTypesController.CreateEventRequestObject;
-import com.leanplatform.MentorshipPlatform.dto.EventTypesController.CreateEventResponse;
-import com.leanplatform.MentorshipPlatform.dto.EventTypesController.DeleteEventResponse;
-import com.leanplatform.MentorshipPlatform.dto.EventTypesController.GetAllEventResponse;
+import com.leanplatform.MentorshipPlatform.dto.EventTypesController.*;
 import com.leanplatform.MentorshipPlatform.services.EventTypesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,29 +60,29 @@ public class EventTypesController {
                         ),HttpStatus.BAD_REQUEST);
             }
         }
-//        @PutMapping("/updateAnEvent")
-//    public ResponseEntity<CreateEventResponse>updateEvent(@PathVariable UUID eventId,@RequestParam(name="userId") UUID userId){
-//            try {
-//                return eventTypesService.updateEvent(eventId,userId);
-//            } catch (Exception e){
-//                return new ResponseEntity<>(new CreateEventResponse
-//                        (                            "0",
-//                                "Invalid Request - caught in catch block" ,
-//                                null
-//                        ),HttpStatus.BAD_REQUEST);
-//            }
-//        }
+        @PutMapping("/updateAnEvent/{eventId}")
+        public ResponseEntity<CreateEventResponse>updateEvent(@PathVariable UUID eventId,@RequestParam(name="userId") UUID userId,@RequestBody UpdateEventRequest updateEventRequest){
+            try {
+                return eventTypesService.updateEvent(eventId,userId,updateEventRequest);
+            } catch (Exception e){
+                return new ResponseEntity<>(new CreateEventResponse
+                        (                            "0",
+                                "Invalid Request - caught in catch block" ,
+                                null
+                        ),HttpStatus.BAD_REQUEST);
+            }
+        }
     @DeleteMapping("/deleteAnEvent/{eventId}")
     public ResponseEntity<DeleteEventResponse>deleteEvent(@PathVariable UUID eventId,@RequestParam(name="userId") UUID userId){
-//        try {
+        try {
             return eventTypesService.deleteAEvent(eventId,userId);
-//        } catch (Exception e){
-//            return new ResponseEntity<>(new DeleteEventResponse
-//                    (                            "0",
-//                            "Invalid Request - caught in catch block" ,
-//                            null
-//                    ),HttpStatus.BAD_REQUEST);
-//        }
+        } catch (Exception e){
+            return new ResponseEntity<>(new DeleteEventResponse
+                    (                            "0",
+                            "Invalid Request - caught in catch block" ,
+                            null
+                    ),HttpStatus.BAD_REQUEST);
+        }
     }
 }
 

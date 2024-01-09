@@ -1,13 +1,15 @@
 package com.leanplatform.MentorshipPlatform.mappers;
 
-import com.leanplatform.MentorshipPlatform.dto.ScheduleController.AvailabilityNewDTO;
-import com.leanplatform.MentorshipPlatform.dto.ScheduleController.CreateScheduleResponse;
-import com.leanplatform.MentorshipPlatform.dto.ScheduleController.CreateScheduleResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.UpdateAvailabilityNewResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.ScheduleController.*;
 import com.leanplatform.MentorshipPlatform.entities.AvailabilityNew;
 import com.leanplatform.MentorshipPlatform.entities.Schedule;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import static com.leanplatform.MentorshipPlatform.mappers.AvailabilityNewMapper.catchSlotIdsListAndConvertIntoStartTimeEndTime;
 
 public class ScheduleMapper {
     public static CreateScheduleResponseDTO convertEntityToDTO(Schedule schedule, List<AvailabilityNew>availabilityNewList) {
@@ -41,4 +43,58 @@ public class ScheduleMapper {
 
 
     }
+    public static DeleteScheduleDTO convertEntityToDTO1(Schedule schedule, List availabilityNewList){
+        DeleteScheduleDTO deleteSchedule=new DeleteScheduleDTO();
+        deleteSchedule.setId(schedule.getScheduleId());
+        deleteSchedule.setUserId(schedule.getUserId());
+        deleteSchedule.setName(schedule.getName());
+        UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO=new UpdateAvailabilityNewResponseDTO();
+        for(int i=0;i<availabilityNewList.size();i++){
+            AvailabilityNew availabilityNew=(AvailabilityNew) availabilityNewList.get(i);
+            Long day=availabilityNew.getDay();
+            List<Slot> ans = catchSlotIdsListAndConvertIntoStartTimeEndTime(availabilityNew.getSlotIds());
+            if(day==0){
+                List<Slot> sun = ans;
+                updateAvailabilityNewResponseDTO.setMon(sun);
+            }
+            if(day==0){
+                List<Slot> mon = ans;
+                updateAvailabilityNewResponseDTO.setMon(mon);
+
+            }
+            if(day==2){
+                List<Slot> tue = ans;
+                updateAvailabilityNewResponseDTO.setMon(tue);
+
+            }
+            if(day==3){
+                List<Slot> wed = ans;
+                updateAvailabilityNewResponseDTO.setMon(wed);
+
+            }
+            if(day==4){
+                List<Slot> thur = ans;
+                updateAvailabilityNewResponseDTO.setMon(thur);
+
+
+            }
+            if(day==5){
+                List<Slot> fri = ans;
+                updateAvailabilityNewResponseDTO.setMon(fri);
+
+            }
+            if(day==6){
+                List<Slot> sat = ans;
+                updateAvailabilityNewResponseDTO.setMon(sat);
+
+            }
+        }
+        deleteSchedule.setAvailability(updateAvailabilityNewResponseDTO);
+        return deleteSchedule;
+
+
+
+
+    }
+
 }
