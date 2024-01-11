@@ -11,5 +11,5 @@ import java.util.List;
 @Getter
 @Setter
 public class Day {
-    private List<Long> day;
+    private List<Long> days;
 }

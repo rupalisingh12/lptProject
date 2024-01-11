@@ -61,7 +61,7 @@ public class AvailabilityNewMapper {
         long endTime1Min = (endTime.getMinute() * 2) / 60;
         long endHour = endTime1hour + endTime1Min;
         Set s = new HashSet<>();
-        if(Starthour<endHour) {
+        if(Starthour<=endHour) {
             for (long i = Starthour; i <= endHour; i++) {
                 s.add(i);
 
@@ -162,6 +162,7 @@ public class AvailabilityNewMapper {
     public static ArrayList<Long> findIfListIsContinuos(Long[]arr) {
         ArrayList<Long> list=new ArrayList<>();
         //sort the array first,Arrays.sort(list);
+        Arrays.sort(arr);
         for(int i=0;i<arr.length-1;i++) {
 //{1,2,3,7,8,9}
 
@@ -196,6 +197,7 @@ public class AvailabilityNewMapper {
     }
     public static ArrayList<Long> convert1 (Long[] arr) {
         ArrayList<Long> a1=new ArrayList<>();
+        Arrays.sort(arr);
         //sort the array
         for(int i =0;i<arr.length-1;i++) {
 
@@ -248,8 +250,8 @@ public class AvailabilityNewMapper {
             LocalDateTime startDateTime = date.atTime(startTime);
             LocalTime endTime = slot.getEndTime();
             LocalDateTime endDateTime = date.atTime(endTime);
-            slotTimeDate.setStartDateTime(startDateTime);
-            slotTimeDate.setEndDateTime(endDateTime);
+            slotTimeDate.setStart(startDateTime);
+            slotTimeDate.setEnd(endDateTime);
             slotTimeDateAns.add(slotTimeDate);
         }
         return slotTimeDateAns;
@@ -277,33 +279,33 @@ public class AvailabilityNewMapper {
             //  availabilityNew.getSlotIds();
             Long day = avilabilityNew1.get(i).getDay();
             List<Slot> ans = catchSlotIdsListAndConvertIntoStartTimeEndTime(availabilityNew.getSlotIds());
-            if (day == 0) {
+            if (day == 1) {
                 List<Slot> mon = ans;
                 updateAvailabilityNewResponseDTO.setMon(mon);
 
             }
-            if (day == 1) {
+            if (day == 2) {
                 List<Slot> tue = ans;
                 updateAvailabilityNewResponseDTO.setTue(tue);
             }
-            if (day == 2) {
+            if (day == 3) {
                 List<Slot> wed = ans;
                 updateAvailabilityNewResponseDTO.setWed(wed);
 
             }
-            if (day == 3) {
+            if (day == 4) {
                 List<Slot> thur = ans;
                 updateAvailabilityNewResponseDTO.setThur(thur);
             }
-            if (day == 4) {
+            if (day == 5) {
                 List<Slot> fri = ans;
                 updateAvailabilityNewResponseDTO.setFri(fri);
             }
-            if (day == 5) {
+            if (day == 6) {
                 List<Slot> sat = ans;
                 updateAvailabilityNewResponseDTO.setSat(sat);
             }
-            if (day == 6) {
+            if (day == 0) {
                 List<Slot> sun = ans;
                 updateAvailabilityNewResponseDTO.setSun(sun);
             }

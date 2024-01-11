@@ -16,6 +16,6 @@ import java.util.List;
 public class GetAllAvailabilitiesResponse {
     private String statusCode;
     private String responseMessage;
-    private List<SlotTimeDate> createAvailabilityNewResponseDTO;
+    private List<SlotTimeDate> dateRanges;
     private List<Day>workingHours;
 }

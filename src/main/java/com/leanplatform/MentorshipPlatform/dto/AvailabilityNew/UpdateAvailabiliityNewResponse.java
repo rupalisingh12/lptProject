@@ -12,5 +12,5 @@ import lombok.Setter;
 public class UpdateAvailabiliityNewResponse {
     private String statusCode;
     private String responseMessage;
-    private UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO;
+    private UpdateAvailabilityNewResponseDTO availability;
 }

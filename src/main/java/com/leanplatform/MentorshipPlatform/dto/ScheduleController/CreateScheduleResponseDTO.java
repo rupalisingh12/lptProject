@@ -1,5 +1,6 @@
 package com.leanplatform.MentorshipPlatform.dto.ScheduleController;
 
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.UpdateAvailabilityNewResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,5 @@ public class CreateScheduleResponseDTO {
     private UUID scheduleId;
     private UUID userId;
     private String name;
-    private AvailabilityNewDTO availabiltyNewDTO;
+    private UpdateAvailabilityNewResponseDTO  Availability;
 }

@@ -17,20 +17,20 @@ import java.util.UUID;
 public class AvailabilityNewController {
     @Autowired AvailabilityNewService availabilityNewService;
     @PostMapping("/addAvailability")
-    public ResponseEntity<UpdateAvailabiliityNewResponse>addAvailability(@RequestParam("scheduleId") UUID scheduleId, @RequestBody CreateAvailabilityNewRequest createAvailabilityNewRequest) {
-//        try {
-            return availabilityNewService.addAnAvailability(scheduleId, createAvailabilityNewRequest);
+    public ResponseEntity<UpdateAvailabiliityNewResponse>addAvailability(@RequestParam("userId") UUID userId, @RequestBody CreateAvailabilityNewRequest createAvailabilityNewRequest) {
+        try {
+            return availabilityNewService.addAnAvailability(userId, createAvailabilityNewRequest);
 
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(new CreateAvailabilityNewResponse
-//                    (
-//                            "0",
-//                            "Failed the on the generation of the DTOs and was caught in side catch block" + e.getLocalizedMessage(),
-//                            null
-//                    ), HttpStatus.BAD_REQUEST);
-//
-//
-//        }
+        } catch (Exception e) {
+            return new ResponseEntity<>(new UpdateAvailabiliityNewResponse
+                    (
+                            "0",
+                            "Failed the on the generation of the DTOs and was caught in side catch block" + e.getLocalizedMessage(),
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+
+
+        }
     }
     @GetMapping("/allAvailabilities")
     public ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailabilities(@RequestParam(name="userName")String userName,@RequestParam(name="userId")UUID userId,

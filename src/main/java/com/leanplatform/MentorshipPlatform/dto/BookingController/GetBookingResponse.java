@@ -14,5 +14,5 @@ import java.util.List;
 public class GetBookingResponse {
     private String statusCode;
     private String responseMessage;
-    private List<CreateBookingDTO> createBookingDTO;
+    private List<CreateBookingDTO> bookings;
 }

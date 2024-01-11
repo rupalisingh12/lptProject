@@ -38,7 +38,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
     @Autowired
     ScheduleRepository scheduleRepository;
 
-    public ResponseEntity<UpdateAvailabiliityNewResponse> addAnAvailability(UUID scheduleId, CreateAvailabilityNewRequest createAvailabilityNewRequest) {
+    public ResponseEntity<UpdateAvailabiliityNewResponse> addAnAvailability(UUID userId, CreateAvailabilityNewRequest createAvailabilityNewRequest) {
         if (createAvailabilityNewRequest == null || createAvailabilityNewRequest.getDays() == null || createAvailabilityNewRequest.getEndTime() == null || createAvailabilityNewRequest.getStartTime() == null ||
                 createAvailabilityNewRequest.getScheduleId() == null) {
             return new ResponseEntity<>
@@ -78,21 +78,22 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
         }
         ArrayList<AvailabilityNew>list=new ArrayList<>();
-        for(int h=0;h<createAvailabilityNewRequest.getDays().size();h++){
-            Long day1 = createAvailabilityNewRequest.getDays().get(h);
-            AvailabilityNew availabilityNew1 = availabilityNewRepository.findByScheduleIdAndDay(createAvailabilityNewRequest.getScheduleId(), day1);
-            list.add(availabilityNew1);
-
-        }
+        List<AvailabilityNew> availabilityNewList=availabilityNewRepository.findByScheduleId(createAvailabilityNewRequest.getScheduleId());
+//        for(int h=0;h<createAvailabilityNewRequest.getDays().size();h++){
+//            Long day1 = createAvailabilityNewRequest.getDays().get(h);
+//            AvailabilityNew availabilityNew1 = availabilityNewRepository.findByScheduleIdAndDay(createAvailabilityNewRequest.getScheduleId(), day1);
+//            list.add(availabilityNew1);
+//
+//        }
 //
 
-      //  CreateAvailabilityNewResponseDTO createAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntity(createAvailabilityNewRequest);
-        UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntityListOfAvailability(list);
+   //  CreateAvailabilityNewResponseDTO createAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntity(createAvailabilityNewRequest);
+        UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntityListOfAvailability(availabilityNewList);
 
         return new ResponseEntity<>
                 (new UpdateAvailabiliityNewResponse
                         ("1",
-                                "New AvailabilityAdded", updateAvailabilityNewResponseDTO), HttpStatus.CREATED);
+                                "New Availability Added", updateAvailabilityNewResponseDTO), HttpStatus.CREATED);
 
 
     }
@@ -119,8 +120,11 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
             DayOfWeek day = date.getDayOfWeek();
             long day1234 = day.getValue();
             //naming convention
+            if(day1234==7){
+                day1234=0;
+            }
 
-            long day1=day1234-1;
+            long day1=day1234;
             AvailabilityNew availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId1, day1);
             if(availabilityNew==null){
                 //go to the next date;
@@ -150,136 +154,345 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
         List<Long> days12=AvailabilityNewMapper.convertDaysIntoDto(days);
         List<Day>workingHours=new ArrayList<>();
         Day day=new Day();
-        day.setDay(days12);
+        day.setDays(days12);
         workingHours.add(day);
         List<SlotTimeDate> ansList2 = AvailabilityNewMapper.convertListIntoDto(finalTimeDateList);
         return new ResponseEntity<>
                 (new GetAllAvailabilitiesResponse
                         ("1",
-                                "DateRange:", ansList2,workingHours), HttpStatus.OK);
+                                "Availabilites :", ansList2,workingHours), HttpStatus.OK);
 
     }
     @Override
-   public ResponseEntity<UpdateAvailabiliityNewResponse>updateAvailabilitys(UUID scheduleId, UpdateAvailabilityNewRequest updateAvailabilityNewRequest){
-        List<AvailabilityNew> avilabilityNew1=availabilityNewRepository.findByScheduleId(scheduleId);
-        if(updateAvailabilityNewRequest.getMon()!=null) {
-            AvailabilityNew availabilityNew= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long)0);
-            if(availabilityNew!=null){
-               // Set<Long> listOfSlots=null;
-                Set<Long> ans=new HashSet<>();
-            for(int i=0;i<updateAvailabilityNewRequest.getMon().size();i++) {
-                //Set<Set<Long>> ans=new HashSet<>();
-                Slot startTimeEndTime = updateAvailabilityNewRequest.getMon().get(i);
-                Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
-                ans.addAll(listOfSlots);
-                //availabilityNew.setSlotIds(listOfSlots);
-                System.out.print(ans);
-            }
-                availabilityNew.setSlotIds(ans);
-            availabilityNewRepository.save(availabilityNew);
-            }
-        }
-        if(updateAvailabilityNewRequest.getTue()!=null){
-            AvailabilityNew availabilityNew= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long)1);
-            if(availabilityNew!=null){
-                Set<Long> ans=new HashSet<>();
-            for(int i=0;i<updateAvailabilityNewRequest.getTue().size();i++) {
-                Slot startTimeEndTime = updateAvailabilityNewRequest.getTue().get(i);
-                Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
-                ans.addAll(listOfSlots);
-                //availabilityNew.setSlotIds(listOfSlots);
-            }
+   public ResponseEntity<UpdateAvailabiliityNewResponse>updateAvailabilitys(UUID scheduleId, UpdateAvailabilityNewRequest updateAvailabilityNewRequest) {
+        //List<AvailabilityNew> avilabilityNew1 = availabilityNewRepository.findByScheduleId(scheduleId);
+       // AvailabilityNew availabilityNew = null;
+       // AvailabilityNew availabilityNewtue = null;
+     //   AvailabilityNew availabilityNewWed = null;
+       // AvailabilityNew availabilityNewThur = null;
+       // AvailabilityNew availabilityNewFri = null;
+        //AvailabilityNew availabilityNewSat = null;
+     //   AvailabilityNew availabilityNewSun = null;
+
+
+        if (updateAvailabilityNewRequest.getMon() != null) {
+            AvailabilityNew availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 1);
+            if (availabilityNew != null) {
+                // Set<Long> listOfSlots=null;
+                Set<Long> ans = new HashSet<>();
+                for (int i = 0; i < updateAvailabilityNewRequest.getMon().size(); i++) {
+                    //Set<Set<Long>> ans=new HashSet<>();
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getMon().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+                    //availabilityNew.setSlotIds(listOfSlots);
+                    System.out.print(ans);
+                   // availabilityNew.setSlotIds(ans);
+                  //  availabilityNewRepository.save(availabilityNew);
+                }
                 availabilityNew.setSlotIds(ans);
                 availabilityNewRepository.save(availabilityNew);
+            } else {
+                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                Set<Long> ans = new HashSet<>();
+                availabilityNew1.setDay((long) 1);
+                availabilityNew1.setScheduleId(scheduleId);
+                for (int i = 0; i < updateAvailabilityNewRequest.getMon().size(); i++) {
+                    //Set<Set<Long>> ans=new HashSet<>();
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getMon().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+                  //  availabilityNew1.setSlotIds(ans);
+                   // availabilityNewRepository.save(availabilityNew1);
+                }
+                availabilityNew1.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNew1);
             }
-
-        }
-        if(updateAvailabilityNewRequest.getWed()!=null){
-            AvailabilityNew availabilityNew= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long)2);
-            if(availabilityNew!=null){
-                Set<Long> ans=new HashSet<>();
-            for(int i=0;i<updateAvailabilityNewRequest.getWed().size();i++) {
-                Slot startTimeEndTime = updateAvailabilityNewRequest.getWed().get(i);
-                Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
-                ans.addAll(listOfSlots);
-               // availabilityNew.setSlotIds(listOfSlots);
+        } else if (updateAvailabilityNewRequest.getMon() == null) {
+            AvailabilityNew availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 1);
+            if (availabilityNew!=null) {
+                availabilityNewRepository.delete(availabilityNew);
             }
-                availabilityNew.setSlotIds(ans);
-                availabilityNewRepository.save(availabilityNew);
-
-           }
-
-        }
-        if(updateAvailabilityNewRequest.getThur()!=null){
-            AvailabilityNew availabilityNew= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long)3);
-            if(availabilityNew!=null){
-                Set<Long> ans=new HashSet<>();
-            for(int i=0;i<updateAvailabilityNewRequest.getThur().size();i++) {
-                Slot startTimeEndTime = updateAvailabilityNewRequest.getThur().get(i);
-                Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
-
-               // availabilityNew.setSlotIds(listOfSlots);
-                ans.addAll(listOfSlots);
+            else {
+                //do nothing
             }
-                availabilityNew.setSlotIds(ans);
-                availabilityNewRepository.save(availabilityNew);
-
-            }
-
-        }
-        if(updateAvailabilityNewRequest.getFri()!=null){
-            AvailabilityNew availabilityNew= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long)4);
-            if(availabilityNew!=null){
-                Set<Long> ans=new HashSet<>();
-            for(int i=0;i<updateAvailabilityNewRequest.getFri().size();i++) {
-                Slot startTimeEndTime = updateAvailabilityNewRequest.getFri().get(i);
-                Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
-                ans.addAll(listOfSlots);
-               // availabilityNew.setSlotIds(listOfSlots);
-            }
-                availabilityNew.setSlotIds(ans);
-                availabilityNewRepository.save(availabilityNew);
-            }
-
 
 
         }
-        if(updateAvailabilityNewRequest.getSat()!=null){
-            AvailabilityNew availabilityNew= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long)5);
-            if(availabilityNew!=null){
-                Set<Long> ans=new HashSet<>();
-            for(int i=0;i<updateAvailabilityNewRequest.getSat().size();i++) {
-                Slot startTimeEndTime = updateAvailabilityNewRequest.getSat().get(i);
-                Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
-                ans.addAll(listOfSlots);
-              //  availabilityNew.setSlotIds(listOfSlots);
+        if (updateAvailabilityNewRequest.getTue() != null) {
+            AvailabilityNew availabilityNewtue = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 2);
+            if (availabilityNewtue != null) {
+                Set<Long> ans = new HashSet<>();
+                for (int i = 0; i < updateAvailabilityNewRequest.getTue().size(); i++) {
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getTue().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+                    //availabilityNew.setSlotIds(listOfSlots);
+                }
+                availabilityNewtue.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNewtue);
             }
-                availabilityNew.setSlotIds(ans);
-                availabilityNewRepository.save(availabilityNew);
+            else {
+                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                Set<Long> ans = new HashSet<>();
+                availabilityNew1.setDay((long) 2);
+                availabilityNew1.setScheduleId(scheduleId);
+                for (int i = 0; i < updateAvailabilityNewRequest.getTue().size(); i++) {
+                    //Set<Set<Long>> ans=new HashSet<>();
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getTue().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+//                    availabilityNew1.setSlotIds(ans);
+//                    availabilityNewRepository.save(availabilityNew1);
+
+                }
+                availabilityNew1.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNew1);
             }
 
         }
-       if(updateAvailabilityNewRequest.getSun()!=null){
-           AvailabilityNew availabilityNew= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long)6);
-           if(availabilityNew!=null){
-               Set<Long> ans=new HashSet<>();
-           for(int i=0;i<updateAvailabilityNewRequest.getSun().size();i++) {
-               Slot startTimeEndTime = updateAvailabilityNewRequest.getSun().get(i);
-               Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
-               ans.addAll(listOfSlots);
-              // availabilityNew.setSlotIds(listOfSlots);
-           }
-               availabilityNew.setSlotIds(ans);
-               availabilityNewRepository.save(availabilityNew);
-           }
+         else if(updateAvailabilityNewRequest.getTue()==null){
+            AvailabilityNew availabilityNewtue = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 2);
 
-       }
-       UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntityListOfAvailability(avilabilityNew1);
-       return new ResponseEntity<>(new UpdateAvailabiliityNewResponse("1",
-                               "Availability Updated:",updateAvailabilityNewResponseDTO), HttpStatus.OK);
+                if (availabilityNewtue!=null) {
+                    availabilityNewRepository.delete(availabilityNewtue);
+                }
+                else {
+                    //do nothing
+                }
 
 
-   }
+        }
+        if (updateAvailabilityNewRequest.getWed() != null) {
+            AvailabilityNew  availabilityNewWed = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 3);
+            if (availabilityNewWed != null) {
+                Set<Long> ans = new HashSet<>();
+                for (int i = 0; i < updateAvailabilityNewRequest.getWed().size(); i++) {
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getWed().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+                    // availabilityNew.setSlotIds(listOfSlots);
+                }
+                availabilityNewWed.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNewWed);
+
+            }
+            else{
+                    AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                    Set<Long> ans = new HashSet<>();
+                    availabilityNew1.setDay((long) 3);
+                    availabilityNew1.setScheduleId(scheduleId);
+                    for (int i = 0; i < updateAvailabilityNewRequest.getWed().size(); i++) {
+                        //Set<Set<Long>> ans=new HashSet<>();
+                        Slot startTimeEndTime = updateAvailabilityNewRequest.getWed().get(i);
+                        Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                        ans.addAll(listOfSlots);
+//                        availabilityNew1.setSlotIds(ans);
+//                        availabilityNewRepository.save(availabilityNew1);
+
+
+                   }
+                availabilityNew1.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNew1);
+
+            }
+
+        }
+        else if(updateAvailabilityNewRequest.getWed()==null){
+            AvailabilityNew   availabilityNewWed = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 3);
+            if (availabilityNewWed!=null) {
+                availabilityNewRepository.delete(availabilityNewWed);
+            }
+            else {
+                //do nothing
+            }
+
+
+
+        }
+        if (updateAvailabilityNewRequest.getThur() != null) {
+            AvailabilityNew availabilityNewThur= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 4);
+            if (availabilityNewThur != null) {
+                Set<Long> ans = new HashSet<>();
+                for (int i = 0; i < updateAvailabilityNewRequest.getThur().size(); i++) {
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getThur().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+
+                    // availabilityNew.setSlotIds(listOfSlots);
+                    ans.addAll(listOfSlots);
+                }
+                availabilityNewThur.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNewThur);
+
+            } else {
+                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                Set<Long> ans = new HashSet<>();
+                availabilityNew1.setDay((long) 4);
+                availabilityNew1.setScheduleId(scheduleId);
+                for (int i = 0; i < updateAvailabilityNewRequest.getThur().size(); i++) {
+                    //Set<Set<Long>> ans=new HashSet<>();
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getThur().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+//                    availabilityNew1.setSlotIds(ans);
+//                    availabilityNewRepository.save(availabilityNew1);
+
+
+                }
+                availabilityNew1.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNew1);
+            }
+        }
+
+
+            else if(updateAvailabilityNewRequest.getThur()==null){
+            AvailabilityNew   availabilityNewThur= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 4);
+                if (availabilityNewThur!=null) {
+                    availabilityNewRepository.delete(availabilityNewThur);
+                }
+                else {
+                    //do nothing
+                }
+
+            }
+
+        if (updateAvailabilityNewRequest.getFri() != null) {
+            AvailabilityNew  availabilityNewFri = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 5);
+            if (availabilityNewFri != null) {
+                Set<Long> ans = new HashSet<>();
+                for (int i = 0; i < updateAvailabilityNewRequest.getFri().size(); i++) {
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getFri().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+                    // availabilityNew.setSlotIds(listOfSlots);
+                }
+                availabilityNewFri.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNewFri);
+            } else {
+                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                Set<Long> ans = new HashSet<>();
+                availabilityNew1.setDay((long) 5);
+                availabilityNew1.setScheduleId(scheduleId);
+                for (int i = 0; i < updateAvailabilityNewRequest.getFri().size(); i++) {
+                    //Set<Set<Long>> ans=new HashSet<>();
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getFri().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+//                    availabilityNew1.setSlotIds(ans);
+//                    availabilityNewRepository.save(availabilityNew1);
+
+                }
+                availabilityNew1.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNew1);
+
+
+            }
+        }
+        else if (updateAvailabilityNewRequest.getFri()==null){
+            AvailabilityNew availabilityNewFri = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 5);
+                    if (availabilityNewFri!=null) {
+                        availabilityNewRepository.delete(availabilityNewFri);
+                    }
+                    else {
+                        //do nothing
+                    }
+        }
+
+         if (updateAvailabilityNewRequest.getSat() != null) {
+             AvailabilityNew  availabilityNewSat = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 6);
+             if (availabilityNewSat != null) {
+                 Set<Long> ans = new HashSet<>();
+                 for (int i = 0; i < updateAvailabilityNewRequest.getSat().size(); i++) {
+                     Slot startTimeEndTime = updateAvailabilityNewRequest.getSat().get(i);
+                     Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                     ans.addAll(listOfSlots);
+                     //  availabilityNew.setSlotIds(listOfSlots);
+                 }
+                 availabilityNewSat.setSlotIds(ans);
+                 availabilityNewRepository.save(availabilityNewSat);
+             } else {
+                 AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                 Set<Long> ans = new HashSet<>();
+                 availabilityNew1.setDay((long) 6);
+                 availabilityNew1.setScheduleId(scheduleId);
+                 for (int i = 0; i < updateAvailabilityNewRequest.getSat().size(); i++) {
+                     //Set<Set<Long>> ans=new HashSet<>();
+                     Slot startTimeEndTime = updateAvailabilityNewRequest.getSat().get(i);
+                     Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                     ans.addAll(listOfSlots);
+//                     availabilityNew1.setSlotIds(ans);
+//                     availabilityNewRepository.save(availabilityNew1);
+
+
+                 }
+                 availabilityNew1.setSlotIds(ans);
+                 availabilityNewRepository.save(availabilityNew1);
+
+             }
+         }
+         else if (updateAvailabilityNewRequest.getSat()==null){
+             AvailabilityNew  availabilityNewSat = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 6);
+                     if (availabilityNewSat!=null) {
+                         availabilityNewRepository.delete(availabilityNewSat);
+                     }
+                     else {
+                         //do nothing
+                     }
+
+
+             }
+        if (updateAvailabilityNewRequest.getSun() != null) {
+            AvailabilityNew  availabilityNewSun = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 0);
+            if (availabilityNewSun != null) {
+                Set<Long> ans = new HashSet<>();
+                for (int i = 0; i < updateAvailabilityNewRequest.getSun().size(); i++) {
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getSun().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+                    // availabilityNew.setSlotIds(listOfSlots);
+                }
+                availabilityNewSun.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNewSun);
+            } else {
+
+                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                Set<Long> ans = new HashSet<>();
+                availabilityNew1.setDay((long) 0);
+                availabilityNew1.setScheduleId(scheduleId);
+                for (int i = 0; i < updateAvailabilityNewRequest.getSun().size(); i++) {
+                    //Set<Set<Long>> ans=new HashSet<>();
+                    Slot startTimeEndTime = updateAvailabilityNewRequest.getSun().get(i);
+                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    ans.addAll(listOfSlots);
+//                    availabilityNew1.setSlotIds(ans);
+//                    availabilityNewRepository.save(availabilityNew1);
+
+
+                }
+                availabilityNew1.setSlotIds(ans);
+                availabilityNewRepository.save(availabilityNew1);
+
+            }
+        }
+        else if (updateAvailabilityNewRequest.getSun()==null){
+            AvailabilityNew  availabilityNewSun = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 0);
+                if (availabilityNewSun!=null) {
+                    availabilityNewRepository.delete(availabilityNewSun);
+                }
+//                else {
+//                    //do nothing
+//                }
+
+        }
+        List<AvailabilityNew> avilabilityNew1 = availabilityNewRepository.findByScheduleId(scheduleId);
+
+        UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntityListOfAvailability(avilabilityNew1);
+     //   UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO=null;
+        return new ResponseEntity<>(new UpdateAvailabiliityNewResponse("1",
+                "Availability Updated:", updateAvailabilityNewResponseDTO), HttpStatus.OK);
+
+
+    }
    @Override
    public  ResponseEntity<DeleteAvailabilityResponse> deleteAvailability(UUID scheduleId,Long day){
        AvailabilityNew availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId,day);

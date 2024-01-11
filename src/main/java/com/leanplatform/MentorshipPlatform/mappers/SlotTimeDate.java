@@ -13,6 +13,6 @@ import java.time.LocalTime;
 @Getter
 
 public class SlotTimeDate {
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private LocalDateTime start;
+    private LocalDateTime end;
 }

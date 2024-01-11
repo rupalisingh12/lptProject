@@ -14,5 +14,5 @@ import java.util.List;
 public class GetAllScheduleResponse {
     private String statusCode;
     private String responseMessage;
-    private List<CreateScheduleResponseDTO> createBookingDTO;
+    private List<CreateScheduleResponseDTO> schedules;
 }

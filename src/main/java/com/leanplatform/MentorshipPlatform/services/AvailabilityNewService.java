@@ -15,7 +15,7 @@ public interface AvailabilityNewService {
 
 
 
-     ResponseEntity<UpdateAvailabiliityNewResponse> addAnAvailability(UUID scheduleId, CreateAvailabilityNewRequest createAvailabilityNewRequest) ;
+     ResponseEntity<UpdateAvailabiliityNewResponse> addAnAvailability(UUID userId, CreateAvailabilityNewRequest createAvailabilityNewRequest) ;
      ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailability(String userName, UUID userId, UUID eventTypeId, LocalDate dateTo, LocalDate dateFrom);
      ResponseEntity<UpdateAvailabiliityNewResponse>updateAvailabilitys(UUID scheduleId, UpdateAvailabilityNewRequest updateAvailabilityNewRequest);
      ResponseEntity<DeleteAvailabilityResponse> deleteAvailability(UUID scheduleId,Long day);

@@ -32,6 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService {
      Schedule schedule=new Schedule();
      schedule.setUserId(userId);
     UserEntity userEntity= userRepository.findByUserId(userId);
+
     schedule.setName(userEntity.getName());
      Schedule schedule1=scheduleRepository.save(schedule);
 
@@ -55,43 +56,69 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Override
   public ResponseEntity<GetAllScheduleResponse> getSchedules(UUID userId){
       List<Schedule>schedule1=scheduleRepository.findByUserId( userId);
-      List<CreateScheduleResponseDTO>createScheduleResponseDTOS=new ArrayList<>();
-     for(int i=0;i<schedule1.size();i++){
-         Schedule schedule=schedule1.get(i);
-         List<AvailabilityNew> availabilityNewList=availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
-         CreateScheduleResponseDTO createScheduleResponsedto=ScheduleMapper.convertEntityToDTO( schedule,availabilityNewList);
-         createScheduleResponseDTOS.add(createScheduleResponsedto);
+      if(schedule1!=null) {
+          List<CreateScheduleResponseDTO> createScheduleResponseDTOS = new ArrayList<>();
+          for (int i = 0; i < schedule1.size(); i++) {
+              Schedule schedule = schedule1.get(i);
+              List<AvailabilityNew> availabilityNewList = availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
+              CreateScheduleResponseDTO createScheduleResponsedto = ScheduleMapper.convertEntityToDTO(schedule, availabilityNewList);
+              createScheduleResponseDTOS.add(createScheduleResponsedto);
 
-     }
-      return new ResponseEntity<>(new GetAllScheduleResponse(
-              "1",
-              "Schedule created",createScheduleResponseDTOS
-      ), HttpStatus.CREATED);
+          }
+          return new ResponseEntity<>(new GetAllScheduleResponse(
+                  "1",
+                  "Schedules for the user are ", createScheduleResponseDTOS
+          ), HttpStatus.CREATED);
+      }else{
+          return new ResponseEntity<>(new GetAllScheduleResponse(
+                  "0",
+                  "Schedule for the user does not exist", null
+          ), HttpStatus.NOT_FOUND);
+
+      }
 
   }
   @Override
  public ResponseEntity<CreateScheduleResponse>getSchdeule(UUID scheduleId,UUID userId) {
       Schedule schedule = scheduleRepository.findByScheduleIdAndUserId(scheduleId, userId);
-      List<AvailabilityNew> availabilityNewList = availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
-      CreateScheduleResponseDTO createScheduleResponsedto = ScheduleMapper.convertEntityToDTO(schedule, availabilityNewList);
-      return new ResponseEntity<>(new CreateScheduleResponse(
-              "1",
-              "Schedule created", createScheduleResponsedto
-      ), HttpStatus.CREATED);
+      if(schedule!=null) {
+          List<AvailabilityNew> availabilityNewList = availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
+          CreateScheduleResponseDTO createScheduleResponsedto = ScheduleMapper.convertEntityToDTO(schedule, availabilityNewList);
+          return new ResponseEntity<>(new CreateScheduleResponse(
+                  "1",
+                  "Schedule is", createScheduleResponsedto
+          ), HttpStatus.OK);
+      }
+      else{
+          return new ResponseEntity<>(new CreateScheduleResponse(
+                  "0",
+                  "No schedule exist for the required scheduleId", null
+          ), HttpStatus.NOT_FOUND);
+
+      }
 
   }
     public ResponseEntity<DeleteSchedule>deleteSchedule(UUID scheduleId, UUID userId){
         Schedule schedule = scheduleRepository.findByScheduleIdAndUserId(scheduleId, userId);
-        List<AvailabilityNew> availabilityNewList = availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
-        scheduleRepository.delete(schedule);
-        for(int i=0;i<availabilityNewList.size();i++) {
-            availabilityNewRepository.delete(availabilityNewList.get(i));
+        if(schedule!=null) {
+            List<AvailabilityNew> availabilityNewList = availabilityNewRepository.findByScheduleId(schedule.getScheduleId());
+            scheduleRepository.delete(schedule);
+            for (int i = 0; i < availabilityNewList.size(); i++) {
+                availabilityNewRepository.delete(availabilityNewList.get(i));
+            }
+            DeleteScheduleDTO deleteScheduleDTO = ScheduleMapper.convertEntityToDTO1(schedule, availabilityNewList);
+            return new ResponseEntity<>(new DeleteSchedule(
+                    "1",
+                    "Schedule deleted successfully for scheduleId: "+scheduleId, deleteScheduleDTO
+            ), HttpStatus.OK);
         }
-        DeleteScheduleDTO deleteScheduleDTO=ScheduleMapper.convertEntityToDTO1(schedule,availabilityNewList);
-        return new ResponseEntity<>(new DeleteSchedule(
-                "1",
-                "Schedule deleted", deleteScheduleDTO
-        ), HttpStatus.CREATED);
+        else{
+            return new ResponseEntity<>(new DeleteSchedule(
+                    "1",
+                    "Schedule does not exist for "+scheduleId , null
+            ), HttpStatus.OK);
+
+        }
 
 
     }

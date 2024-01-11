@@ -45,7 +45,7 @@ public class ScheduleController {
                     ), HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/getSchdeule{scheduleId}")
+    @GetMapping("/getSchdeule/{scheduleId}")
     public ResponseEntity<CreateScheduleResponse>getSchedule(@PathVariable UUID scheduleId , @RequestParam(name = "userId") UUID userId) {
         try {
             return scheduleService.getSchdeule(scheduleId, userId);
