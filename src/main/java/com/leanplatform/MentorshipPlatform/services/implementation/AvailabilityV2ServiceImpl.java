@@ -1,19 +1,18 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.CreateAvailabilityNewRequest;
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.CreateAvailabilityNewResponse;
-import com.leanplatform.MentorshipPlatform.entities.AvailabilityNew;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.CreateAvailabilityNewRequest;
+import com.leanplatform.MentorshipPlatform.entities.AvailabilityV2;
 import com.leanplatform.MentorshipPlatform.entities.Booking;
 
-import com.leanplatform.MentorshipPlatform.mappers.AvailabilityNewMapper;
+import com.leanplatform.MentorshipPlatform.entities.Schedule;
+import com.leanplatform.MentorshipPlatform.mappers.AvailabilityV2Mapper;
 import com.leanplatform.MentorshipPlatform.mappers.Slot;
 import com.leanplatform.MentorshipPlatform.mappers.SlotTimeDate;
 import com.leanplatform.MentorshipPlatform.repositories.*;
-import com.leanplatform.MentorshipPlatform.services.AvailabilityNewService;
+import com.leanplatform.MentorshipPlatform.services.AvailabilityV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.*;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.*;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,9 +24,9 @@ import java.time.LocalTime;
 import java.util.*;
 
 @Service
-public class AvailabilityNewServiceImpl implements AvailabilityNewService {
+public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
     @Autowired
-    AvailabilityNewRepository availabilityNewRepository;
+    AvailabilityV2Repository availabilityNewRepository;
     @Autowired
     DaysRepository daysRepository;
     @Autowired
@@ -40,17 +39,25 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
     public ResponseEntity<UpdateAvailabiliityNewResponse> addAnAvailability(UUID userId, CreateAvailabilityNewRequest createAvailabilityNewRequest) {
         if (createAvailabilityNewRequest == null || createAvailabilityNewRequest.getDays() == null || createAvailabilityNewRequest.getEndTime() == null || createAvailabilityNewRequest.getStartTime() == null ||
-                createAvailabilityNewRequest.getScheduleId() == null) {
+                createAvailabilityNewRequest.getScheduleId() == null || createAvailabilityNewRequest.getDays().isEmpty()) {
             return new ResponseEntity<>
                     (new UpdateAvailabiliityNewResponse
                             ("0",
                                     "Invalid Request", null), HttpStatus.BAD_REQUEST);
 
         }
+       Schedule schedule= scheduleRepository.findByScheduleId(createAvailabilityNewRequest.getScheduleId());
+        if(schedule==null){
+            return new ResponseEntity<>
+                    (new UpdateAvailabiliityNewResponse
+                            ("0",
+                                    "Schedule does not exist", null), HttpStatus.NOT_FOUND);
+
+        }
 //
         for (int i = 0; i < createAvailabilityNewRequest.getDays().size(); i++) {
             Long day1 = createAvailabilityNewRequest.getDays().get(i);
-            AvailabilityNew availabilityNew1 = availabilityNewRepository.findByScheduleIdAndDay(createAvailabilityNewRequest.getScheduleId(), day1);
+           AvailabilityV2 availabilityNew1 = availabilityNewRepository.findByScheduleIdAndDay(createAvailabilityNewRequest.getScheduleId(), day1);
             if (availabilityNew1 != null) {
                 LocalDateTime startTime = createAvailabilityNewRequest.getStartTime();
                 LocalDateTime endTime = createAvailabilityNewRequest.getEndTime();
@@ -58,27 +65,27 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
                 LocalTime endTime1 = endTime.toLocalTime();
                 Set<Long> listans = availabilityNew1.getSlotIds();
 
-                Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTime1, endTime1);
+                Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTime1, endTime1);
                 listans.addAll(listOfSlots);
                 availabilityNew1.setSlotIds(listans);
                 availabilityNewRepository.save(availabilityNew1);
             } else {
-                AvailabilityNew availabilityNew = new AvailabilityNew();
+                AvailabilityV2 availabilityNew = new AvailabilityV2();
                 availabilityNew.setDay(day1);
                 availabilityNew.setScheduleId(createAvailabilityNewRequest.getScheduleId());
                 LocalDateTime startTime = createAvailabilityNewRequest.getStartTime();
                 LocalDateTime endTime = createAvailabilityNewRequest.getEndTime();
                 LocalTime startTime1 = startTime.toLocalTime();
                 LocalTime endTime1 = endTime.toLocalTime();
-                Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTime1, endTime1);
+                Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTime1, endTime1);
                 availabilityNew.setSlotIds(listOfSlots);
                 availabilityNewRepository.save(availabilityNew);
 
             }
 
         }
-        ArrayList<AvailabilityNew>list=new ArrayList<>();
-        List<AvailabilityNew> availabilityNewList=availabilityNewRepository.findByScheduleId(createAvailabilityNewRequest.getScheduleId());
+        ArrayList<AvailabilityV2>list=new ArrayList<>();
+        List<AvailabilityV2> availabilityNewList=availabilityNewRepository.findByScheduleId(createAvailabilityNewRequest.getScheduleId());
 //        for(int h=0;h<createAvailabilityNewRequest.getDays().size();h++){
 //            Long day1 = createAvailabilityNewRequest.getDays().get(h);
 //            AvailabilityNew availabilityNew1 = availabilityNewRepository.findByScheduleIdAndDay(createAvailabilityNewRequest.getScheduleId(), day1);
@@ -88,7 +95,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 //
 
    //  CreateAvailabilityNewResponseDTO createAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntity(createAvailabilityNewRequest);
-        UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntityListOfAvailability(availabilityNewList);
+        UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityV2Mapper.convertDtoToEntityListOfAvailability(availabilityNewList);
 
         return new ResponseEntity<>
                 (new UpdateAvailabiliityNewResponse
@@ -110,6 +117,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
 //        }
        // availabilityNewRepository.findDistinctSlotIdByScheduleId()
+
         UUID scheduleId1 = eventTypesRepository.findScheduleIdByEventTypeId(eventTypeId);
         List<Long>days=availabilityNewRepository.findAllDayByScheduleId(scheduleId1);
         List<List<com.leanplatform.MentorshipPlatform.mappers.Slot>> finalSetList = new ArrayList<>();
@@ -125,7 +133,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
             }
 
             long day1=day1234;
-            AvailabilityNew availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId1, day1);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId1, day1);
             if(availabilityNew==null){
                 //go to the next date;
                 continue;
@@ -142,21 +150,21 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
                         Set<Long> slotIDsList1 = booking1.getSlotIds();
                         slotIDsList.removeAll(slotIDsList1);
                     }
-                    List<com.leanplatform.MentorshipPlatform.mappers.Slot> slotsLists = AvailabilityNewMapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(slotIDsList);
+                    List<com.leanplatform.MentorshipPlatform.mappers.Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(slotIDsList);
                     finalSetList.add(slotsLists);
                     dates.add(i);
-                    List<SlotTimeDate>slotTimeDateList= AvailabilityNewMapper.convertLocalTimeToLocalDateTime(slotsLists,i);
+                    List<SlotTimeDate>slotTimeDateList= AvailabilityV2Mapper.convertLocalTimeToLocalDateTime(slotsLists,i);
                     finalTimeDateList.add(slotTimeDateList);
 
                 }
             }
         }
-        List<Long> days12=AvailabilityNewMapper.convertDaysIntoDto(days);
+        List<Long> days12= AvailabilityV2Mapper.convertDaysIntoDto(days);
         List<Day>workingHours=new ArrayList<>();
         Day day=new Day();
         day.setDays(days12);
         workingHours.add(day);
-        List<SlotTimeDate> ansList2 = AvailabilityNewMapper.convertListIntoDto(finalTimeDateList);
+        List<SlotTimeDate> ansList2 = AvailabilityV2Mapper.convertListIntoDto(finalTimeDateList);
         return new ResponseEntity<>
                 (new GetAllAvailabilitiesResponse
                         ("1",
@@ -176,14 +184,14 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
 
         if (updateAvailabilityNewRequest.getMon() != null) {
-            AvailabilityNew availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 1);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 1);
             if (availabilityNew != null) {
                 // Set<Long> listOfSlots=null;
                 Set<Long> ans = new HashSet<>();
                 for (int i = 0; i < updateAvailabilityNewRequest.getMon().size(); i++) {
                     //Set<Set<Long>> ans=new HashSet<>();
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getMon().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
                     //availabilityNew.setSlotIds(listOfSlots);
                     System.out.print(ans);
@@ -193,14 +201,14 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
                 availabilityNew.setSlotIds(ans);
                 availabilityNewRepository.save(availabilityNew);
             } else {
-                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew1 = new com.leanplatform.MentorshipPlatform.entities.AvailabilityV2();
                 Set<Long> ans = new HashSet<>();
                 availabilityNew1.setDay((long) 1);
                 availabilityNew1.setScheduleId(scheduleId);
                 for (int i = 0; i < updateAvailabilityNewRequest.getMon().size(); i++) {
                     //Set<Set<Long>> ans=new HashSet<>();
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getMon().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
                   //  availabilityNew1.setSlotIds(ans);
                    // availabilityNewRepository.save(availabilityNew1);
@@ -209,7 +217,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
                 availabilityNewRepository.save(availabilityNew1);
             }
         } else if (updateAvailabilityNewRequest.getMon() == null) {
-            AvailabilityNew availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 1);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 1);
             if (availabilityNew!=null) {
                 availabilityNewRepository.delete(availabilityNew);
             }
@@ -220,12 +228,12 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
         }
         if (updateAvailabilityNewRequest.getTue() != null) {
-            AvailabilityNew availabilityNewtue = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 2);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewtue = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 2);
             if (availabilityNewtue != null) {
                 Set<Long> ans = new HashSet<>();
                 for (int i = 0; i < updateAvailabilityNewRequest.getTue().size(); i++) {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getTue().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
                     //availabilityNew.setSlotIds(listOfSlots);
                 }
@@ -233,14 +241,14 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
                 availabilityNewRepository.save(availabilityNewtue);
             }
             else {
-                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew1 = new com.leanplatform.MentorshipPlatform.entities.AvailabilityV2();
                 Set<Long> ans = new HashSet<>();
                 availabilityNew1.setDay((long) 2);
                 availabilityNew1.setScheduleId(scheduleId);
                 for (int i = 0; i < updateAvailabilityNewRequest.getTue().size(); i++) {
                     //Set<Set<Long>> ans=new HashSet<>();
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getTue().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
 //                    availabilityNew1.setSlotIds(ans);
 //                    availabilityNewRepository.save(availabilityNew1);
@@ -252,7 +260,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
         }
          else if(updateAvailabilityNewRequest.getTue()==null){
-            AvailabilityNew availabilityNewtue = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 2);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewtue = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 2);
 
                 if (availabilityNewtue!=null) {
                     availabilityNewRepository.delete(availabilityNewtue);
@@ -264,12 +272,12 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
         }
         if (updateAvailabilityNewRequest.getWed() != null) {
-            AvailabilityNew  availabilityNewWed = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 3);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewWed = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 3);
             if (availabilityNewWed != null) {
                 Set<Long> ans = new HashSet<>();
                 for (int i = 0; i < updateAvailabilityNewRequest.getWed().size(); i++) {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getWed().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
                     // availabilityNew.setSlotIds(listOfSlots);
                 }
@@ -278,14 +286,14 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
             }
             else{
-                    AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                    com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew1 = new com.leanplatform.MentorshipPlatform.entities.AvailabilityV2();
                     Set<Long> ans = new HashSet<>();
                     availabilityNew1.setDay((long) 3);
                     availabilityNew1.setScheduleId(scheduleId);
                     for (int i = 0; i < updateAvailabilityNewRequest.getWed().size(); i++) {
                         //Set<Set<Long>> ans=new HashSet<>();
                         Slot startTimeEndTime = updateAvailabilityNewRequest.getWed().get(i);
-                        Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                        Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                         ans.addAll(listOfSlots);
 //                        availabilityNew1.setSlotIds(ans);
 //                        availabilityNewRepository.save(availabilityNew1);
@@ -299,7 +307,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
         }
         else if(updateAvailabilityNewRequest.getWed()==null){
-            AvailabilityNew   availabilityNewWed = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 3);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewWed = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 3);
             if (availabilityNewWed!=null) {
                 availabilityNewRepository.delete(availabilityNewWed);
             }
@@ -311,12 +319,12 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
         }
         if (updateAvailabilityNewRequest.getThur() != null) {
-            AvailabilityNew availabilityNewThur= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 4);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewThur= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 4);
             if (availabilityNewThur != null) {
                 Set<Long> ans = new HashSet<>();
                 for (int i = 0; i < updateAvailabilityNewRequest.getThur().size(); i++) {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getThur().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
 
                     // availabilityNew.setSlotIds(listOfSlots);
                     ans.addAll(listOfSlots);
@@ -325,14 +333,14 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
                 availabilityNewRepository.save(availabilityNewThur);
 
             } else {
-                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew1 = new com.leanplatform.MentorshipPlatform.entities.AvailabilityV2();
                 Set<Long> ans = new HashSet<>();
                 availabilityNew1.setDay((long) 4);
                 availabilityNew1.setScheduleId(scheduleId);
                 for (int i = 0; i < updateAvailabilityNewRequest.getThur().size(); i++) {
                     //Set<Set<Long>> ans=new HashSet<>();
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getThur().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
 //                    availabilityNew1.setSlotIds(ans);
 //                    availabilityNewRepository.save(availabilityNew1);
@@ -346,7 +354,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
 
             else if(updateAvailabilityNewRequest.getThur()==null){
-            AvailabilityNew   availabilityNewThur= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 4);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewThur= availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 4);
                 if (availabilityNewThur!=null) {
                     availabilityNewRepository.delete(availabilityNewThur);
                 }
@@ -357,26 +365,26 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
             }
 
         if (updateAvailabilityNewRequest.getFri() != null) {
-            AvailabilityNew  availabilityNewFri = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 5);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewFri = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 5);
             if (availabilityNewFri != null) {
                 Set<Long> ans = new HashSet<>();
                 for (int i = 0; i < updateAvailabilityNewRequest.getFri().size(); i++) {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getFri().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
                     // availabilityNew.setSlotIds(listOfSlots);
                 }
                 availabilityNewFri.setSlotIds(ans);
                 availabilityNewRepository.save(availabilityNewFri);
             } else {
-                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew1 = new com.leanplatform.MentorshipPlatform.entities.AvailabilityV2();
                 Set<Long> ans = new HashSet<>();
                 availabilityNew1.setDay((long) 5);
                 availabilityNew1.setScheduleId(scheduleId);
                 for (int i = 0; i < updateAvailabilityNewRequest.getFri().size(); i++) {
                     //Set<Set<Long>> ans=new HashSet<>();
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getFri().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
 //                    availabilityNew1.setSlotIds(ans);
 //                    availabilityNewRepository.save(availabilityNew1);
@@ -389,7 +397,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
             }
         }
         else if (updateAvailabilityNewRequest.getFri()==null){
-            AvailabilityNew availabilityNewFri = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 5);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewFri = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 5);
                     if (availabilityNewFri!=null) {
                         availabilityNewRepository.delete(availabilityNewFri);
                     }
@@ -399,26 +407,26 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
         }
 
          if (updateAvailabilityNewRequest.getSat() != null) {
-             AvailabilityNew  availabilityNewSat = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 6);
+             com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewSat = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 6);
              if (availabilityNewSat != null) {
                  Set<Long> ans = new HashSet<>();
                  for (int i = 0; i < updateAvailabilityNewRequest.getSat().size(); i++) {
                      Slot startTimeEndTime = updateAvailabilityNewRequest.getSat().get(i);
-                     Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                      ans.addAll(listOfSlots);
                      //  availabilityNew.setSlotIds(listOfSlots);
                  }
                  availabilityNewSat.setSlotIds(ans);
                  availabilityNewRepository.save(availabilityNewSat);
              } else {
-                 AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                 com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew1 = new com.leanplatform.MentorshipPlatform.entities.AvailabilityV2();
                  Set<Long> ans = new HashSet<>();
                  availabilityNew1.setDay((long) 6);
                  availabilityNew1.setScheduleId(scheduleId);
                  for (int i = 0; i < updateAvailabilityNewRequest.getSat().size(); i++) {
                      //Set<Set<Long>> ans=new HashSet<>();
                      Slot startTimeEndTime = updateAvailabilityNewRequest.getSat().get(i);
-                     Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                      ans.addAll(listOfSlots);
 //                     availabilityNew1.setSlotIds(ans);
 //                     availabilityNewRepository.save(availabilityNew1);
@@ -431,7 +439,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
              }
          }
          else if (updateAvailabilityNewRequest.getSat()==null){
-             AvailabilityNew  availabilityNewSat = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 6);
+             com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewSat = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 6);
                      if (availabilityNewSat!=null) {
                          availabilityNewRepository.delete(availabilityNewSat);
                      }
@@ -442,12 +450,12 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 
              }
         if (updateAvailabilityNewRequest.getSun() != null) {
-            AvailabilityNew  availabilityNewSun = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 0);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewSun = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 0);
             if (availabilityNewSun != null) {
                 Set<Long> ans = new HashSet<>();
                 for (int i = 0; i < updateAvailabilityNewRequest.getSun().size(); i++) {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getSun().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
                     // availabilityNew.setSlotIds(listOfSlots);
                 }
@@ -455,14 +463,14 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
                 availabilityNewRepository.save(availabilityNewSun);
             } else {
 
-                AvailabilityNew availabilityNew1 = new AvailabilityNew();
+                com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew1 = new com.leanplatform.MentorshipPlatform.entities.AvailabilityV2();
                 Set<Long> ans = new HashSet<>();
                 availabilityNew1.setDay((long) 0);
                 availabilityNew1.setScheduleId(scheduleId);
                 for (int i = 0; i < updateAvailabilityNewRequest.getSun().size(); i++) {
                     //Set<Set<Long>> ans=new HashSet<>();
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getSun().get(i);
-                    Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
+                    Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
 //                    availabilityNew1.setSlotIds(ans);
 //                    availabilityNewRepository.save(availabilityNew1);
@@ -475,7 +483,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
             }
         }
         else if (updateAvailabilityNewRequest.getSun()==null){
-            AvailabilityNew  availabilityNewSun = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 0);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNewSun = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 0);
                 if (availabilityNewSun!=null) {
                     availabilityNewRepository.delete(availabilityNewSun);
                 }
@@ -484,9 +492,9 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
 //                }
 
         }
-        List<AvailabilityNew> avilabilityNew1 = availabilityNewRepository.findByScheduleId(scheduleId);
+        List<com.leanplatform.MentorshipPlatform.entities.AvailabilityV2> avilabilityNew1 = availabilityNewRepository.findByScheduleId(scheduleId);
 
-        UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntityListOfAvailability(avilabilityNew1);
+        UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityV2Mapper.convertDtoToEntityListOfAvailability(avilabilityNew1);
      //   UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO=null;
         return new ResponseEntity<>(new UpdateAvailabiliityNewResponse("1",
                 "Availability Updated:", updateAvailabilityNewResponseDTO), HttpStatus.OK);
@@ -495,7 +503,7 @@ public class AvailabilityNewServiceImpl implements AvailabilityNewService {
     }
    @Override
    public  ResponseEntity<DeleteAvailabilityResponse> deleteAvailability(UUID scheduleId,Long day){
-       AvailabilityNew availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId,day);
+       com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId,day);
        availabilityNewRepository.delete(availabilityNew);
        return new ResponseEntity<>(new DeleteAvailabilityResponse("1",
                "Availability deleted"), HttpStatus.OK);

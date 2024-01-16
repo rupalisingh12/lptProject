@@ -5,8 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -25,6 +27,8 @@ public class Schedule {
     private UUID scheduleId;
     private UUID userId;
     private String name;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
 
 

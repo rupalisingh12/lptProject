@@ -41,6 +41,14 @@ public class BookingController {
 
     @GetMapping("/getAllBookings")
     public ResponseEntity<GetBookingResponse> getAllBooking(@RequestParam(name = "userId") UUID userId) {
+        if(userId==null){
+            return new ResponseEntity<>(new GetBookingResponse
+                    (
+                            "0",
+                            "Invalid request",
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+        }
         try {
             return bookingService.getBookings(userId);
         } catch (Exception e) {

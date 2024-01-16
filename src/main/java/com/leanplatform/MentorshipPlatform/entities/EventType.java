@@ -6,8 +6,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -29,5 +31,7 @@ public class EventType {
     private UUID scheduleId;//2
     private Double price;
     private String description;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
 }

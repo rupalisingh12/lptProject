@@ -4,6 +4,7 @@ import com.leanplatform.MentorshipPlatform.enums.BookingEnums;
 import com.leanplatform.MentorshipPlatform.enums.MentorEnums;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.boot.Metadata;
 
@@ -37,6 +38,8 @@ public class Booking {
    private LocalDate date;
    private UUID locationId;
    private Set<Long> slotIds;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
 
   //  private BookingEnums status;

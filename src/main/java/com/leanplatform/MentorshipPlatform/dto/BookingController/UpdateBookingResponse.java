@@ -1,6 +1,5 @@
 package com.leanplatform.MentorshipPlatform.dto.BookingController;
 
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.CreateAvailabilityNewResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

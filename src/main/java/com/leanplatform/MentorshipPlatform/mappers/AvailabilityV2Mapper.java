@@ -1,16 +1,13 @@
 package com.leanplatform.MentorshipPlatform.mappers;
 
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.*;
-import com.leanplatform.MentorshipPlatform.entities.AvailabilityNew;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.*;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-public class AvailabilityNewMapper {
+public class AvailabilityV2Mapper {
 
     public static CreateAvailabilityNewResponseDTO convertDtoToEntity(CreateAvailabilityNewRequest createAvailabilityNewRequest) {
         CreateAvailabilityNewResponseDTO createAvailabilityNewResponseDTO = new CreateAvailabilityNewResponseDTO();
@@ -36,6 +33,8 @@ public class AvailabilityNewMapper {
         ArrayList<Long> ansans=new ArrayList(slotIDsList);
         //{1,3,4,5,10,11,20}
         //{1,20} and{3,5,10,11}
+        //find if list is continuos or not
+       //find if list is discontinuos
         ArrayList<Long> ans=findIfListIsContinuos(arr);
         ArrayList<Long> ans34=convert1 (arr1);
         List<Long> absoluteList1 = getAbsoluteValues(ans34);
@@ -45,6 +44,7 @@ public class AvailabilityNewMapper {
         List<Long> absoluteList = getAbsoluteValues(ans);
         //List<Long> absoluteList1 = getAbsoluteValues(ansans);
         List ans12= convertSlotIds2(absoluteList);
+      //to convert slotIds into startTime and endTime
        List ansfinal= convertSlotIdsIntoStartTimeEndTime(ansans);
         List<Slot> combinedList = new ArrayList<>(ans12);
         combinedList.addAll(ansfinal);
@@ -61,26 +61,18 @@ public class AvailabilityNewMapper {
         long endTime1Min = (endTime.getMinute() * 2) / 60;
         long endHour = endTime1hour + endTime1Min;
         Set s = new HashSet<>();
-        if(Starthour<=endHour) {
+        if(endHour==0){
+            endHour=48;
+        }
+
             for (long i = Starthour; i <= endHour; i++) {
                 s.add(i);
 
             }
             return s;
-        }
-        else if(endHour<Starthour){
-            for(long j=0;j<=endHour;j++){
-                s.add(j);
 
-            }
-            for(long k=Starthour;k<=48;k++){
-                s.add(k);
 
-            }
-            return s;
 
-        }
-        return s;
 
 
     }
@@ -93,10 +85,17 @@ public class AvailabilityNewMapper {
             Long ans = s.get(i);
             if (ans % 2 == 0) {
                 int g = (int) (ans / 2);
+                if(g==24){
+                    g=0;
+                }
                 LocalTime endTime = LocalTime.of(g, 0);
                 LocalTime startTime = endTime.minusMinutes(30);
                 Slot slot = new Slot();
                 slot.setStartTime(startTime);
+                if (endTime.getHour() == 24) {
+                    // Set the hour component to 0 (midnight)
+                    endTime = endTime.withHour(0);
+                }
                 slot.setEndTime(endTime);
                 list.add(slot);
             } else {
@@ -133,8 +132,13 @@ public class AvailabilityNewMapper {
             Slot slot = new Slot();
             if (ans[0] % 2 == 0) {
                 int g = (int) (ans[0] / 2);
+
+                if(g==24){
+                    g=0;
+                }
                 LocalTime endTime = LocalTime.of(g, 0);
                 LocalTime startTime = endTime.minusMinutes(30);
+
                 slot.setStartTime(startTime);
             } else if (ans[0] % 2 != 0) {
                 int a = (int) (ans[0] / 2);
@@ -144,14 +148,26 @@ public class AvailabilityNewMapper {
             }
             if (ans[1] % 2 == 0) {
                 int g = (int) (ans[1] / 2);
+
+                if(g==24){
+                    g=0;
+                }
                 LocalTime endTime = LocalTime.of(g, 0);
                 LocalTime startTime = endTime.minusMinutes(30);
+                if (endTime.getHour() == 24) {
+                    // Set the hour component to 0 (midnight)
+                    endTime = endTime.withHour(0);
+                }
                 slot.setEndTime(endTime);
 
             } else if (ans[1] % 2 != 0) {
                 int a = (int) (ans[1] / 2);
                 LocalTime startTime = LocalTime.of(a, 0);
                 LocalTime endTime = startTime.plusMinutes(30);
+                if (endTime.getHour() == 24) {
+                    // Set the hour component to 0 (midnight)
+                    endTime = endTime.withHour(0);
+                }
                 slot.setEndTime(endTime);
             }
             ansList.add(slot);
@@ -272,10 +288,10 @@ public class AvailabilityNewMapper {
         return activeDaysList;
 
     }
-    public static UpdateAvailabilityNewResponseDTO convertDtoToEntityListOfAvailability(List<AvailabilityNew> avilabilityNew1){
+    public static UpdateAvailabilityNewResponseDTO convertDtoToEntityListOfAvailability(List<com.leanplatform.MentorshipPlatform.entities.AvailabilityV2> avilabilityNew1){
         UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO=new UpdateAvailabilityNewResponseDTO();
         for(int i=0;i<avilabilityNew1.size();i++) {
-            AvailabilityNew availabilityNew = avilabilityNew1.get(i);
+            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew = avilabilityNew1.get(i);
             //  availabilityNew.getSlotIds();
             Long day = avilabilityNew1.get(i).getDay();
             List<Slot> ans = catchSlotIdsListAndConvertIntoStartTimeEndTime(availabilityNew.getSlotIds());
@@ -375,6 +391,14 @@ public class AvailabilityNewMapper {
 //
 //
 //    }
+private boolean allElementsAreLongs(List<?> list) {
+    for (Object element : list) {
+        if (!(element instanceof Long)) {
+            return false;
+        }
+    }
+    return true;
+}
 }
 
 

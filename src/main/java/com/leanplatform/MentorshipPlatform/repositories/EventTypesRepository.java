@@ -1,6 +1,7 @@
 package com.leanplatform.MentorshipPlatform.repositories;
 
 import com.leanplatform.MentorshipPlatform.entities.EventType;
+import com.leanplatform.MentorshipPlatform.entities.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +25,8 @@ public interface EventTypesRepository extends JpaRepository<EventType, UUID> {
     Integer findEventTypeLengthByEventId(@Param("eventId") UUID eventId);
     @Query("SELECT e.scheduleId FROM EventType e WHERE e.eventId=:eventId")
     UUID findScheduleIdByEventTypeId(@Param("eventId")UUID eventId);
+    @Query("SELECT s FROM EventType s WHERE s.scheduleId = :scheduleId")
+    List<EventType> findByScheduleId(@Param("scheduleId") UUID scheduleId);
    // EventType findByEventTypeId(UUID eventTypeId);
 }
 

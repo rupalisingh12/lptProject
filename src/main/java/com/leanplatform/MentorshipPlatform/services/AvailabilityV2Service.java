@@ -1,17 +1,13 @@
 package com.leanplatform.MentorshipPlatform.services;
 
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.*;
-import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorRequestObject;
-import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorRequestResponse;
-import com.leanplatform.MentorshipPlatform.services.implementation.AvailabilityNewServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.UUID;
 @Service
-public interface AvailabilityNewService {
+public interface AvailabilityV2Service {
 
 
 

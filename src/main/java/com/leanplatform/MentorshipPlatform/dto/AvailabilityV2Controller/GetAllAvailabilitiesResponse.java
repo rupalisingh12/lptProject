@@ -1,6 +1,5 @@
-package com.leanplatform.MentorshipPlatform.dto.AvailabilityNew;
+package com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller;
 
-import com.leanplatform.MentorshipPlatform.mappers.Slot;
 import com.leanplatform.MentorshipPlatform.mappers.SlotTimeDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,21 +1,17 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.BookingController.*;
-import com.leanplatform.MentorshipPlatform.dto.EventTypesController.CreateEventDTO;
-import com.leanplatform.MentorshipPlatform.dto.MentorController.MentorSearchResponseObject;
 import com.leanplatform.MentorshipPlatform.entities.*;
 import com.leanplatform.MentorshipPlatform.enums.BookingEnums;
-import com.leanplatform.MentorshipPlatform.mappers.AvailabilityNewMapper;
+import com.leanplatform.MentorshipPlatform.mappers.AvailabilityV2Mapper;
 import com.leanplatform.MentorshipPlatform.mappers.BookingMapper;
 import com.leanplatform.MentorshipPlatform.repositories.*;
 import com.leanplatform.MentorshipPlatform.services.BookingService;
 import jakarta.transaction.Transactional;
-import jdk.jfr.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,7 +43,7 @@ public class BookingServiceImpl implements BookingService {
         LocalDateTime endTime = bookingRequest.getStart().plusMinutes(length1);
         LocalTime startTime1 = bookingRequest.getStart().toLocalTime();
         LocalTime endTime1 = endTime.toLocalTime();
-        Set<Long> listOfSlots = AvailabilityNewMapper.convertStartTimeEndTimeIntoSlotIds(startTime1, endTime1);
+        Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTime1, endTime1);
         if (list != null) {
             //if list is not empty
             for (int i = 0; i < list.size(); i++) {
@@ -247,6 +243,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public ResponseEntity<GetBookingResponse>getBookings(UUID userId){
+        if(userId==null){
+            return new ResponseEntity<>(new GetBookingResponse
+                    (
+                            "0",
+                            "Invalid request",
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+        }
         List<Booking> bookingList=bookingRepository.findAllByUserId(userId);
         if(!bookingList.isEmpty()) {
             List<CreateBookingDTO> createBookingDTOList = new ArrayList<>();

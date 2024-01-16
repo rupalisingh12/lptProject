@@ -1,5 +1,5 @@
 package com.leanplatform.MentorshipPlatform.repositories;
 
-public class OverallStats {
+public class OverallStatsRepository {
 
 }

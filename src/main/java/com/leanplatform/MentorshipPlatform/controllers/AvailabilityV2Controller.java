@@ -1,23 +1,34 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.*;
-import com.leanplatform.MentorshipPlatform.dto.BookingController.BookingRequest;
-import com.leanplatform.MentorshipPlatform.dto.MentorController.MentorSearchResponseObject;
-import com.leanplatform.MentorshipPlatform.services.AvailabilityNewService;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.*;
+import com.leanplatform.MentorshipPlatform.mappers.AvailabilityV2Mapper.*;
+
+import com.leanplatform.MentorshipPlatform.services.AvailabilityV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 @RestController
-@RequestMapping("/AvailabilityNew")
-public class AvailabilityNewController {
-    @Autowired AvailabilityNewService availabilityNewService;
+@RequestMapping("/AvailabilityV2")
+public class AvailabilityV2Controller {
+    @Autowired
+    AvailabilityV2Service availabilityNewService;
     @PostMapping("/addAvailability")
     public ResponseEntity<UpdateAvailabiliityNewResponse>addAvailability(@RequestParam("userId") UUID userId, @RequestBody CreateAvailabilityNewRequest createAvailabilityNewRequest) {
+
+        if (createAvailabilityNewRequest == null || createAvailabilityNewRequest.getDays() == null || createAvailabilityNewRequest.getEndTime() == null || createAvailabilityNewRequest.getStartTime() == null ||
+                createAvailabilityNewRequest.getScheduleId() == null || createAvailabilityNewRequest.getDays().isEmpty()) {
+
+            return new ResponseEntity<>(new UpdateAvailabiliityNewResponse
+                    (
+                            "0",
+                            "Invalid Request : Null object received.",null
+                    ), HttpStatus.BAD_REQUEST);
+        }
         try {
             return availabilityNewService.addAnAvailability(userId, createAvailabilityNewRequest);
 
@@ -32,6 +43,8 @@ public class AvailabilityNewController {
 
         }
     }
+
+
     @GetMapping("/allAvailabilities")
     public ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailabilities(@RequestParam(name="userName")String userName,@RequestParam(name="userId")UUID userId,
                                                                             @RequestParam(name="eventTypeId")UUID eventTypeId,@RequestParam(name="dateFrom") LocalDate dateFrom,@RequestParam(name="dateTo")LocalDate dateTo){

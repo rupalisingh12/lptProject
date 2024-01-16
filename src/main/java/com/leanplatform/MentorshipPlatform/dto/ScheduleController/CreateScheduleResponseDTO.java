@@ -1,6 +1,6 @@
 package com.leanplatform.MentorshipPlatform.dto.ScheduleController;
 
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.UpdateAvailabilityNewResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.UpdateAvailabilityNewResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.UpdateAvailabilityNewResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.UpdateAvailabilityNewResponseDTO;
 
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor

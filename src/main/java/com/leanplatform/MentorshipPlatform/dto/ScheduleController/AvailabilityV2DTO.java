@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AvailabilityNewDTO {
+public class AvailabilityV2DTO {
     private UUID availabilityId;
     private UUID scheduleId;
     private DaysOfTheWeek days;

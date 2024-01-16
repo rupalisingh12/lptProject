@@ -37,7 +37,15 @@ public class EventTypesController {
         }
         }
         @GetMapping("/gettALLEvents")
-    public ResponseEntity<GetAllEventResponse>gettAllEvents(@RequestParam(name="userId") UUID userId){
+        public ResponseEntity<GetAllEventResponse>gettAllEvents(@RequestParam(name="userId") UUID userId){
+        if(userId==null){
+            return new ResponseEntity<>(new GetAllEventResponse
+                    (
+                            "0",
+                            "Invalid Request" ,
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+        }
             try {
                 return eventTypesService.getALLEventsOfAUser(userId);
             } catch (Exception e){
@@ -50,6 +58,15 @@ public class EventTypesController {
         }
         @GetMapping("/getEvent/{eventId}")
         public ResponseEntity<CreateEventResponse>getEvents(@PathVariable UUID eventId,@RequestParam(name="userId") UUID userId){
+          if(eventId==null || userId==null){
+              return new ResponseEntity<>(new CreateEventResponse
+                      (
+                              "0",
+                              "Invalid Request" ,
+                              null
+                      ), HttpStatus.BAD_REQUEST);
+          }
+
             try {
                 return eventTypesService.getEventOfAUser(eventId,userId);
             } catch (Exception e){
@@ -62,6 +79,14 @@ public class EventTypesController {
         }
         @PutMapping("/updateAnEvent/{eventId}")
         public ResponseEntity<CreateEventResponse>updateEvent(@PathVariable UUID eventId,@RequestParam(name="userId") UUID userId,@RequestBody UpdateEventRequest updateEventRequest){
+        if(eventId==null || userId==null || updateEventRequest==null || updateEventRequest.getScheduleId()==null){
+            return new ResponseEntity<>(new CreateEventResponse
+                    (
+                            "0",
+                            "Invalid Request" ,
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+        }
             try {
                 return eventTypesService.updateEvent(eventId,userId,updateEventRequest);
             } catch (Exception e){
@@ -74,6 +99,15 @@ public class EventTypesController {
         }
     @DeleteMapping("/deleteAnEvent/{eventId}")
     public ResponseEntity<DeleteEventResponse>deleteEvent(@PathVariable UUID eventId,@RequestParam(name="userId") UUID userId){
+
+        if(userId==null){
+            return new ResponseEntity<>(new DeleteEventResponse
+                    (
+                            "0",
+                            "Invalid Request" ,
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+        }
         try {
             return eventTypesService.deleteAEvent(eventId,userId);
         } catch (Exception e){

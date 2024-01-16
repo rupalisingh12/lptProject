@@ -1,18 +1,16 @@
 package com.leanplatform.MentorshipPlatform.mappers;
 
-import com.leanplatform.MentorshipPlatform.dto.AvailabilityNew.UpdateAvailabilityNewResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.UpdateAvailabilityNewResponseDTO;
 import com.leanplatform.MentorshipPlatform.dto.ScheduleController.*;
-import com.leanplatform.MentorshipPlatform.entities.AvailabilityNew;
+import com.leanplatform.MentorshipPlatform.entities.AvailabilityV2;
 import com.leanplatform.MentorshipPlatform.entities.Schedule;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import static com.leanplatform.MentorshipPlatform.mappers.AvailabilityNewMapper.catchSlotIdsListAndConvertIntoStartTimeEndTime;
+import static com.leanplatform.MentorshipPlatform.mappers.AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime;
 
 public class ScheduleMapper {
-    public static CreateScheduleResponseDTO convertEntityToDTO(Schedule schedule, List<AvailabilityNew>availabilityNewList) {
+    public static CreateScheduleResponseDTO convertEntityToDTO(Schedule schedule, List<AvailabilityV2>availabilityNewList) {
         CreateScheduleResponseDTO createScheduleResponsedto = new CreateScheduleResponseDTO();
         createScheduleResponsedto.setScheduleId(schedule.getScheduleId());
         createScheduleResponsedto.setUserId(schedule.getUserId());
@@ -22,7 +20,7 @@ public class ScheduleMapper {
 //        AvailabilityNewDTO availabilityNewDTO = null;
         for (int i = 0; i < availabilityNewList.size(); i++) {
 
-                AvailabilityNew availabilityNew = availabilityNewList.get(i);
+                AvailabilityV2 availabilityNew = availabilityNewList.get(i);
                 //  availabilityNew.getSlotIds();
                 Long day = availabilityNewList.get(i).getDay();
                 List<Slot> ans = catchSlotIdsListAndConvertIntoStartTimeEndTime(availabilityNew.getSlotIds());
@@ -68,8 +66,8 @@ public class ScheduleMapper {
         return createScheduleResponsedto;
     }
 
-    private static AvailabilityNewDTO convertToDTO(AvailabilityNew availabilityNew) {
-        AvailabilityNewDTO availabilityNewDTO = new AvailabilityNewDTO();
+    private static AvailabilityV2DTO convertToDTO(AvailabilityV2 availabilityNew) {
+        AvailabilityV2DTO availabilityNewDTO = new AvailabilityV2DTO();
         availabilityNewDTO.setAvailabilityId(availabilityNew.getAvailabilityId());
         availabilityNewDTO.setScheduleId(availabilityNew.getScheduleId());
         //availabilityNewDTO.setDays(availabilityNew.getDays());
@@ -89,7 +87,7 @@ public class ScheduleMapper {
         deleteSchedule.setName(schedule.getName());
         UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO=new UpdateAvailabilityNewResponseDTO();
         for(int i=0;i<availabilityNewList.size();i++){
-            AvailabilityNew availabilityNew=(AvailabilityNew) availabilityNewList.get(i);
+            AvailabilityV2 availabilityNew=(AvailabilityV2) availabilityNewList.get(i);
             Long day=availabilityNew.getDay();
             List<Slot> ans = catchSlotIdsListAndConvertIntoStartTimeEndTime(availabilityNew.getSlotIds());
             if(day==0){

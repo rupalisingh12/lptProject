@@ -1,12 +1,11 @@
 package com.leanplatform.MentorshipPlatform.entities;
 
-import com.leanplatform.MentorshipPlatform.enums.DaysOfTheWeek;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,7 +16,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @ToString
-public class AvailabilityNew {
+public class AvailabilityV2 {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -26,6 +25,8 @@ public class AvailabilityNew {
     private UUID scheduleId;
     private Long day;
     private Set<Long> slotIds;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
 
 
