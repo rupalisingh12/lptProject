@@ -40,6 +40,7 @@ public class BookingServiceImpl implements BookingService {
         // CreateBookingDTO createBookingDTO = new CreateBookingDTO();
         List<Booking> list = bookingRepository.findByUserIdAndDate(userId, bookingRequest.getStart().toLocalDate());
         Integer length1 = eventTypesRepository.findEventTypeLengthByEventId(bookingRequest.getEventTypeId());
+        EventType eventType=eventTypesRepository.findByEventId(bookingRequest.getEventTypeId());
         LocalDateTime endTime = bookingRequest.getStart().plusMinutes(length1);
         LocalTime startTime1 = bookingRequest.getStart().toLocalTime();
         LocalTime endTime1 = endTime.toLocalTime();
@@ -76,7 +77,7 @@ public class BookingServiceImpl implements BookingService {
             UserEntity userEntity = userRepository.findByUserId(userId);
             String name = userEntity.getName();
             String name1 = bookingRequest.getResponse().getName();
-            booking.setTitle(name + " between " + name1);
+            booking.setTitle(eventType.getTitle()+" between " + name + " and " + name1);
             //to put startTime
             booking.setStartTime(bookingRequest.getStart());
             //put date
@@ -206,7 +207,7 @@ public class BookingServiceImpl implements BookingService {
         UserEntity userEntity = userRepository.findByUserId(userId);
         String name = userEntity.getName();
         String name1 = bookingRequest.getResponse().getName();
-        booking.setTitle(name + " between " + name1);
+        booking.setTitle(eventType.getTitle()+" between " + name + " and " + name1);
         //to put startTime
         booking.setStartTime(bookingRequest.getStart());
         //put date
@@ -270,13 +271,19 @@ public class BookingServiceImpl implements BookingService {
         }
         else{
             return new ResponseEntity<>(new
-                    GetBookingResponse("0",
-                    "There is no booking for the required userId", null), HttpStatus.NOT_FOUND);
+                    GetBookingResponse("1",
+                    "There is no booking for the required userId", null), HttpStatus.OK);
 
         }
     }
     @Override
     public ResponseEntity<CreateBookingResponse>getBooking(UUID bookingId,UUID userId){
+        if(bookingId==null || userId==null){
+            return new ResponseEntity<>(new
+                    CreateBookingResponse("0",
+                    "Invalid request", null), HttpStatus.BAD_REQUEST);
+
+        }
        Booking booking=bookingRepository.findByBookingIdAndUserId(bookingId,userId);
        if(booking!=null) {
            List<Attendee> attendee = attendeeRepository.findByBookingId(booking.getBookingId());
@@ -290,13 +297,19 @@ public class BookingServiceImpl implements BookingService {
        else{
            return new ResponseEntity<>(new
                    CreateBookingResponse("0",
-                   "No Booking with this userId exist",null), HttpStatus.NOT_FOUND);
+                   "No Booking with this userId exist",null), HttpStatus.OK);
 
        }
 
     }
     @Override
     public ResponseEntity<CreateBookingResponse>updateBooking(UUID bookingId,UUID userId,UpdateBookingRequest updateBookingRequest){
+        if(bookingId==null || userId==null || updateBookingRequest==null){
+            return new ResponseEntity<>(new
+                    CreateBookingResponse("0",
+                    "Invalid Request", null), HttpStatus.BAD_REQUEST);
+
+        }
         Booking booking=bookingRepository.findByBookingIdAndUserId(bookingId,userId);
         if(booking!=null) {
             booking.setStatus(BookingEnums.valueOf(updateBookingRequest.getStatus().toUpperCase()));
@@ -321,6 +334,10 @@ public class BookingServiceImpl implements BookingService {
     }
     @Override
     public ResponseEntity<DeleteBookingRespone>deleteBooking(UUID bookingId, UUID userId){
+        if(bookingId==null || userId==null){
+            return new ResponseEntity<>(new
+                    DeleteBookingRespone("0", "Invalid Request"), HttpStatus.BAD_REQUEST);
+        }
         Booking booking=bookingRepository.findByBookingIdAndUserId(bookingId,userId);
         if(booking!=null) {
             bookingRepository.delete(booking);

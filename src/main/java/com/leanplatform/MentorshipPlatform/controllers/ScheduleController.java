@@ -89,7 +89,7 @@ public class ScheduleController {
 
         }
     }
-    @DeleteMapping("/deleteScheduleId{scheduleId}")
+    @DeleteMapping("/deleteScheduleId/{scheduleId}")
     public ResponseEntity<DeleteSchedule>deleteSchedule(@PathVariable UUID scheduleId,@RequestParam(name = "userId") UUID userId){
         if(userId==null || scheduleId==null){
             return new ResponseEntity<>(new DeleteSchedule
@@ -114,6 +114,29 @@ public class ScheduleController {
         }
 
     }
+    @GetMapping("/getAllSchedulesWithAvailabilities")
+    public ResponseEntity<GetAllScheduleResponse>getAllScheduleWithAvailabilities(@RequestParam(name = "userId") UUID userId){
+        if(userId==null){
+            return new ResponseEntity<>(new GetAllScheduleResponse
+                    (
+                            "0",
+                            "Invalid request",
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+        }
+        try {
+            return scheduleService.getSchedulesWithAvailabilities( userId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new GetAllScheduleResponse
+                    (
+                            "0",
+                            "Caught in catch block",
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 //
 //}
 }

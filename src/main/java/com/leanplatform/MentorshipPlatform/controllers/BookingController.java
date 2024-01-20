@@ -64,6 +64,12 @@ public class BookingController {
 
     @GetMapping("/bookings/{bookingId}")
     public ResponseEntity<CreateBookingResponse> getBookingById(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId) {
+        if(bookingId==null || userId==null){
+            return new ResponseEntity<>(new
+                    CreateBookingResponse("0",
+                    "Invalid request", null), HttpStatus.BAD_REQUEST);
+
+        }
         try {
             return bookingService.getBooking(bookingId, userId);
         } catch (Exception e) {
@@ -75,6 +81,12 @@ public class BookingController {
 
     @PutMapping("/updateBooking/{bookingId}")
     public ResponseEntity<CreateBookingResponse> updateBooking(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId,@RequestBody UpdateBookingRequest updateBookingRequest) {
+        if(bookingId==null || userId==null || updateBookingRequest==null){
+            return new ResponseEntity<>(new
+                    CreateBookingResponse("0",
+                    "Invalid Request", null), HttpStatus.BAD_REQUEST);
+
+        }
 
 
      try {
@@ -90,6 +102,10 @@ public class BookingController {
 
     @DeleteMapping("bookings/{bookingId}")
     public ResponseEntity<DeleteBookingRespone>deleteBookings(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId){
+        if(bookingId==null || userId==null){
+            return new ResponseEntity<>(new
+                    DeleteBookingRespone("0", "Invalid Request"), HttpStatus.BAD_REQUEST);
+        }
         try {
             return bookingService.deleteBooking(bookingId, userId);
         } catch (Exception e) {

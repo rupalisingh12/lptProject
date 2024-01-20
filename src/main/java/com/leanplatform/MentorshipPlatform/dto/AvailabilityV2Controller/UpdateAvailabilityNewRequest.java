@@ -19,6 +19,7 @@ public class UpdateAvailabilityNewRequest {
     List<Slot>fri;
     List<Slot>sat;
     List<Slot>sun;
+    private String name;
 
 
 

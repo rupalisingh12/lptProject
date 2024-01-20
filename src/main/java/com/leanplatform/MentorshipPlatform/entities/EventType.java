@@ -33,5 +33,12 @@ public class EventType {
     private String description;
     @CreationTimestamp
     private LocalDateTime createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedAt;
+
 
 }

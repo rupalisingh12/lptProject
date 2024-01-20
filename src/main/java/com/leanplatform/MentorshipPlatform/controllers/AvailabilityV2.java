@@ -1,7 +1,6 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
 import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.*;
-import com.leanplatform.MentorshipPlatform.mappers.AvailabilityV2Mapper.*;
 
 import com.leanplatform.MentorshipPlatform.services.AvailabilityV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 @RestController
 @RequestMapping("/AvailabilityV2")
-public class AvailabilityV2Controller {
+public class AvailabilityV2 {
     @Autowired
     AvailabilityV2Service availabilityNewService;
     @PostMapping("/addAvailability")
@@ -49,8 +47,15 @@ public class AvailabilityV2Controller {
     public ResponseEntity<GetAllAvailabilitiesResponse>getAllAvailabilities(@RequestParam(name="userName")String userName,@RequestParam(name="userId")UUID userId,
                                                                             @RequestParam(name="eventTypeId")UUID eventTypeId,@RequestParam(name="dateFrom") LocalDate dateFrom,@RequestParam(name="dateTo")LocalDate dateTo){
 
+        if(userName==null || userId==null || eventTypeId==null || dateFrom==null || dateTo==null){
+            return new ResponseEntity<>(new GetAllAvailabilitiesResponse
+                    (
+                            "0",
+                            "Invalid Request : Null object received.",null,null
+                    ), HttpStatus.BAD_REQUEST);
+        }
      try{
-         return availabilityNewService.getAllAvailability(userName,userId,eventTypeId,dateTo,dateFrom);
+         return availabilityNewService.getAllAvailability(userName,userId,eventTypeId,dateFrom, dateTo);
 
      }
      catch(Exception e){
@@ -66,10 +71,20 @@ public class AvailabilityV2Controller {
 
 
     }
-    @PutMapping("/updateAvailability")
-    public ResponseEntity<UpdateAvailabiliityNewResponse>updateAvailability(@RequestParam(name="scheduleId")UUID scheduleId, @RequestBody UpdateAvailabilityNewRequest updateAvailabilityNewRequest){
+    @PutMapping("/updateAvailability/{scheduleId}")
+    public ResponseEntity<UpdateAvailabiliityNewResponse>updateAvailability(@PathVariable UUID scheduleId,@RequestParam(name="userId")UUID userId, @RequestBody UpdateAvailabilityNewRequest updateAvailabilityNewRequest){
+
+        if(scheduleId==null || userId==null || updateAvailabilityNewRequest==null ){
+            return new ResponseEntity<>(new UpdateAvailabiliityNewResponse
+                    (
+                            "0",
+                            "Invalid Request recieved" ,
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+
+        }
         try{
-            return availabilityNewService.updateAvailabilitys(scheduleId,updateAvailabilityNewRequest);
+            return availabilityNewService.updateAvailabilitys(scheduleId,userId,updateAvailabilityNewRequest);
 
         }
         catch(Exception e) {
@@ -84,6 +99,15 @@ public class AvailabilityV2Controller {
     }
     @DeleteMapping("/deleteAvailability")
     public ResponseEntity<DeleteAvailabilityResponse>deleteAvailability(@RequestParam(name="scheduleId")UUID scheduleId,@RequestParam(name="day") Long day) {
+        if(scheduleId==null || day==null){
+            return new ResponseEntity<>(new DeleteAvailabilityResponse
+                    (
+                            "0",
+                            "Invalid Request recieved"
+                    ), HttpStatus.BAD_REQUEST);
+
+
+        }
         try {
             return availabilityNewService.deleteAvailability(scheduleId, day);
 

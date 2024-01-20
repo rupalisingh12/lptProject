@@ -30,4 +30,11 @@ public class UserEntity {
     private UUID defaultScheduleId;
     @CreationTimestamp
     private LocalDateTime createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedAt;
+
 }

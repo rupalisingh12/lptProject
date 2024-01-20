@@ -15,5 +15,7 @@ public interface ScheduleService {
     ResponseEntity<GetAllScheduleResponse> getSchedules(UUID userId);
     ResponseEntity<CreateScheduleResponse>getSchdeule(UUID userId, UUID scheduleId);
     ResponseEntity<DeleteSchedule>deleteSchedule(UUID scheduleId,UUID userId);
+    ResponseEntity<GetAllScheduleResponse>getSchedulesWithAvailabilities( UUID userId);
+
 
 }

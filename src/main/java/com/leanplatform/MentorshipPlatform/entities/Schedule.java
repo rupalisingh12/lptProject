@@ -28,7 +28,12 @@ public class Schedule {
     private UUID userId;
     private String name;
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt;private LocalDateTime createdBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedAt;
+
 
 
 

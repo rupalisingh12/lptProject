@@ -40,9 +40,16 @@ public class Booking {
    private Set<Long> slotIds;
     @CreationTimestamp
     private LocalDateTime createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedAt;
 
 
-  //  private BookingEnums status;
+
+    //  private BookingEnums status;
 
 
 

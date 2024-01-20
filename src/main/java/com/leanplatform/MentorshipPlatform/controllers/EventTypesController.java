@@ -79,7 +79,7 @@ public class EventTypesController {
         }
         @PutMapping("/updateAnEvent/{eventId}")
         public ResponseEntity<CreateEventResponse>updateEvent(@PathVariable UUID eventId,@RequestParam(name="userId") UUID userId,@RequestBody UpdateEventRequest updateEventRequest){
-        if(eventId==null || userId==null || updateEventRequest==null || updateEventRequest.getScheduleId()==null){
+        if(eventId==null || userId==null || updateEventRequest==null ){
             return new ResponseEntity<>(new CreateEventResponse
                     (
                             "0",

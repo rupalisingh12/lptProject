@@ -1,6 +1,7 @@
 package com.leanplatform.MentorshipPlatform.mappers;
 
 import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.*;
+import com.leanplatform.MentorshipPlatform.entities.AvailabilityV2;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -288,10 +289,10 @@ public class AvailabilityV2Mapper {
         return activeDaysList;
 
     }
-    public static UpdateAvailabilityNewResponseDTO convertDtoToEntityListOfAvailability(List<com.leanplatform.MentorshipPlatform.entities.AvailabilityV2> avilabilityNew1){
+    public static UpdateAvailabilityNewResponseDTO convertDtoToEntityListOfAvailability(List<AvailabilityV2> avilabilityNew1){
         UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO=new UpdateAvailabilityNewResponseDTO();
         for(int i=0;i<avilabilityNew1.size();i++) {
-            com.leanplatform.MentorshipPlatform.entities.AvailabilityV2 availabilityNew = avilabilityNew1.get(i);
+            AvailabilityV2 availabilityNew = avilabilityNew1.get(i);
             //  availabilityNew.getSlotIds();
             Long day = avilabilityNew1.get(i).getDay();
             List<Slot> ans = catchSlotIdsListAndConvertIntoStartTimeEndTime(availabilityNew.getSlotIds());
@@ -399,6 +400,14 @@ private boolean allElementsAreLongs(List<?> list) {
     }
     return true;
 }
+    public static boolean containsGreaterThanOrEqualToSeven(List<Long>days) {
+        for (int i=0;i<days.size();i++) {
+            if (days.get(i) >= 7) {
+                return true;  // Found an element equal to or greater than 7
+            }
+        }
+        return false;  // No element equal to or greater than 7 found
+    }
 }
 
 

@@ -2,14 +2,10 @@ package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.EventTypesController.*;
 
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponse;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponseDTO;
 import com.leanplatform.MentorshipPlatform.entities.AvailabilityV2;
 import com.leanplatform.MentorshipPlatform.entities.EventType;
 import com.leanplatform.MentorshipPlatform.entities.Schedule;
-import com.leanplatform.MentorshipPlatform.mappers.BookingMapper;
 import com.leanplatform.MentorshipPlatform.mappers.EventMapper;
-import com.leanplatform.MentorshipPlatform.mappers.StatsMapper;
 import com.leanplatform.MentorshipPlatform.repositories.AvailabilityV2Repository;
 import com.leanplatform.MentorshipPlatform.repositories.EventTypesRepository;
 import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository;
@@ -52,6 +48,7 @@ public class EventTypesServiceImpl implements EventTypesService {
         //eventType.setTitle(createEventRequestObject.getTitle());
         eventType.setDescription(createEventRequestObject.getDescription());
         eventType.setUserId(userId);
+        eventType.setHidden(true);
         EventType eventType1= eventTypesRepository.save(eventType);
         CreateEventDTO createEventDTO=new CreateEventDTO();
         createEventDTO.setDescription(eventType1.getDescription());
@@ -60,7 +57,7 @@ public class EventTypesServiceImpl implements EventTypesService {
         createEventDTO.setTitle(eventType1.getTitle());
         createEventDTO.setUserId(userId);
         createEventDTO.setId(eventType1.getEventId());
-        createEventDTO.setHidden(false);
+        createEventDTO.setHidden(true);
         createEventDTO.setScheduleId(eventType1.getScheduleId());
         return new ResponseEntity<>(new 
                 CreateEventResponse("1",
@@ -82,9 +79,9 @@ public class EventTypesServiceImpl implements EventTypesService {
         List<EventType> eventType= eventTypesRepository.findAllByUserId(userId);
         if (eventType.isEmpty()) {
             return new ResponseEntity<>(new GetAllEventResponse
-                    ("0",
+                    ("1",
                             "No events found or a given user or no no userId exist with this userId exist ",
-                            null), HttpStatus.NOT_FOUND);
+                            null), HttpStatus.OK);
         }
         //use a for loop ,send only one object
         List<CreateEventDTO> createEventDTOList = EventMapper.convertEntityToDTO(eventType);
@@ -125,7 +122,7 @@ public class EventTypesServiceImpl implements EventTypesService {
     }
     @Override
    public ResponseEntity<CreateEventResponse>updateEvent(UUID eventId,UUID userId,UpdateEventRequest updateEventRequest){
-        if(eventId==null || userId==null || updateEventRequest==null || updateEventRequest.getScheduleId()==null ){
+        if(eventId==null || userId==null || updateEventRequest==null  ){
             return new ResponseEntity<>(new CreateEventResponse
                     (
                             "0",
@@ -139,11 +136,52 @@ public class EventTypesServiceImpl implements EventTypesService {
                     ("0",
                             "This event does not exist:", null), HttpStatus.NOT_FOUND);
         }
-        Schedule schedule= scheduleRepository.findByScheduleId(updateEventRequest.getScheduleId());
-        if(schedule==null){
+        if(updateEventRequest.getScheduleId()!=null) {
+            Schedule schedule = scheduleRepository.findByScheduleId(updateEventRequest.getScheduleId());
+            if (schedule == null) {
+                return new ResponseEntity<>(new CreateEventResponse
+                        ("0",
+                                "This scheduleId does not exist :", null), HttpStatus.NOT_FOUND);
+            }
+            else{
+                if (updateEventRequest.getDescription() != null) {
+                    eventType.setDescription(updateEventRequest.getDescription());
+
+                }
+                if (updateEventRequest.getHidden() != null) {
+                    eventType.setHidden(updateEventRequest.getHidden());
+                }
+                if (updateEventRequest.getTitle() != null) {
+                    eventType.setTitle(updateEventRequest.getTitle());
+                }
+                if (updateEventRequest.getLength() != null) {
+                    eventType.setLength(updateEventRequest.getLength());
+                }
+                List<AvailabilityV2> availabilityV2s = availabilityV2Repository.findByScheduleId(updateEventRequest.getScheduleId());
+                if (!availabilityV2Repository.findByScheduleId(updateEventRequest.getScheduleId()).isEmpty()) {
+                    eventType.setScheduleId(updateEventRequest.getScheduleId());
+                } else {
+                    return new ResponseEntity<>(new CreateEventResponse
+                            ("0",
+                                    "This scheduleId does not contain any availability:", null), HttpStatus.BAD_REQUEST);
+                }
+                if (updateEventRequest.getPrice() != null) {
+                    eventType.setPrice(updateEventRequest.getPrice());
+                }
+//                EventType eventType1 = eventTypesRepository.save(eventType);
+//                CreateEventDTO createEventDTO = EventMapper.convertEntityToDTO1(eventType1);
+//                return new ResponseEntity<>(new CreateEventResponse
+//                        ("1",
+//                                "The Event has been updated:", createEventDTO), HttpStatus.OK);
+
+
+            }
+            EventType eventType1 = eventTypesRepository.save(eventType);
+            CreateEventDTO createEventDTO = EventMapper.convertEntityToDTO1(eventType1);
             return new ResponseEntity<>(new CreateEventResponse
-                    ("0",
-                            "This scheduleId does not exist :", null), HttpStatus.NOT_FOUND);
+                    ("1",
+                            "The Event has been updated:", createEventDTO), HttpStatus.OK);
+
         }
 
 
