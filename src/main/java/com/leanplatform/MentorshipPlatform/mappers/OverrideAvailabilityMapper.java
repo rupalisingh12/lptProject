@@ -1,6 +1,8 @@
 package com.leanplatform.MentorshipPlatform.mappers;
 
+import com.leanplatform.MentorshipPlatform.dto.OverrideAvailabilityController.AddCOmbinedAvailabilityAndUnavailabilityResponse;
 import com.leanplatform.MentorshipPlatform.dto.OverrideAvailabilityController.AddOverrideAvailabilityResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.OverrideAvailabilityController.AddOverrideUnavailabiltyResponseDTO;
 import com.leanplatform.MentorshipPlatform.entities.OverrideAvailability;
 
 import java.time.LocalDate;
@@ -29,28 +31,40 @@ public class OverrideAvailabilityMapper {
 //        }
 //        return addOverrideAvailabilityResponseDTO;
 //    }
-    public static List<AddOverrideAvailabilityResponseDTO> convertEntityToDTO1(List<OverrideAvailability> overrideAvailability){
+    public static AddCOmbinedAvailabilityAndUnavailabilityResponse convertEntityToDTO1(List<OverrideAvailability> overrideAvailability){
         List<AddOverrideAvailabilityResponseDTO> addOverrideAvailabilityResponseDTO=new ArrayList<>();
+        List<AddOverrideUnavailabiltyResponseDTO> addOverrideUnavailabiltyResponseDTOS=new ArrayList<>();
         for(int i=0;i<overrideAvailability.size();i++) {
             OverrideAvailability overrideAvailability1 = overrideAvailability.get(i);
-            List<Slot> ans = catchSlotIdsListAndConvertIntoStartTimeEndTime(overrideAvailability1.getSlotIds());
-            LocalDate date= overrideAvailability1.getDate();
-            for(int j=0;j<ans.size();j++){
-                Slot slot=ans.get(j);
-               LocalTime time1= slot.getStartTime();
+            Set<Long> ansSlostList = overrideAvailability1.getSlotIds();
+            if (ansSlostList.contains((long) -1)) {
+                LocalDate date = overrideAvailability1.getDate();
+                AddOverrideUnavailabiltyResponseDTO addOverrideUnavailabiltyResponseDTO = new AddOverrideUnavailabiltyResponseDTO();
+                addOverrideUnavailabiltyResponseDTO.setDate(date);
+                addOverrideUnavailabiltyResponseDTOS.add(addOverrideUnavailabiltyResponseDTO);
+            } else{
+                List<Slot> ans = catchSlotIdsListAndConvertIntoStartTimeEndTime(overrideAvailability1.getSlotIds());
+            LocalDate date = overrideAvailability1.getDate();
+            for (int j = 0; j < ans.size(); j++) {
+                Slot slot = ans.get(j);
+                LocalTime time1 = slot.getStartTime();
                 LocalDateTime combinedDateTime = date.atTime(time1);
-                    LocalTime time2=slot.getEndTime();
-                LocalDateTime combinedDateTime2=date.atTime(time2);
-                AddOverrideAvailabilityResponseDTO addOverrideAvailabilityResponseDTO1=new AddOverrideAvailabilityResponseDTO();
-              addOverrideAvailabilityResponseDTO1.setStartTime(combinedDateTime);
-              addOverrideAvailabilityResponseDTO1.setEndTime(combinedDateTime2);
-              addOverrideAvailabilityResponseDTO.add(addOverrideAvailabilityResponseDTO1);
-            // addOverrideAvailabilityResponseDTO.add(combinedDateTime);
+                LocalTime time2 = slot.getEndTime();
+                LocalDateTime combinedDateTime2 = date.atTime(time2);
+                AddOverrideAvailabilityResponseDTO addOverrideAvailabilityResponseDTO1 = new AddOverrideAvailabilityResponseDTO();
+                addOverrideAvailabilityResponseDTO1.setStartTime(combinedDateTime);
+                addOverrideAvailabilityResponseDTO1.setEndTime(combinedDateTime2);
+                addOverrideAvailabilityResponseDTO.add(addOverrideAvailabilityResponseDTO1);
+                // addOverrideAvailabilityResponseDTO.add(combinedDateTime);
 
             }
+        }
          // LocalDate date= overrideAvailability1.getDate();
         }
-        return addOverrideAvailabilityResponseDTO;
+        AddCOmbinedAvailabilityAndUnavailabilityResponse  addCOmbinedAvailabilityAndUnavailabilityResponse=new AddCOmbinedAvailabilityAndUnavailabilityResponse();
+        addCOmbinedAvailabilityAndUnavailabilityResponse.setAddOverrideAvailabilityResponseDTO(addOverrideAvailabilityResponseDTO);
+        addCOmbinedAvailabilityAndUnavailabilityResponse.setAddOverrideUnavailabilityResponseDTO(addOverrideUnavailabiltyResponseDTOS);
+        return addCOmbinedAvailabilityAndUnavailabilityResponse;
 
     }
 }

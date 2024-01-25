@@ -1,9 +1,6 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
-import com.leanplatform.MentorshipPlatform.dto.OverrideAvailabilityController.AddOverrideAvailabilityRequest;
-import com.leanplatform.MentorshipPlatform.dto.OverrideAvailabilityController.AddOverrideAvailabilityRespone;
-import com.leanplatform.MentorshipPlatform.dto.OverrideAvailabilityController.AddOverrideAvailabilityResponseDTO;
-import com.leanplatform.MentorshipPlatform.dto.OverrideAvailabilityController.DeleteOverrideRequest;
+import com.leanplatform.MentorshipPlatform.dto.OverrideAvailabilityController.*;
 import com.leanplatform.MentorshipPlatform.services.OverrideAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,12 +35,12 @@ public class OverrideAvailabilityController {
 //
 //    }
     @PutMapping("/updateOverride")
-    public ResponseEntity<AddOverrideAvailabilityRespone> addOverride(@RequestParam UUID scheduleId, @RequestBody List<AddOverrideAvailabilityRequest> addOverrideAvailabilityRequest) {
-        if (scheduleId == null || addOverrideAvailabilityRequest == null) {
+    public ResponseEntity<AddOverrideAvailabilityRespone> addOverride(@RequestParam UUID scheduleId, @RequestBody AddavailabilityOverrideCombinedRequest addavailabilityOverrideCombinedRequest) {
+        if (scheduleId == null || addavailabilityOverrideCombinedRequest== null) {
             return new ResponseEntity<>(new AddOverrideAvailabilityRespone("0", "Invalid Request", null), HttpStatus.BAD_REQUEST);
         }
         try {
-            return overrideAvailabilityService.UpdateOverrideAvailability(scheduleId, addOverrideAvailabilityRequest);
+            return overrideAvailabilityService.UpdateOverrideAvailability(scheduleId,addavailabilityOverrideCombinedRequest);
 
         } catch (Exception e) {
             return new ResponseEntity<>(new AddOverrideAvailabilityRespone("0", "Invalid Request", null), HttpStatus.BAD_REQUEST);
@@ -73,7 +70,7 @@ public class OverrideAvailabilityController {
             return new ResponseEntity<>(new AddOverrideAvailabilityRespone("0", "Invalid Request", null), HttpStatus.BAD_REQUEST);
         }
         try {
-            return overrideAvailabilityService.DeleteOverrideAvailability(scheduleId,deleteOverrideRequest );
+            return overrideAvailabilityService.DeleteOverrideAvailability(scheduleId, deleteOverrideRequest);
 
         } catch (Exception e) {
             return new ResponseEntity<>(new AddOverrideAvailabilityRespone("0", "Invalid Request", null), HttpStatus.BAD_REQUEST);
@@ -81,4 +78,18 @@ public class OverrideAvailabilityController {
 
         }
     }
+        @DeleteMapping("/DeleteOverrideUnavailability")
+        public ResponseEntity<AddOverrideAvailabilityRespone> DeleteOverrideUnavailability(@RequestParam UUID scheduleId,@RequestBody DeleteOverrideUnavailabilityRequest deleteOverrideUnavailability){
+            if (scheduleId == null || deleteOverrideUnavailability == null) {
+                return new ResponseEntity<>(new AddOverrideAvailabilityRespone("0", "Invalid Request", null), HttpStatus.BAD_REQUEST);
+            }
+            try {
+                return overrideAvailabilityService.DeleteOverrideUnAvailabilitys(scheduleId,deleteOverrideUnavailability );
+
+            } catch (Exception e) {
+                return new ResponseEntity<>(new AddOverrideAvailabilityRespone("0", "Invalid Request", null), HttpStatus.BAD_REQUEST);
+
+
+            }
+        }
 }

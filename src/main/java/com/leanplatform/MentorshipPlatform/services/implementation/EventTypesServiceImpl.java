@@ -38,12 +38,13 @@ public class EventTypesServiceImpl implements EventTypesService {
         EventType eventType=new EventType();
         eventType.setLength(createEventRequestObject.getLength());
         eventType.setTitle(createEventRequestObject.getTitle());
-        if (createEventRequestObject.getPrice()>0) {
-            eventType.setPrice(createEventRequestObject.getPrice());
-
-        } else {
-            eventType.setPrice(null);
-        }
+//        if (createEventRequestObject.getPrice()>0) {
+//            eventType.setPrice(createEventRequestObject.getPrice());
+//
+//        } else {
+//            eventType.setPrice(null);
+//        }
+        eventType.setPrice(createEventRequestObject.getPrice());
         //eventType.setPrice(createEventRequestObject.getPrice());
         //eventType.setTitle(createEventRequestObject.getTitle());
         eventType.setDescription(createEventRequestObject.getDescription());

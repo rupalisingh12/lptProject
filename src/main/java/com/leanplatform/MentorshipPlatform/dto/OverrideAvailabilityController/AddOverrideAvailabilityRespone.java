@@ -16,5 +16,6 @@ import java.util.List;
 public class AddOverrideAvailabilityRespone {
     private String statusCode;
     private String responseMessage;
-    private List<AddOverrideAvailabilityResponseDTO> addOverrideAvailabilityResponseDTO;
+    private AddCOmbinedAvailabilityAndUnavailabilityResponse addCOmbinedAvailabilityAndUnavailabilityResponse;
+
 }

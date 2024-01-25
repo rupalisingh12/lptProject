@@ -6,6 +6,7 @@ import com.leanplatform.MentorshipPlatform.entities.Booking;
 
 import com.leanplatform.MentorshipPlatform.entities.OverrideAvailability;
 import com.leanplatform.MentorshipPlatform.entities.Schedule;
+import com.leanplatform.MentorshipPlatform.enums.BookingEnums;
 import com.leanplatform.MentorshipPlatform.mappers.AvailabilityV2Mapper;
 import com.leanplatform.MentorshipPlatform.mappers.Slot;
 import com.leanplatform.MentorshipPlatform.mappers.SlotTimeDate;
@@ -157,53 +158,95 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                             "This event does not exist ",null,null
                     ), HttpStatus.OK);
         }
+        //to find out days in availability table (all the days of the week who has availabilities)
         List<Long>days=availabilityNewRepository.findAllDayByScheduleId(scheduleId1);
-        List<List<com.leanplatform.MentorshipPlatform.mappers.Slot>> finalSetList = new ArrayList<>();
+        //list
+        List<List<Slot>> finalSetList = new ArrayList<>();
+        //list
         List<List<SlotTimeDate>>finalTimeDateList=new ArrayList<>();
+        //list to add days which has avaiability in (working hours)
         List<LocalDate>dates=new ArrayList<>();
+        //iterate on dates
         for (LocalDate i = dateFrom;  !i.isAfter(dateTo);i= i.plusDays(1)) {
             LocalDate date = i;
             DayOfWeek day = date.getDayOfWeek();
-            long day1234 = day.getValue();
+            long dayValueInteger = day.getValue();
             //naming convention
-            if(day1234==7){
-                day1234=0;
+            if(dayValueInteger==7){
+                dayValueInteger=0;
             }
 
-            long day1=day1234;
-
-
-
-            AvailabilityV2 availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId1, day1);
-            if(availabilityNew==null){
-                //go to the next date;
-                continue;
-            }
-            else {
-
-                Set<Long> slotIDsList = availabilityNew.getSlotIds();
-                //fetch only date ,fetch only dateTime
+            long dayValueIntegerFinal=dayValueInteger;
+            OverrideAvailability overrideAvailability= overrideAvailabilityRepository.findByScheduleIdAndDate(scheduleId1,i);
+            if(overrideAvailability!=null && overrideAvailability.getSlotIds().size()!=0) {
+                Set<Long> slotIDsList = overrideAvailability.getSlotIds();
+                Set<Long> listToNotImpactOriginalList = new HashSet<>(slotIDsList);
                 List<Booking> booking = bookingRepository.findAllByUserIdAndDate(userId, i);
-                if (booking != null) {
+                if (booking.size() != 0) {
                     for (int j = 0; j < booking.size(); j++) {
                         Booking booking1 = booking.get(j);
                         // Set slotIDsList= availabilityNew.getSlotIds();
-                        Set<Long> slotIDsList1 = booking1.getSlotIds();
-                        slotIDsList.removeAll(slotIDsList1);
+                        if (booking1.getStatus() == BookingEnums.ACCEPTED) {
+                            Set<Long> slotIDsList1 = booking1.getSlotIds();
+                            listToNotImpactOriginalList.removeAll(slotIDsList1);
+                        } else {
+                            //do not substract from the list
+                        }
                     }
-                    List<com.leanplatform.MentorshipPlatform.mappers.Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(slotIDsList);
-                    finalSetList.add(slotsLists);
-                    dates.add(i);
-                    List<SlotTimeDate>slotTimeDateList= AvailabilityV2Mapper.convertLocalTimeToLocalDateTime(slotsLists,i);
-                    finalTimeDateList.add(slotTimeDateList);
+                }
+                if (!listToNotImpactOriginalList.contains((long) -1)) {
+                   List<Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(listToNotImpactOriginalList);
+                   finalSetList.add(slotsLists);
+                   dates.add(i);
+                   List<SlotTimeDate> slotTimeDateList = AvailabilityV2Mapper.convertLocalTimeToLocalDateTime(slotsLists, i);
+                   finalTimeDateList.add(slotTimeDateList);
+                 }
+
+
+
+            }
+            else {
+
+
+                AvailabilityV2 availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId1, dayValueIntegerFinal);
+                if (availabilityNew == null) {
+                    //go to the next date;
+                    continue;
+                } else {
+
+                    Set<Long> slotIDsList = availabilityNew.getSlotIds();
+                    //now store this in a new list so that the original list does get impacted
+                    Set<Long>listToNotImpactOriginalList=new HashSet<>(slotIDsList);
+                    //fetch only date ,fetch only dateTime
+                    List<Booking> booking = bookingRepository.findAllByUserIdAndDate(userId, i);
+                    if (booking.size()!=0) {
+                        for (int j = 0; j < booking.size(); j++) {
+                            Booking booking1 = booking.get(j);
+                            // Set slotIDsList= availabilityNew.getSlotIds();
+                            if(booking1.getStatus()== BookingEnums.ACCEPTED) {
+                                Set<Long> slotIDsList1 = booking1.getSlotIds();
+                                listToNotImpactOriginalList.removeAll(slotIDsList1);
+                            }
+                            else{
+                                //do not subtract it from the list
+                            }
+                        }
+                    }
+
+                        List<Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(listToNotImpactOriginalList);
+                        finalSetList.add(slotsLists);
+                        dates.add(i);
+                        List<SlotTimeDate> slotTimeDateList = AvailabilityV2Mapper.convertLocalTimeToLocalDateTime(slotsLists, i);
+                        finalTimeDateList.add(slotTimeDateList);
+
 
                 }
             }
         }
-        List<Long> days12= AvailabilityV2Mapper.convertDaysIntoDto(days);
+        List<Long> daysListDTO= AvailabilityV2Mapper.convertDaysIntoDto(days);
         List<Day>workingHours=new ArrayList<>();
         Day day=new Day();
-        day.setDays(days12);
+        day.setDays(daysListDTO);
         workingHours.add(day);
         List<SlotTimeDate> ansList2 = AvailabilityV2Mapper.convertListIntoDto(finalTimeDateList);
         return new ResponseEntity<>

@@ -39,6 +39,12 @@ public class BookingServiceImpl implements BookingService {
 
         // CreateBookingDTO createBookingDTO = new CreateBookingDTO();
         List<Booking> list = bookingRepository.findByUserIdAndDate(userId, bookingRequest.getStart().toLocalDate());
+       EventType eventTypeFinal= eventTypesRepository.findByEventId(bookingRequest.getEventTypeId());
+       if(eventTypeFinal==null){
+           return new ResponseEntity<>
+                   (new CreateBookingResponse("0", "This event Does not exist iin the db", null), HttpStatus.NOT_FOUND);
+
+       }
         Integer length1 = eventTypesRepository.findEventTypeLengthByEventId(bookingRequest.getEventTypeId());
         EventType eventType=eventTypesRepository.findByEventId(bookingRequest.getEventTypeId());
         LocalDateTime endTime = bookingRequest.getStart().plusMinutes(length1);
