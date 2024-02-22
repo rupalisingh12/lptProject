@@ -15,4 +15,6 @@ public class MentorAddsServices {
     private UUID mentor_id;
     private UUID service_id;
     private Double price;
+
+
 }
