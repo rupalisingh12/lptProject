@@ -25,7 +25,7 @@ public class LandingPageRequest2 {
     private ProductDescription productDescription;
     private SlotConsultationLP2 slotConsultationDtoLP2;
     private Testimonials testimonials;
-    private CallToAction finalGoDto;
+    private CallToAction callToAction;
 
 
 }
