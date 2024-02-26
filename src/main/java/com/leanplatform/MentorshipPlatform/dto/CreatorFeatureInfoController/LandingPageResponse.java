@@ -1,30 +1,43 @@
 package com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class LandingPageRequest {
+public class LandingPageResponse {
+    private UUID landingPage;
+    private UUID creatorFeatureInfoId;
+    private String userName;
 
-    private String landingPageId; //(this is for like whoich landing page it is out of the two landing page available to the creator)
-    private int landingPageVariantId;
-    private HeroDto heroDto;
     private SubHeroDto subHeroDto;
-    private LearningDto learningDto;
+
+    private HeroDto heroDto;
+    private int landingPageVariantId;
     private HelpDto helpDto;
+
+    private LearningDto learningDto;
+
     private IndividualCardsDto individualCardsDto;
+
     private ApplySectionDto applySectionDto;
+
     private BelowApplySection belowApplySection;
+
     private IndividualCardsDto2 individualCardsDto2;
+
     private SlotConsultation slotConsultationDto;
+
     private LearningDto2 learningDto2;
+
     private FinalGoDto finalGoDto;
-
-
+    private UUID userId;
+    private String landingPageId; //the id which is creattor ging to choose out of the two landingPage
 
 }

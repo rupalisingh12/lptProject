@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface CreatorFeatureInfoRepository extends JpaRepository<CreatorFeatureInfo, UUID> {
+    CreatorFeatureInfo findByUserName(String userName);
 }

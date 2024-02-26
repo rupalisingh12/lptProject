@@ -1,9 +1,6 @@
 package com.leanplatform.MentorshipPlatform.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -21,6 +18,11 @@ public class CreatorFeatureInfo {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID creatorFeatureInfoId;
+    //remove this , make a separate btable for landing page
+
+  //  private String tryingToSaveInJson;
+    private UUID userId;
+    private String userName;
     private String leadGenForm;
     private String masterClass;
     private Boolean slot;

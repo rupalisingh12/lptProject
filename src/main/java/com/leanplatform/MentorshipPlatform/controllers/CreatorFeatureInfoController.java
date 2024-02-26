@@ -18,7 +18,7 @@ public class CreatorFeatureInfoController {
     @Autowired
     CreatorFeatureInfoService creatorFeatureInfoService;
     @PostMapping("/AddFeatureDetails")
-    public ResponseEntity<CreateDetailsForCreatorResponse>AddFeatureDetails(@RequestParam(name="userId") UUID userId , @RequestBody CreateDetailsRequest createDetailsRequest){
+    public ResponseEntity<CreateDetailsForCreatorResponse>AddFeatureDetails(@RequestParam(name="userName") String userName , @RequestBody CreateDetailsRequest createDetailsRequest){
         if (createDetailsRequest == null ||
                 createDetailsRequest.getMasterClass() == null || createDetailsRequest.getLeadGenForm() == null ||
                 createDetailsRequest.getSlot() == null || createDetailsRequest.getLandingPageRequest() == null) {
@@ -28,14 +28,34 @@ public class CreatorFeatureInfoController {
                                     "Invalid Request", null), HttpStatus.BAD_REQUEST);
 
         }try {
-                return creatorFeatureInfoService.AddCreatorPersonalieFeature(userId, createDetailsRequest);
+                return creatorFeatureInfoService.AddCreatorPersonalieFeature(userName, createDetailsRequest);
             } catch (Exception e) {
                 return new ResponseEntity<>(new CreateDetailsForCreatorResponse
                         (
                                 "0",
-                                "Caught in catch block",
+                                "Caught in catch block   "+ e.getLocalizedMessage(),
                                 null
                         ), HttpStatus.BAD_REQUEST);
             }
         }
+    @GetMapping("/GetFeatureDetails")
+    public ResponseEntity<CreateDetailsForCreatorResponse>GetFeatureDetails(@RequestParam(name="userName") String userName ){
+        if (userName==null) {
+            return new ResponseEntity<>
+                    (new CreateDetailsForCreatorResponse
+                            ("0",
+                                    "Invalid Request", null), HttpStatus.BAD_REQUEST);
+
+        }try {
+            return creatorFeatureInfoService.GetCreatorPersonalieFeature(userName);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new CreateDetailsForCreatorResponse
+                    (
+                            "0",
+                            "Caught in catch block   "+ e.getLocalizedMessage(),
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

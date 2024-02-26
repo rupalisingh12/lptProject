@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProductDescription {
-    private ArrayList<ProductDescriptionDetails> productDescriptionDetails;
-
-
+public class ProductDescriptionDetails {
+    private String heading;
+    private String body;
+    private String img;
 }

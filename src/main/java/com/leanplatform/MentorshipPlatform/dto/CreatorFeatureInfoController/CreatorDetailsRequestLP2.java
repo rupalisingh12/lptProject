@@ -10,8 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreatorDetailsRequestLP2 {   private String leadGenForm;
+public class CreatorDetailsRequestLP2 {
     private String masterClass;
+    private String leadGenForm;
     private Boolean slot;
     private LandingPageRequest2 landingPageRequest2;
 
