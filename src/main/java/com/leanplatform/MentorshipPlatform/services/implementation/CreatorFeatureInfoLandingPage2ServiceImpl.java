@@ -7,8 +7,10 @@ import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.Crea
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.LandingPage2.*;
 import com.leanplatform.MentorshipPlatform.entities.CreatorFeatureInfo;
 import com.leanplatform.MentorshipPlatform.entities.LandingPage2;
+import com.leanplatform.MentorshipPlatform.entities.UserEntity;
 import com.leanplatform.MentorshipPlatform.repositories.CreatorFeatureInfoRepository;
 import com.leanplatform.MentorshipPlatform.repositories.LandingPage2Repository;
+import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.CreatorFeatureInfoLandingPage2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeatureInfoLandingPage2Service {
     @Autowired
     CreatorFeatureInfoRepository creatorFeatureInfoRepository;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     LandingPage2Repository landingPage2Repository;
     ObjectMapper objectMapper = new ObjectMapper();
@@ -31,6 +35,22 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
             return new ResponseEntity<>(new CreateDetailsForCreatorResponse
                 ("1",
                         "Null object recieved", null), HttpStatus.OK);
+        UserEntity userEntity= userRepository.findByUserName(userName);
+        if(userEntity==null){
+            return new ResponseEntity<>
+                    (new CreateDetailsForCreatorResponse
+                            ("0",
+                                    "This user does not exist in the db", null), HttpStatus.BAD_REQUEST);
+
+        }
+        if(creatorFeatureInfoRepository.findByUserName(userName)!=null){
+            return new ResponseEntity<>
+                    (new CreateDetailsForCreatorResponse
+                            ("0",
+                                    "This user already has a creataureInfoDetails in db", null), HttpStatus.BAD_REQUEST);
+
+        }
+
         CreatorFeatureInfo creatorFeatureInfo=new CreatorFeatureInfo();
         creatorFeatureInfo.setLeadGenForm(creatorDetailsRequestLP2.getLeadGenForm());
         creatorFeatureInfo.setMasterClass(creatorDetailsRequestLP2.getMasterClass());
@@ -116,7 +136,7 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
         creatorFeatureInfoRepository.save(creatorFeatureInfo);
         return new ResponseEntity<>(new CreateDetailsForCreatorResponse
                 ("1",
-                        "Booking Created", null), HttpStatus.OK);
+                        "Landing Page data saved", null), HttpStatus.OK);
 
 
     }
@@ -179,6 +199,12 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
                             ("0",
                                     "Invalid Request", null), HttpStatus.BAD_REQUEST);
 
+        }
+        if(creatorFeatureInfoRepository.findByUserName(userName)==null){
+            return new ResponseEntity<>
+                    (new CreateDetailsResponseForCreatorLP2
+                            ("0",
+                                    "This user does not exist in the creatureInfoDetails table", null), HttpStatus.NOT_FOUND);
         }
         CreatorFeatureInfo creatorFeatureInfo = creatorFeatureInfoRepository.findByUserName(userName);
         CreateDetailsForCreatorDtoLP2 createDetailsForCreatorDtoLP2 = new CreateDetailsForCreatorDtoLP2();
@@ -279,10 +305,10 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
         landingPage2Response.setLandingPage2VariantId(landingPage2.getLandingPageVariantId());
         landingPage2Response.setUserName(userName);
         landingPage2Response.setLandingPage2Id(landingPage2.getLandingPageId());
-        createDetailsForCreatorDtoLP2.setLandingPageR2esponse(landingPage2Response);
+        createDetailsForCreatorDtoLP2.setLandingPageRequest2(landingPage2Response);
         return new ResponseEntity<>(new  CreateDetailsResponseForCreatorLP2
                 ("1",
-                        "Landing Page data saved", createDetailsForCreatorDtoLP2 ), HttpStatus.OK);
+                        "Landing Page data ", createDetailsForCreatorDtoLP2 ), HttpStatus.OK);
 
 
 

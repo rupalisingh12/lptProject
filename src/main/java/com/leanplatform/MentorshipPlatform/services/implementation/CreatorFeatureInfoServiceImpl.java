@@ -42,6 +42,24 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
                                     "Invalid Request", null), HttpStatus.BAD_REQUEST);
 
         }
+       UserEntity userEntity= userRepository.findByUserName(userName);
+        if(userEntity==null){
+            return new ResponseEntity<>
+                    (new CreateDetailsForCreatorResponse
+                            ("0",
+                                    "This user does not exist in db", null), HttpStatus.BAD_REQUEST);
+
+        }
+        if(creatorFeatureInfoRepository.findByUserName(userName)!=null){
+            return new ResponseEntity<>
+                        (new CreateDetailsForCreatorResponse
+                                ("0",
+                                        "This user already has a landing page made in the db", null), HttpStatus.BAD_REQUEST);
+
+
+            }
+
+
 
         CreatorFeatureInfo creatorFeatureInfo = new CreatorFeatureInfo();
         creatorFeatureInfo.setUserName(userName);
@@ -187,6 +205,13 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
 
 
         }
+        if(creatorFeatureInfoRepository.findByUserName(userName)==null){
+            return new ResponseEntity<>
+                    (new CreateDetailsForCreatorResponse
+                            ("0",
+                                    "This user does not exist in creatureFeatureInfo", null), HttpStatus.NOT_FOUND);
+        }
+
         CreatorFeatureInfo creatorFeatureInfo = creatorFeatureInfoRepository.findByUserName(userName);
         CreateDetailsForCreatorDto createDetailsForCreatorDto = new CreateDetailsForCreatorDto();
         createDetailsForCreatorDto.setSlot(creatorFeatureInfo.getSlot());
