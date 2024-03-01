@@ -1,16 +1,13 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
 import com.leanplatform.MentorshipPlatform.entities.CreatorFeatureInfo;
-import com.leanplatform.MentorshipPlatform.entities.LandingPage;
+import com.leanplatform.MentorshipPlatform.entities.LandingPage1;
 import com.leanplatform.MentorshipPlatform.entities.UserEntity;
 import com.leanplatform.MentorshipPlatform.repositories.CreatorFeatureInfoRepository;
-import com.leanplatform.MentorshipPlatform.repositories.HeroSectionRepository;
-import com.leanplatform.MentorshipPlatform.repositories.LandingPageRepository;
+import com.leanplatform.MentorshipPlatform.repositories.LandingPage1Repository;
 import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.CreatorFeatureInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
 @Service
 public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService {
 
@@ -27,7 +23,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
     @Autowired
     UserRepository userRepository;
     @Autowired
-    LandingPageRepository landingPageRepository;
+    LandingPage1Repository landingPageRepository;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -66,7 +62,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         // UserEntity userEntity = userRepository.findByUserName(userName);
         //  creatorFeatureInfo.setUserId(userEntity.getUserId());
 
-        LandingPage landingPage = new LandingPage();
+        LandingPage1 landingPage = new LandingPage1();
         landingPage.setUserName(userName);
         creatorFeatureInfo.setLeadGenForm(createDetailsRequest.getLeadGenForm());
         creatorFeatureInfo.setMasterClass(createDetailsRequest.getMasterClass());
@@ -141,6 +137,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         landingPage.setLandingPageVariantId(createDetailsRequest.getLandingPageRequest().getLandingPageVariantId());
         landingPage.setLandingPageId(createDetailsRequest.getLandingPageRequest().getLandingPageId());
         landingPageRepository.save(landingPage);
+        creatorFeatureInfo.setUserId(userEntity.getUserId());
         creatorFeatureInfoRepository.save(creatorFeatureInfo);
 
 
@@ -213,12 +210,13 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         }
 
         CreatorFeatureInfo creatorFeatureInfo = creatorFeatureInfoRepository.findByUserName(userName);
+
         CreateDetailsForCreatorDto createDetailsForCreatorDto = new CreateDetailsForCreatorDto();
         createDetailsForCreatorDto.setSlot(creatorFeatureInfo.getSlot());
         createDetailsForCreatorDto.setLeadGenForm(creatorFeatureInfo.getLeadGenForm());
         createDetailsForCreatorDto.setMasterClass(creatorFeatureInfo.getMasterClass());
         LandingPageResponse landingPageResponse = new LandingPageResponse();
-        LandingPage landingPage = landingPageRepository.findByUserName(userName);
+        LandingPage1 landingPage = landingPageRepository.findByUserName(userName);
         try {
             String ans = landingPage.getHeroDto();
            HeroDto heroDto= createDetailsRequestFromJsonString(ans);
@@ -304,6 +302,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         }
         landingPageResponse.setLandingPageVariantId(landingPage.getLandingPageVariantId());
         landingPageResponse.setUserName(userName);
+        landingPageResponse.setUserId(creatorFeatureInfo.getUserId());
         landingPageResponse.setLandingPageId(landingPage.getLandingPageId());
 
 

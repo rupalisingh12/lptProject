@@ -15,6 +15,7 @@ public class LandingPage2Response {
     private HeroDto2 heroDto2;
     private SubHeroDto2 subHeroDto2;
     private GettingDto2 gettingDto;
+
     private String userName;
     private ServicesAvail servicesAvail;
     private CharacteristicsOfService characteristicsOfService;

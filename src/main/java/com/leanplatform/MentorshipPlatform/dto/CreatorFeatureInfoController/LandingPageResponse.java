@@ -16,6 +16,7 @@ public class LandingPageResponse {
     private UUID creatorFeatureInfoId;
     private String userName;
 
+
     private SubHeroDto subHeroDto;
 
     private HeroDto heroDto;

@@ -1,6 +1,9 @@
 package com.leanplatform.MentorshipPlatform.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -15,19 +18,18 @@ import java.util.UUID;
 @Setter
 @Getter
 @ToString
-public class CreatorFeatureInfo {
+public class FeedBackFeature {//configuration
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID creatorFeatureInfoId;
-    //remove this , make a separate btable for landing page
-
-  //  private String tryingToSaveInJson;
-    private UUID userId;
-    private String userName;
-    private String leadGenForm;
-    private String masterClass;
-    private Boolean slot;
+    private UUID feedBackFeatureId;
+    //No need for these ,keep only one
+//    private Boolean suggestion;
+        private String userName;
+//    private Boolean FeedBack;
+//    private Boolean issue;
+//    private Boolean contact;
+    private String formType; //(out of suggestion, issue,feedback,contact,rating)
     @CreationTimestamp
     private LocalDateTime createdAt;
     @CreationTimestamp
@@ -36,5 +38,7 @@ public class CreatorFeatureInfo {
     private LocalDateTime modifiedBy;
     @CreationTimestamp
     private LocalDateTime modifiedAt;
+
+
 
 }

@@ -1,11 +1,11 @@
 package com.leanplatform.MentorshipPlatform.entities;
 
-import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
-import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.BelowApplySection;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @ToString
-public class LandingPage {
+public class LandingPage1 {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -47,4 +47,14 @@ public class LandingPage {
     private String finalGoDto;
     private UUID userId;
     private String landingPageId; //the id which is creattor ging to choose out of the two landingPage
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedAt;
+
 }
+

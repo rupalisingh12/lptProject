@@ -1,33 +1,33 @@
 package com.leanplatform.MentorshipPlatform.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
+@Table
 @ToString
-public class CreatorFeatureInfo {
+public class Suggestion {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID creatorFeatureInfoId;
-    //remove this , make a separate btable for landing page
-
-  //  private String tryingToSaveInJson;
-    private UUID userId;
+    private UUID suggestionId;
+    private String emailId;
+    private String details;
     private String userName;
-    private String leadGenForm;
-    private String masterClass;
-    private Boolean slot;
+    private List<String> fileUrls;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @CreationTimestamp

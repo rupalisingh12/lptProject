@@ -55,6 +55,7 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
         creatorFeatureInfo.setLeadGenForm(creatorDetailsRequestLP2.getLeadGenForm());
         creatorFeatureInfo.setMasterClass(creatorDetailsRequestLP2.getMasterClass());
         creatorFeatureInfo.setSlot(creatorDetailsRequestLP2.getSlot());
+        creatorFeatureInfo.setUserId(userEntity.getUserId());
         LandingPage2 landingPage2=new LandingPage2();
         landingPage2.setUserName(userName);
         try {
@@ -304,6 +305,7 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
         }
         landingPage2Response.setLandingPage2VariantId(landingPage2.getLandingPageVariantId());
         landingPage2Response.setUserName(userName);
+
         landingPage2Response.setLandingPage2Id(landingPage2.getLandingPageId());
         createDetailsForCreatorDtoLP2.setLandingPageRequest2(landingPage2Response);
         return new ResponseEntity<>(new  CreateDetailsResponseForCreatorLP2

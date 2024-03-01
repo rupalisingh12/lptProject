@@ -2,8 +2,10 @@ package com.leanplatform.MentorshipPlatform.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -45,4 +47,12 @@ public class LandingPage2 {
     private String landingPageId;
     @Column(length =5000 )
     private String callToAction;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedAt;
 }

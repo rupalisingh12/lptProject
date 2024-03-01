@@ -1,7 +1,5 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
-import com.leanplatform.MentorshipPlatform.dto.BookingController.BookingRequest;
-import com.leanplatform.MentorshipPlatform.dto.BookingController.CreateBookingResponse;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.CreateDetailsForCreatorResponse;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.CreateDetailsRequest;
 import com.leanplatform.MentorshipPlatform.services.CreatorFeatureInfoService;
@@ -10,11 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/CreatorFeature")
-public class CreatorFeatureInfoController {
+public class CreatorFeatureInfoControllerLandingPage1 {
     @Autowired
     CreatorFeatureInfoService creatorFeatureInfoService;
     @PostMapping("/AddFeatureDetails")
