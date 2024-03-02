@@ -13,7 +13,7 @@ import java.util.UUID;
 public class FormStructureConverter {
 
     //This is used while creation of the form
-    public static FormStructure dtoToEntityConverterCreate(String title, FormStructureDto formStructureDto, String formUrl, UUID userId, String posterUrl)
+    public static FormStructure dtoToEntityConverterCreate(String title, FormStructureDto formStructureDto, String formUrl, String posterUrl)
     {
        FormStructure formStructure = new FormStructure();
        if(formStructureDto.getName()!=null)formStructure.setName(formStructureDto.getName());
@@ -30,7 +30,7 @@ public class FormStructureConverter {
             formStructure.setOthers(formStructureDto.getOthers());
         }
         formStructure.setTitle(title);
-        formStructure.setCreatedBy(userId);
+        //formStructure.setCreatedBy(userId);
         LocalDateTime IST_time = LocalDateTime.now().plusHours(5).plusMinutes(30);
         formStructure.setCreatedAt(IST_time);
         formStructure.setFormUrl(formUrl);
@@ -39,7 +39,7 @@ public class FormStructureConverter {
     }
 
     //This is used while updating  the form
-    public static FormStructure dtoToEntityConverterUpdate( FormStructureDto formStructureDto,FormStructure formStructure, UUID userId,String posterUrl)
+    public static FormStructure dtoToEntityConverterUpdate( FormStructureDto formStructureDto,FormStructure formStructure,String posterUrl)
     {
         if(formStructureDto.getName()!=null)formStructure.setName(formStructureDto.getName());
         if(formStructureDto.getEmail()!=null)formStructure.setEmail(formStructureDto.getEmail());
@@ -56,7 +56,7 @@ public class FormStructureConverter {
         }
         LocalDateTime IST_time = LocalDateTime.now().plusHours(5).plusMinutes(30);
         formStructure.setModifiedAt(IST_time);
-        formStructure.setModifiedBy(userId);
+        //formStructure.setModifiedBy(userId);
         return  formStructure;
     }
 

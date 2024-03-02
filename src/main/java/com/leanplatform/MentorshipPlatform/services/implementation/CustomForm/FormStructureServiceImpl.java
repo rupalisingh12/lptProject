@@ -7,6 +7,7 @@ import com.leanplatform.MentorshipPlatform.entities.CustomForm.FormStructure;
 import com.leanplatform.MentorshipPlatform.mappers.CustomForm.FormStructureConverter;
 import com.leanplatform.MentorshipPlatform.repositories.CustomForm.FormResponseRepository;
 import com.leanplatform.MentorshipPlatform.repositories.CustomForm.FormStructureRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MasterConfig.MasterConfigRepository;
 import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.CustomForm.FormStructureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 ;
 
 import java.io.IOException;
@@ -66,7 +70,7 @@ public class FormStructureServiceImpl implements FormStructureService {
          MultipartFile poster = formStructureDto.getPoster();
          String posterUrl = savePosterInBucketAndCreateUrl(poster);
 
-        FormStructure formStructure = FormStructureConverter.dtoToEntityConverterCreate(title,formStructureDto,formUrl,userId,posterUrl);
+        FormStructure formStructure = FormStructureConverter.dtoToEntityConverterCreate(title,formStructureDto,formUrl,posterUrl);
         formStructureRepository.save(formStructure);
         return FormStructureResponse.builder().form_Url(formUrl).responseCode(1).message("Form has been created successfully").build();
 
@@ -125,9 +129,9 @@ public class FormStructureServiceImpl implements FormStructureService {
 
         //Creating poster url
         MultipartFile poster = formStructureDto.getPoster();
-        String posterUrl = savePosterInBucketAndCreateUrl(poster,userId);
+        String posterUrl = savePosterInBucketAndCreateUrl(poster);
 
-        FormStructure updatedFormStructure = FormStructureConverter.dtoToEntityConverterUpdate(formStructureDto,formStructure.get(),userId,posterUrl);
+        FormStructure updatedFormStructure = FormStructureConverter.dtoToEntityConverterUpdate(formStructureDto,formStructure.get(),posterUrl);
         formStructureRepository.save(updatedFormStructure);
         return FormStructureResponse.builder().form_Url(updatedFormStructure.getFormUrl()).responseCode(1).message("Form has been updated successfully").build();
     }
