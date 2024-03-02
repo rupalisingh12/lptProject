@@ -67,6 +67,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         creatorFeatureInfo.setLeadGenForm(createDetailsRequest.getLeadGenForm());
         creatorFeatureInfo.setMasterClass(createDetailsRequest.getMasterClass());
         creatorFeatureInfo.setSlot(createDetailsRequest.getSlot());
+        creatorFeatureInfo.setUserId(userEntity.getUserId());
 
         try {
             String json = convertObjectToJson(createDetailsRequest);

@@ -305,6 +305,7 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
         }
         landingPage2Response.setLandingPage2VariantId(landingPage2.getLandingPageVariantId());
         landingPage2Response.setUserName(userName);
+        landingPage2Response.setUserId(creatorFeatureInfo.getUserId());
 
         landingPage2Response.setLandingPage2Id(landingPage2.getLandingPageId());
         createDetailsForCreatorDtoLP2.setLandingPageRequest2(landingPage2Response);

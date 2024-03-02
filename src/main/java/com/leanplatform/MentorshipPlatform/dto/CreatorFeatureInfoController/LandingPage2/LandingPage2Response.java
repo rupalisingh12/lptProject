@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -15,6 +17,7 @@ public class LandingPage2Response {
     private HeroDto2 heroDto2;
     private SubHeroDto2 subHeroDto2;
     private GettingDto2 gettingDto;
+    private UUID userId;
 
     private String userName;
     private ServicesAvail servicesAvail;
