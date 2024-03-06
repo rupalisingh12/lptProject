@@ -9,6 +9,7 @@ public interface FeedBackFeatureService {
    ResponseEntity<GetAvailableButtonsResponse> AddAvailableButtons(String userName, AddAvailableButtonsRequest addAvailableButtonsRequest);
 
    ResponseEntity<GetAvailableButtonsResponse> getAvailableButtons(String userName);
+//   ResponseEntity<GetAvailableButtonsResponse>disableAvailableButtons(String userName,AddAvailableButtonsRequest addAvailableButtonsRequest);
    ResponseEntity<AddSuggestionResponse>  AddSuggestionForUser(String userName, AddSuggestionRequest addSuggestionRequest);
    ResponseEntity<GiveSuggestionResponse> getAllSuggestion(String userName);
    ResponseEntity<AddFeedBackDetailsResponse> addFeedBackDetailsOfUser(String userName,AddFeedBackFeatureDetailsRequest addFeedBackFeatureDetailsRequest);

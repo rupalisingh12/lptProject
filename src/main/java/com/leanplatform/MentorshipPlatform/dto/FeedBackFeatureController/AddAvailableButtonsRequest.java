@@ -10,5 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AddAvailableButtonsRequest {
-   private String formType;
+   private Boolean contact;
+   private Boolean suggestion;
+   private Boolean feedBack;
+   private Boolean issue;
+   private Boolean rating;
 }

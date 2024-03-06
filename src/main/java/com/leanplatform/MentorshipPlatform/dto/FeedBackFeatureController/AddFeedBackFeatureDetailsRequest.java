@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,6 +15,6 @@ import java.util.List;
 public class AddFeedBackFeatureDetailsRequest {
     private String emailId;
     private String details;
-    private List<String> fileUrls;
+    private List<MultipartFile> fileUrls;
 
 }

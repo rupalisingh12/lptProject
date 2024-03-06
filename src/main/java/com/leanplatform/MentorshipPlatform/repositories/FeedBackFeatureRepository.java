@@ -9,5 +9,7 @@ import java.util.UUID;
 
 public interface FeedBackFeatureRepository extends JpaRepository<FeedBackFeature, UUID> {
     List<FeedBackFeature> findByUserName(String userName);
+    List<FeedBackFeature>findByUserNameAndDisableOrenabled(String userName,Boolean disableOrenabled );
+
     FeedBackFeature findByUserNameAndFormType(String userEntity,String formType);
 }

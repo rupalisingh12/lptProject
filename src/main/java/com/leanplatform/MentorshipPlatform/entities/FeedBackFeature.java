@@ -23,12 +23,8 @@ public class FeedBackFeature {//configuration
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID feedBackFeatureId;
-    //No need for these ,keep only one
-//    private Boolean suggestion;
-        private String userName;
-//    private Boolean FeedBack;
-//    private Boolean issue;
-//    private Boolean contact;
+    private String userName;
+    private Boolean disableOrenabled;
     private String formType; //(out of suggestion, issue,feedback,contact,rating)
     @CreationTimestamp
     private LocalDateTime createdAt;
