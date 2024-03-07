@@ -38,7 +38,6 @@ public class LandingPageResponse {
     private LearningDto2 learningDto2;
 
     private FinalGoDto finalGoDto;
-    private UUID userId;
-    private String landingPageId; //the id which is creattor ging to choose out of the two landingPage
+
 
 }

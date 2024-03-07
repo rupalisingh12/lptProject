@@ -5,10 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.CreatorDetailsRequestLP2;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.LandingPage2.*;
+import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailabilityButtonsDto;
 import com.leanplatform.MentorshipPlatform.entities.CreatorFeatureInfo;
+import com.leanplatform.MentorshipPlatform.entities.FeedBackFeature;
 import com.leanplatform.MentorshipPlatform.entities.LandingPage2;
 import com.leanplatform.MentorshipPlatform.entities.UserEntity;
+import com.leanplatform.MentorshipPlatform.mappers.FeedBackFeatureMapper;
 import com.leanplatform.MentorshipPlatform.repositories.CreatorFeatureInfoRepository;
+import com.leanplatform.MentorshipPlatform.repositories.FeedBackFeatureRepository;
 import com.leanplatform.MentorshipPlatform.repositories.LandingPage2Repository;
 import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.CreatorFeatureInfoLandingPage2Service;
@@ -16,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeatureInfoLandingPage2Service {
@@ -26,6 +33,10 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
     @Autowired
     LandingPage2Repository landingPage2Repository;
     ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired FeedBackFeatureRepository feedBackFeatureRepository;
+
+
     public ResponseEntity<CreateDetailsForCreatorResponse> AddCreatorPersonalieFeatureLP2(String userName, CreatorDetailsRequestLP2 creatorDetailsRequestLP2 ){
 
         if ( creatorDetailsRequestLP2== null ||
@@ -305,10 +316,23 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
         }
         landingPage2Response.setLandingPage2VariantId(landingPage2.getLandingPageVariantId());
         landingPage2Response.setUserName(userName);
+        List<FeedBackFeature> features = feedBackFeatureRepository.findByUserNameAndDisableOrenabled(userName,true);
+
+
+        ArrayList<GetAvailabilityButtonsDto> list = new ArrayList<>();
+        if(!features.isEmpty()) {
+            for (int j = 0; j < features.size(); j++) {
+                GetAvailabilityButtonsDto getAvailabilityButtonsDto = FeedBackFeatureMapper.converEntityToDTO(features.get(j));
+                list.add(getAvailabilityButtonsDto);
+            }
+        }
+        createDetailsForCreatorDtoLP2.setGetAvailabilityButtonsDto(list);
+        createDetailsForCreatorDtoLP2.setUserId(creatorFeatureInfo.getUserId());
+        createDetailsForCreatorDtoLP2.setLandingPageId(landingPage2.getLandingPageId());
         landingPage2Response.setUserId(creatorFeatureInfo.getUserId());
 
         landingPage2Response.setLandingPage2Id(landingPage2.getLandingPageId());
-        createDetailsForCreatorDtoLP2.setLandingPageRequest2(landingPage2Response);
+//        createDetailsForCreatorDtoLP2.setLandingPageRequest2(landingPage2Response);
         return new ResponseEntity<>(new  CreateDetailsResponseForCreatorLP2
                 ("1",
                         "Landing Page data ", createDetailsForCreatorDtoLP2 ), HttpStatus.OK);
@@ -350,6 +374,23 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
     }
     public CallToAction createDetailsRequestFromJsonString10(String ans) throws JsonProcessingException {
         return objectMapper.readValue(ans, CallToAction.class );
+    }
+    @Override
+    public ResponseEntity<UpdateSlotResponse>UpdateSlotButton2(String userName, UpdateSlotRequest updateSlotRequest){
+        if(userName==null){
+            return new ResponseEntity<>
+                    (new UpdateSlotResponse
+                            ("0",
+                                    "Invalid Request", null), HttpStatus.BAD_REQUEST);
+        }
+        CreatorFeatureInfo creatorFeatureInfo= creatorFeatureInfoRepository.findByUserName(userName);
+        creatorFeatureInfo.setSlot(updateSlotRequest.getSlot());
+        creatorFeatureInfoRepository.save(creatorFeatureInfo);
+        return new ResponseEntity<>
+                (new UpdateSlotResponse
+                        ("1",
+                                "The slot has been updated", null), HttpStatus.OK);
+
     }
 
 

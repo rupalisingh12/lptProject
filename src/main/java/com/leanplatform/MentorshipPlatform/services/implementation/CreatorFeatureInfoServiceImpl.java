@@ -3,10 +3,15 @@ package com.leanplatform.MentorshipPlatform.services.implementation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
+import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailabilityButtonsDto;
+import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailableButtonsResponse;
 import com.leanplatform.MentorshipPlatform.entities.CreatorFeatureInfo;
+import com.leanplatform.MentorshipPlatform.entities.FeedBackFeature;
 import com.leanplatform.MentorshipPlatform.entities.LandingPage1;
 import com.leanplatform.MentorshipPlatform.entities.UserEntity;
+import com.leanplatform.MentorshipPlatform.mappers.FeedBackFeatureMapper;
 import com.leanplatform.MentorshipPlatform.repositories.CreatorFeatureInfoRepository;
+import com.leanplatform.MentorshipPlatform.repositories.FeedBackFeatureRepository;
 import com.leanplatform.MentorshipPlatform.repositories.LandingPage1Repository;
 import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.CreatorFeatureInfoService;
@@ -14,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService {
@@ -24,6 +32,8 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
     UserRepository userRepository;
     @Autowired
     LandingPage1Repository landingPageRepository;
+    @Autowired
+    FeedBackFeatureRepository feedBackFeatureRepository;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -303,8 +313,22 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         }
         landingPageResponse.setLandingPageVariantId(landingPage.getLandingPageVariantId());
         landingPageResponse.setUserName(userName);
-        landingPageResponse.setUserId(creatorFeatureInfo.getUserId());
-        landingPageResponse.setLandingPageId(landingPage.getLandingPageId());
+        createDetailsForCreatorDto.setUserId(creatorFeatureInfo.getUserId());
+        createDetailsForCreatorDto.setLandingPageId(landingPage.getLandingPageId());
+//        landingPageResponse.setUserId(creatorFeatureInfo.getUserId());
+//        landingPageResponse.setLandingPageId(landingPage.getLandingPageId());
+
+        List<FeedBackFeature> features = feedBackFeatureRepository.findByUserNameAndDisableOrenabled(userName,true);
+
+
+        ArrayList<GetAvailabilityButtonsDto> list = new ArrayList<>();
+        if(!features.isEmpty()) {
+            for (int j = 0; j < features.size(); j++) {
+                GetAvailabilityButtonsDto getAvailabilityButtonsDto = FeedBackFeatureMapper.converEntityToDTO(features.get(j));
+                list.add(getAvailabilityButtonsDto);
+            }
+        }
+        createDetailsForCreatorDto.setGetAvailabilityButtonsDto(list);
 
 
 
@@ -320,7 +344,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
 //        landingPageResponse.setFinalGoDto(landingPage.getFinalGoDto());
 //        landingPageResponse.setSlotConsultationDto(landingPage.getSlotConsultationDto());
 //        landingPageResponse.setHelpDto(landingPageResponse.getHelpDto());
-        createDetailsForCreatorDto.setLandingPageResponse(landingPageResponse);
+//        createDetailsForCreatorDto.setLandingPageResponse(landingPageResponse);
         return new ResponseEntity<>(new CreateDetailsForCreatorResponse
                 ("1",
                         "Landing Page data saved", createDetailsForCreatorDto), HttpStatus.OK);
@@ -362,6 +386,22 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
     }
     public SubHeroDto createDetailsRequestFromJsonString11(String ans) throws JsonProcessingException {
         return objectMapper.readValue(ans,SubHeroDto.class );
+    }
+    public ResponseEntity<UpdateSlotResponse>UpdateSlotButton(String userName,UpdateSlotRequest updateSlotRequest){
+        if(userName==null){
+            return new ResponseEntity<>
+                    (new UpdateSlotResponse
+                            ("0",
+                                    "Invalid Request", null), HttpStatus.BAD_REQUEST);
+        }
+       CreatorFeatureInfo creatorFeatureInfo= creatorFeatureInfoRepository.findByUserName(userName);
+        creatorFeatureInfo.setSlot(updateSlotRequest.getSlot());
+        creatorFeatureInfoRepository.save(creatorFeatureInfo);
+        return new ResponseEntity<>
+                (new UpdateSlotResponse
+                        ("1",
+                                "The slot has been updated", null), HttpStatus.OK);
+
     }
 
 

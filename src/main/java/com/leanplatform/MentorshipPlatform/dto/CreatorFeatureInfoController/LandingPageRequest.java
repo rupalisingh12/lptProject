@@ -12,7 +12,7 @@ import lombok.Setter;
 public class LandingPageRequest {
 
     private String landingPageId; //(this is for like whoich landing page it is out of the two landing page available to the creator)
-    private int landingPageVariantId;
+    private int landingPageVariantId; // this is for the colour
     private HeroDto heroDto;
     private SubHeroDto subHeroDto;
     private LearningDto learningDto;
