@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +19,6 @@ public class CreateDetailsForCreatorDto {
 //   private UUID userId;
 //   private String landingPageId; //the id which is creattor ging to choose out of the two landingPage
     private LandingPageResponse landingPageResponse;
-   private List<GetAvailabilityButtonsDto> getAvailabilityButtonsDto;
+   private List<GetAvailabilityButtonsDto> feedBackEnabled;
 
 }

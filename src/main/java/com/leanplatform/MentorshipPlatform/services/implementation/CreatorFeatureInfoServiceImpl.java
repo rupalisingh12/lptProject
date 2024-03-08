@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
 import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailabilityButtonsDto;
-import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailableButtonsResponse;
 import com.leanplatform.MentorshipPlatform.entities.CreatorFeatureInfo;
 import com.leanplatform.MentorshipPlatform.entities.FeedBackFeature;
 import com.leanplatform.MentorshipPlatform.entities.LandingPage1;
@@ -328,7 +327,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
                 list.add(getAvailabilityButtonsDto);
             }
         }
-        createDetailsForCreatorDto.setGetAvailabilityButtonsDto(list);
+        createDetailsForCreatorDto.setFeedBackEnabled(list);
 
 
 
