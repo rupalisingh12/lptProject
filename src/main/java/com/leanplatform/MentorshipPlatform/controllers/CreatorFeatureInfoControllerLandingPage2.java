@@ -1,8 +1,6 @@
 package com.leanplatform.MentorshipPlatform.controllers;
 
-import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.CreateDetailsForCreatorResponse;
-import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.CreateDetailsRequest;
-import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.CreatorDetailsRequestLP2;
+import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.LandingPage2.CreateDetailsResponseForCreatorLP2;
 import com.leanplatform.MentorshipPlatform.services.CreatorFeatureInfoLandingPage2Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,4 +55,26 @@ public class CreatorFeatureInfoControllerLandingPage2 {
                     ), HttpStatus.BAD_REQUEST);
         }
     }
+    @PutMapping("/updateSlotLP2")
+    public ResponseEntity<UpdateSlotResponse>updateSlotbutton2(@RequestParam(name="userName")String userName, @RequestBody UpdateSlotRequest updateSlotRequest){
+        if(userName==null){
+            return new ResponseEntity<>
+                    (new UpdateSlotResponse
+                            ("0",
+                                    "Invalid Request", null), HttpStatus.BAD_REQUEST);
+        }
+        try{
+            return creatorFeatureInfoLandingPage2Service.UpdateSlotButton2(userName,updateSlotRequest);
+        }catch(Exception e) {
+            return new ResponseEntity<>(new UpdateSlotResponse
+                    (
+                            "0",
+                            "Caught in catch block   "+ e.getLocalizedMessage(),
+                            null
+                    ), HttpStatus.BAD_REQUEST);
+
+
+        }
+    }
+
 }
