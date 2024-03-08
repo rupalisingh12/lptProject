@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface CoursesRepository extends JpaRepository<Courses, UUID> {
+//   Courses findByUserName(String userName);
 }

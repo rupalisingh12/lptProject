@@ -7,6 +7,9 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +28,11 @@ public class Courses {
     private Double price;
     private String description;
     private Double discount;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+    private Duration duration;
+    private Double totalNoOfSeats;
+    private Double noOfSeatsLeft;
 
 
 }

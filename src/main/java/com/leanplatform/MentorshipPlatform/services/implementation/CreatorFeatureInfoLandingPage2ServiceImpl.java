@@ -225,100 +225,100 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
         createDetailsForCreatorDtoLP2.setMasterClass(creatorFeatureInfo.getMasterClass());
         LandingPage2Response landingPage2Response = new LandingPage2Response();
         LandingPage2 landingPage2 = landingPage2Repository.findByUserName(userName);
-        try {
-            String ans = landingPage2.getHeroDto2();
-            HeroDto2 heroDto2= createDetailsRequestFromJsonString(ans);
-            landingPage2Response.setHeroDto2(heroDto2);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage2.getSubHeroDto2();
-            SubHeroDto2 subHeroDto2= createDetailsRequestFromJsonString1(ans);
-            landingPage2Response.setSubHeroDto2(subHeroDto2);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage2.getGettingDto();
-            GettingDto2 gettingDto2= createDetailsRequestFromJsonString2(ans);
-            landingPage2Response.setGettingDto(gettingDto2);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage2.getServicesAvail();
-            ServicesAvail servicesAvail= createDetailsRequestFromJsonString3(ans);
-            landingPage2Response.setServicesAvail(servicesAvail);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage2.getCharacteristicsOfService();
-           CharacteristicsOfService characteristicsOfService= createDetailsRequestFromJsonString4(ans);
-            landingPage2Response.setCharacteristicsOfService(characteristicsOfService);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage2.getApplySectionDtoLP2();
-            ApplySectionDtoLP2 applySectionDtoLP2= createDetailsRequestFromJsonString5(ans);
-            landingPage2Response.setApplySectionDtoLP2(applySectionDtoLP2);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
 //        try {
-//            String ans = landingPage2.getIndividualCardsDto();
+//            String ans = landingPage2.getHeroDto2();
+//            HeroDto2 heroDto2= createDetailsRequestFromJsonString(ans);
+//            landingPage2Response.setHeroDto2(heroDto2);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage2.getSubHeroDto2();
+//            SubHeroDto2 subHeroDto2= createDetailsRequestFromJsonString1(ans);
+//            landingPage2Response.setSubHeroDto2(subHeroDto2);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage2.getGettingDto();
+//            GettingDto2 gettingDto2= createDetailsRequestFromJsonString2(ans);
+//            landingPage2Response.setGettingDto(gettingDto2);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage2.getServicesAvail();
+//            ServicesAvail servicesAvail= createDetailsRequestFromJsonString3(ans);
+//            landingPage2Response.setServicesAvail(servicesAvail);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage2.getCharacteristicsOfService();
+//           CharacteristicsOfService characteristicsOfService= createDetailsRequestFromJsonString4(ans);
+//            landingPage2Response.setCharacteristicsOfService(characteristicsOfService);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage2.getApplySectionDtoLP2();
 //            ApplySectionDtoLP2 applySectionDtoLP2= createDetailsRequestFromJsonString5(ans);
 //            landingPage2Response.setApplySectionDtoLP2(applySectionDtoLP2);
 //        } catch (JsonProcessingException e) {
 //            throw new RuntimeException(e);
 //        }
-        try {
-            String ans = landingPage2.getHelpSection();
-            HelpSection helpSection= createDetailsRequestFromJsonString6(ans);
-            landingPage2Response.setHelpSection(helpSection);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage2.getProductDescription();
-            ProductDescription productDescription= createDetailsRequestFromJsonString7(ans);
-            landingPage2Response.setProductDescription(productDescription);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage2.getSlotConsultationDtoLP2();
-            if(creatorFeatureInfo.getSlot()==true) {
-                SlotConsultationLP2 slotConsultationLP2 = createDetailsRequestFromJsonString8(ans);
-                landingPage2Response.setSlotConsultationDtoLP2(slotConsultationLP2);
-            }
-            else{
-                landingPage2Response.setSlotConsultationDtoLP2(null);
-            }
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage2.getTestimonials();
-             Testimonials testimonials= createDetailsRequestFromJsonString9(ans);
-            landingPage2Response.setTestimonials(testimonials);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage2.getCallToAction();
-            CallToAction callToAction= createDetailsRequestFromJsonString10(ans);
-            landingPage2Response.setCallToAction(callToAction);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        landingPage2Response.setLandingPage2VariantId(landingPage2.getLandingPageVariantId());
-        landingPage2Response.setUserName(userName);
+////        try {
+////            String ans = landingPage2.getIndividualCardsDto();
+////            ApplySectionDtoLP2 applySectionDtoLP2= createDetailsRequestFromJsonString5(ans);
+////            landingPage2Response.setApplySectionDtoLP2(applySectionDtoLP2);
+////        } catch (JsonProcessingException e) {
+////            throw new RuntimeException(e);
+////        }
+//        try {
+//            String ans = landingPage2.getHelpSection();
+//            HelpSection helpSection= createDetailsRequestFromJsonString6(ans);
+//            landingPage2Response.setHelpSection(helpSection);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage2.getProductDescription();
+//            ProductDescription productDescription= createDetailsRequestFromJsonString7(ans);
+//            landingPage2Response.setProductDescription(productDescription);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage2.getSlotConsultationDtoLP2();
+//            if(creatorFeatureInfo.getSlot()==true) {
+//                SlotConsultationLP2 slotConsultationLP2 = createDetailsRequestFromJsonString8(ans);
+//                landingPage2Response.setSlotConsultationDtoLP2(slotConsultationLP2);
+//            }
+//            else{
+//                landingPage2Response.setSlotConsultationDtoLP2(null);
+//            }
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage2.getTestimonials();
+//             Testimonials testimonials= createDetailsRequestFromJsonString9(ans);
+//            landingPage2Response.setTestimonials(testimonials);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage2.getCallToAction();
+//            CallToAction callToAction= createDetailsRequestFromJsonString10(ans);
+//            landingPage2Response.setCallToAction(callToAction);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        landingPage2Response.setLandingPage2VariantId(landingPage2.getLandingPageVariantId());
+//        landingPage2Response.setUserName(userName);
         List<FeedBackFeature> features = feedBackFeatureRepository.findByUserNameAndDisableOrenabled(userName,true);
-
-
+//
+//
         ArrayList<GetAvailabilityButtonsDto> list = new ArrayList<>();
         if(!features.isEmpty()) {
             for (int j = 0; j < features.size(); j++) {
@@ -327,12 +327,12 @@ public class CreatorFeatureInfoLandingPage2ServiceImpl implements CreatorFeature
             }
         }
         createDetailsForCreatorDtoLP2.setGetAvailabilityButtonsDto(list);
-        createDetailsForCreatorDtoLP2.setUserId(creatorFeatureInfo.getUserId());
-        createDetailsForCreatorDtoLP2.setLandingPageId(landingPage2.getLandingPageId());
+//        createDetailsForCreatorDtoLP2.setUserId(creatorFeatureInfo.getUserId());
+//        createDetailsForCreatorDtoLP2.setLandingPageId(landingPage2.getLandingPageId());
         landingPage2Response.setUserId(creatorFeatureInfo.getUserId());
 
         landingPage2Response.setLandingPage2Id(landingPage2.getLandingPageId());
-//        createDetailsForCreatorDtoLP2.setLandingPageRequest2(landingPage2Response);
+       createDetailsForCreatorDtoLP2.setLandingPageRequest2(landingPage2Response);
         return new ResponseEntity<>(new  CreateDetailsResponseForCreatorLP2
                 ("1",
                         "Landing Page data ", createDetailsForCreatorDtoLP2 ), HttpStatus.OK);

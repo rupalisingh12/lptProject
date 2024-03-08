@@ -17,8 +17,8 @@ public class CreateDetailsForCreatorDtoLP2 {
     private String leadGenForm;
     private String masterClass;
     private Boolean slot;
-//    private LandingPage2Response landingPageRequest2;
-     private UUID userId;
-    private String landingPageId;
+   private LandingPage2Response landingPageRequest2;
+//     private UUID userId;
+//    private String landingPageId;
     private List<GetAvailabilityButtonsDto> getAvailabilityButtonsDto;
 }

@@ -228,96 +228,96 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         createDetailsForCreatorDto.setMasterClass(creatorFeatureInfo.getMasterClass());
         LandingPageResponse landingPageResponse = new LandingPageResponse();
         LandingPage1 landingPage = landingPageRepository.findByUserName(userName);
-        try {
-            String ans = landingPage.getHeroDto();
-           HeroDto heroDto= createDetailsRequestFromJsonString(ans);
-           landingPageResponse.setHeroDto(heroDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage.getApplySectionDto();
-            ApplySectionDto applySectionDto= createDetailsRequestFromJsonString1(ans);
-            landingPageResponse.setApplySectionDto(applySectionDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage.getIndividualCardsDto();
-            IndividualCardsDto individualCardsDto= createDetailsRequestFromJsonString2(ans);
-            landingPageResponse.setIndividualCardsDto(individualCardsDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            String ans = landingPage.getFinalGoDto();
-            FinalGoDto finalGoDto= createDetailsRequestFromJsonString4(ans);
-            landingPageResponse.setFinalGoDto(finalGoDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage.getSlotConsultationDto();
-            if(creatorFeatureInfo.getSlot()==true) {
-                SlotConsultation slotConsultation = createDetailsRequestFromJsonString5(ans);
-                landingPageResponse.setSlotConsultationDto(slotConsultation);
-            }
-            else{
-                landingPageResponse.setSlotConsultationDto(null);
-            }
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage.getHelpDto();
-            HelpDto helpDto= createDetailsRequestFromJsonString6(ans);
-            landingPageResponse.setHelpDto(helpDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage.getLearningDto2();
-            LearningDto2 learningDto2= createDetailsRequestFromJsonString7(ans);
-            landingPageResponse.setLearningDto2(learningDto2);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage.getLearningDto();
-            LearningDto learningDto= createDetailsRequestFromJsonString8(ans);
-            landingPageResponse.setLearningDto(learningDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage.getBelowApplySection();
-            BelowApplySection belowApplySection= createDetailsRequestFromJsonString9(ans);
-            landingPageResponse.setBelowApplySection(belowApplySection);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage.getIndividualCardsDto2();
-            IndividualCardsDto2 individualCardsDto2= createDetailsRequestFromJsonString10(ans);
-            landingPageResponse.setIndividualCardsDto2(individualCardsDto2);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String ans = landingPage.getSubHeroDto();
-           SubHeroDto subHeroDto= createDetailsRequestFromJsonString11(ans);
-            landingPageResponse.setSubHeroDto(subHeroDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        landingPageResponse.setLandingPageVariantId(landingPage.getLandingPageVariantId());
+//        try {
+//            String ans = landingPage.getHeroDto();
+//           HeroDto heroDto= createDetailsRequestFromJsonString(ans);
+//           landingPageResponse.setHeroDto(heroDto);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage.getApplySectionDto();
+//            ApplySectionDto applySectionDto= createDetailsRequestFromJsonString1(ans);
+//            landingPageResponse.setApplySectionDto(applySectionDto);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage.getIndividualCardsDto();
+//            IndividualCardsDto individualCardsDto= createDetailsRequestFromJsonString2(ans);
+//            landingPageResponse.setIndividualCardsDto(individualCardsDto);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        try {
+//            String ans = landingPage.getFinalGoDto();
+//            FinalGoDto finalGoDto= createDetailsRequestFromJsonString4(ans);
+//            landingPageResponse.setFinalGoDto(finalGoDto);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage.getSlotConsultationDto();
+//            if(creatorFeatureInfo.getSlot()==true) {
+//                SlotConsultation slotConsultation = createDetailsRequestFromJsonString5(ans);
+//                landingPageResponse.setSlotConsultationDto(slotConsultation);
+//            }
+//            else{
+//                landingPageResponse.setSlotConsultationDto(null);
+//            }
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage.getHelpDto();
+//            HelpDto helpDto= createDetailsRequestFromJsonString6(ans);
+//            landingPageResponse.setHelpDto(helpDto);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage.getLearningDto2();
+//            LearningDto2 learningDto2= createDetailsRequestFromJsonString7(ans);
+//            landingPageResponse.setLearningDto2(learningDto2);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage.getLearningDto();
+//            LearningDto learningDto= createDetailsRequestFromJsonString8(ans);
+//            landingPageResponse.setLearningDto(learningDto);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage.getBelowApplySection();
+//            BelowApplySection belowApplySection= createDetailsRequestFromJsonString9(ans);
+//            landingPageResponse.setBelowApplySection(belowApplySection);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage.getIndividualCardsDto2();
+//            IndividualCardsDto2 individualCardsDto2= createDetailsRequestFromJsonString10(ans);
+//            landingPageResponse.setIndividualCardsDto2(individualCardsDto2);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            String ans = landingPage.getSubHeroDto();
+//           SubHeroDto subHeroDto= createDetailsRequestFromJsonString11(ans);
+//            landingPageResponse.setSubHeroDto(subHeroDto);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+        //landingPageResponse.setLandingPageVariantId(landingPage.getLandingPageVariantId());
         landingPageResponse.setUserName(userName);
-        createDetailsForCreatorDto.setUserId(creatorFeatureInfo.getUserId());
-        createDetailsForCreatorDto.setLandingPageId(landingPage.getLandingPageId());
-//        landingPageResponse.setUserId(creatorFeatureInfo.getUserId());
-//        landingPageResponse.setLandingPageId(landingPage.getLandingPageId());
-
+//        createDetailsForCreatorDto.setUserId(creatorFeatureInfo.getUserId());
+//        createDetailsForCreatorDto.setLandingPageId(landingPage.getLandingPageId());
+        landingPageResponse.setUserId(creatorFeatureInfo.getUserId());
+        landingPageResponse.setLandingPageId(landingPage.getLandingPageId());
+         createDetailsForCreatorDto.setLandingPageResponse(landingPageResponse);
         List<FeedBackFeature> features = feedBackFeatureRepository.findByUserNameAndDisableOrenabled(userName,true);
 
 

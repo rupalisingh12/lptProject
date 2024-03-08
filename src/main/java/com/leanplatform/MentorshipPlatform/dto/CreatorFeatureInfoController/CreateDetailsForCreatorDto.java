@@ -17,9 +17,9 @@ public class CreateDetailsForCreatorDto {
     private String leadGenForm;
     private String masterClass;
     private Boolean slot;
-    private UUID userId;
-    private String landingPageId; //the id which is creattor ging to choose out of the two landingPage
-//    private LandingPageResponse landingPageResponse;
+//   private UUID userId;
+//   private String landingPageId; //the id which is creattor ging to choose out of the two landingPage
+    private LandingPageResponse landingPageResponse;
    private List<GetAvailabilityButtonsDto> getAvailabilityButtonsDto;
 
 }

@@ -12,32 +12,36 @@ import java.util.UUID;
 @Getter
 @Setter
 public class LandingPageResponse {
-    private UUID landingPage;
-    private UUID creatorFeatureInfoId;
+//    private UUID landingPage;
+//    private UUID creatorFeatureInfoId;
     private String userName;
+    private UUID userId;
 
 
-    private SubHeroDto subHeroDto;
+    private String landingPageId;
 
-    private HeroDto heroDto;
-    private int landingPageVariantId;
-    private HelpDto helpDto;
 
-    private LearningDto learningDto;
-
-    private IndividualCardsDto individualCardsDto;
-
-    private ApplySectionDto applySectionDto;
-
-    private BelowApplySection belowApplySection;
-
-    private IndividualCardsDto2 individualCardsDto2;
-
-    private SlotConsultation slotConsultationDto;
-
-    private LearningDto2 learningDto2;
-
-    private FinalGoDto finalGoDto;
+//    private SubHeroDto subHeroDto;
+//
+//    private HeroDto heroDto;
+//    private int landingPageVariantId;
+//    private HelpDto helpDto;
+//
+//    private LearningDto learningDto;
+//
+//    private IndividualCardsDto individualCardsDto;
+//
+//    private ApplySectionDto applySectionDto;
+//
+//    private BelowApplySection belowApplySection;
+//
+//    private IndividualCardsDto2 individualCardsDto2;
+//
+//    private SlotConsultation slotConsultationDto;
+//
+//    private LearningDto2 learningDto2;
+//
+//    private FinalGoDto finalGoDto;
 
 
 }

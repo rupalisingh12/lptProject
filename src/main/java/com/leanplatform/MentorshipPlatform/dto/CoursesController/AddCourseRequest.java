@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -17,6 +18,9 @@ public class AddCourseRequest {
     private Double price;
     private String description;
     private Double discount;
-
-
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+    private LocalDateTime duration;
+    private Double totalNoOfSeats;
+    private Double noOfSeatsLeft;
 }
