@@ -35,7 +35,7 @@ public class CreatorFeatureInfoControllerLandingPage1 {
             }
         }
     @GetMapping("/GetFeatureDetails")
-    public ResponseEntity<CreateDetailsForCreatorResponse>GetFeatureDetails(@RequestParam(name="userName") String userName ){
+    public ResponseEntity<CreateDetailsForCreatorResponse>GetFeatureDetails(@RequestParam(name="userName") String userName,@RequestParam("flag") Boolean flag ){
         if (userName==null) {
             return new ResponseEntity<>
                     (new CreateDetailsForCreatorResponse
@@ -43,7 +43,7 @@ public class CreatorFeatureInfoControllerLandingPage1 {
                                     "Invalid Request", null), HttpStatus.BAD_REQUEST);
 
         }try {
-            return creatorFeatureInfoService.GetCreatorPersonalieFeature(userName);
+            return creatorFeatureInfoService.GetCreatorPersonalieFeature(userName,flag);
         } catch (Exception e) {
             return new ResponseEntity<>(new CreateDetailsForCreatorResponse
                     (

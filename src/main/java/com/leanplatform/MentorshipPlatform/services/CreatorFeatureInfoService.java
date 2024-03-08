@@ -12,6 +12,6 @@ import java.util.UUID;
 @Service
 public interface CreatorFeatureInfoService {
     public ResponseEntity<CreateDetailsForCreatorResponse>AddCreatorPersonalieFeature(String userName,  CreateDetailsRequest createDetailsRequest);
-    public ResponseEntity<CreateDetailsForCreatorResponse>GetCreatorPersonalieFeature(String userId);
+    public ResponseEntity<CreateDetailsForCreatorResponse>GetCreatorPersonalieFeature(String userId,Boolean flag);
 
 }
