@@ -15,7 +15,7 @@ public interface CoursesService {
     ResponseEntity<AddCoursesResponse> createCourse(String userName, AddCourseRequest addCourseRequest);
 //    ResponseEntity<AddCoursesResponse> getCousreOfMentor(String userName);
      ResponseEntity<AddCoursesResponse>updateCourse( UUID courseId,AddCourseRequest addCourseRequest);
-    ResponseEntity<AddCoursesResponse>getCourses(UUID userId);
+    ResponseEntity<AddCoursesResponse>getCourses(String userName);
     ResponseEntity<AddCoursesResponse>enableOrDisableCourse(UUID courseId,AddCourseRequest addCourseRequest);
    ResponseEntity<ExtraDetailsResponse>addExtraDetailsOfCourse(UUID courseId , ExtraDeatilsRequest extraDeatilsRequest );
 

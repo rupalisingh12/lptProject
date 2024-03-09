@@ -110,12 +110,12 @@ public class CoursesServiceImpl implements CoursesService {
 
 
    }
-   public ResponseEntity<AddCoursesResponse>getCourses(UUID userId){
-        if(userId==null){
+   public ResponseEntity<AddCoursesResponse>getCourses(String userName){
+        if(userName==null){
             return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
 
         }
-       List<Courses> courses= coursesRepository.findByUserId(userId);
+       List<Courses> courses= coursesRepository.findByUserName(userName);
         List<AddCoursesResponseDTO>ans=new ArrayList<>();
         for(int i=0;i<courses.size();i++){
             AddCoursesResponseDTO addCoursesResponseDTO=  CoursesMapper.convertEntityToDto(courses.get(i));

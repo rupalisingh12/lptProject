@@ -77,13 +77,13 @@ public class CoursesController {
 
     }
     @GetMapping("/getCourses")
-    public ResponseEntity<AddCoursesResponse>getCourse(@RequestParam("userId")UUID userId){
-        if(userId==null){
+    public ResponseEntity<AddCoursesResponse>getCourse(@RequestParam("userName")String userName){
+        if(userName==null){
             return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
 
         }
         try{
-           return coursesService.getCourses(userId);
+           return coursesService.getCourses(userName);
         }
         catch  (Exception e) {
             return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null), HttpStatus.BAD_REQUEST);

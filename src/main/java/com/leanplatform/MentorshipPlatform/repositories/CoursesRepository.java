@@ -14,6 +14,7 @@ public interface CoursesRepository extends JpaRepository<Courses, UUID> {
     List<Courses> findByUserId(UUID userId);
    // List<Courses>findByUserNameAndIsEnabledOrDisabled(String userName,Boolean isEnabledOrDisabled );
     // CoursesRepository interface
+   List<Courses> findByUserName(String userName);
     List<Courses> findByUserNameAndIsEnabled(String userName, Boolean isEnabled);
 
 
