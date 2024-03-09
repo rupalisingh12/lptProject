@@ -5,23 +5,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class AddCourseRequest {
-   // private UUID courseId;
-    private String name;
+public class ExtraDetailsResponseDTO {
+    private String about;
+    private String field1;
+    private String field2;
+    private String field3;
+    private String instructorName;
     private Double price;
     private String description;
     private Double discount;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
-    private LocalDateTime duration;
+    private Duration duration;
     private Double totalNoOfSeats;
     private Double noOfSeatsLeft;
-    private Boolean isEnabled;
+
 }

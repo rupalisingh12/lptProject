@@ -1,6 +1,5 @@
 package com.leanplatform.MentorshipPlatform.dto.CoursesController;
 
-import com.leanplatform.MentorshipPlatform.dto.BookingController.CreateBookingDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AddCoursesResponse {
+public class ExtraDetailsResponse {
     private String statusCode;
     private String responseMessage;
-    private List<AddCoursesResponseDTO> addCoursesResponseDTO;
-
-
+    private ExtraDetailsResponseDTO extraDetailsResponseDTO;
 }

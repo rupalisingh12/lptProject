@@ -8,7 +8,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,23 +18,16 @@ import java.util.UUID;
 @Setter
 @Getter
 @ToString
-public class Courses {
+public class ExtraDetailsOfCourses {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID extraDetailsOfCourses;
+    private String about;
     private UUID courseId;
-    private String name;
-    private Double price;
-    private UUID userId;
-    private String userName;
-    private Boolean isEnabled;
-    private String description;
-    private Double discount;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
-    private Duration duration;
-    private Double totalNoOfSeats;
-    private Double noOfSeatsLeft;
+    private String field1;
+    private String field2;
+    private String field3;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @CreationTimestamp

@@ -2,17 +2,14 @@ package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponseDTO;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
+import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.BelowApplySection;
 import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailabilityButtonsDto;
-import com.leanplatform.MentorshipPlatform.entities.CreatorFeatureInfo;
-import com.leanplatform.MentorshipPlatform.entities.FeedBackFeature;
-import com.leanplatform.MentorshipPlatform.entities.LandingPage1;
-import com.leanplatform.MentorshipPlatform.entities.UserEntity;
+import com.leanplatform.MentorshipPlatform.entities.*;
+import com.leanplatform.MentorshipPlatform.mappers.CoursesMapper;
 import com.leanplatform.MentorshipPlatform.mappers.FeedBackFeatureMapper;
-import com.leanplatform.MentorshipPlatform.repositories.CreatorFeatureInfoRepository;
-import com.leanplatform.MentorshipPlatform.repositories.FeedBackFeatureRepository;
-import com.leanplatform.MentorshipPlatform.repositories.LandingPage1Repository;
-import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
+import com.leanplatform.MentorshipPlatform.repositories.*;
 import com.leanplatform.MentorshipPlatform.services.CreatorFeatureInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +26,8 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
     CreatorFeatureInfoRepository creatorFeatureInfoRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CoursesRepository coursesRepository;
     @Autowired
     LandingPage1Repository landingPageRepository;
     @Autowired
@@ -220,10 +219,19 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         }
 
         CreatorFeatureInfo creatorFeatureInfo = creatorFeatureInfoRepository.findByUserName(userName);
+        List<Courses> courses=coursesRepository.findByUserNameAndIsEnabled(userName,true);
+        List<AddCoursesResponseDTO>ans=new ArrayList<>();
+        for(int i=0;i<courses.size();i++){
+            AddCoursesResponseDTO addCoursesResponseDTO=  CoursesMapper.convertEntityToDto(courses.get(i));
+            ans.add(addCoursesResponseDTO);
+
+        }
+
 
         CreateDetailsForCreatorDto createDetailsForCreatorDto = new CreateDetailsForCreatorDto();
         createDetailsForCreatorDto.setSlot(creatorFeatureInfo.getSlot());
         createDetailsForCreatorDto.setLeadGenForm(creatorFeatureInfo.getLeadGenForm());
+        createDetailsForCreatorDto.setAddCoursesResponseDTO(ans);
         createDetailsForCreatorDto.setMasterClass(creatorFeatureInfo.getMasterClass());
         LandingPageResponse landingPageResponse = new LandingPageResponse();
         LandingPage1 landingPage = landingPageRepository.findByUserName(userName);

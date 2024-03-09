@@ -3,6 +3,8 @@ package com.leanplatform.MentorshipPlatform.controllers;
 import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.UpdateAvailabiliityNewResponse;
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCourseRequest;
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponse;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDeatilsRequest;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDetailsResponse;
 import com.leanplatform.MentorshipPlatform.services.CoursesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +24,11 @@ public class CoursesController {
     // what should happen, should it geted saved or what do we expect
     @PostMapping("/addCourses")
     public ResponseEntity<AddCoursesResponse> addNewCourses(@RequestParam("userName") String userName, @RequestBody AddCourseRequest addCourseRequest) {
-        if (userName == null || addCourseRequest == null) {
+        if (userName == null || addCourseRequest == null
+                || addCourseRequest.getName()==null ||
+                addCourseRequest.getPrice()==null || addCourseRequest.getDescription()==null ||
+                addCourseRequest.getStartDateTime()==null  ||addCourseRequest.getEndDateTime()==null ||
+                addCourseRequest.getTotalNoOfSeats()==null) {
             return new ResponseEntity<>(new AddCoursesResponse
                     ("0",
                             "Null request recieved ", null
@@ -58,6 +64,96 @@ public class CoursesController {
 //                    ), HttpStatus.BAD_REQUEST);
 //        }
 //    }
+    @PutMapping("/updateCourse")
+    public ResponseEntity<AddCoursesResponse>UpdateCourse( @RequestParam("courseId")UUID courseId ,@RequestBody AddCourseRequest addCourseRequest) {
+        if (courseId == null || addCourseRequest == null) {
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+        }
+        try {
+            return coursesService.updateCourse(courseId, addCourseRequest);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    @GetMapping("/getCourses")
+    public ResponseEntity<AddCoursesResponse>getCourse(@RequestParam("userId")UUID userId){
+        if(userId==null){
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+
+        }
+        try{
+           return coursesService.getCourses(userId);
+        }
+        catch  (Exception e) {
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null), HttpStatus.BAD_REQUEST);
+
+        }
+    }
+    @PutMapping("/enableOrDisable")
+    public ResponseEntity<AddCoursesResponse>updateENableOrDisabe(@RequestParam("courseId")UUID courseId,@RequestBody AddCourseRequest addCourseRequest){
+        if(courseId==null){
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+
+        }
+        try{
+           return coursesService.enableOrDisableCourse(courseId,addCourseRequest);
+        }
+        catch  (Exception e) {
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null), HttpStatus.BAD_REQUEST);
+
+        }
+    }
+    //extraDeatils which will be shown on the website of the user
+    //post api of extra details(nopt used from fronted , will only be used to put data manually in the db
 
 
-}
+    // this will be done on the website
+    @PostMapping("/addExtraDetails")
+    public ResponseEntity<ExtraDetailsResponse>addExtraDetails(@RequestParam("courseId")UUID courseId, @RequestBody ExtraDeatilsRequest extraDeatilsRequest ){
+        if(courseId==null){
+            return new ResponseEntity<>(new ExtraDetailsResponse ("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+
+        }
+        try{
+           return coursesService.addExtraDetailsOfCourse(courseId,extraDeatilsRequest);
+        }
+        catch(Exception e){
+
+                return new ResponseEntity<>
+                        (new ExtraDetailsResponse
+                                ("0", "Caught in the catch block" + e.getLocalizedMessage(), null), HttpStatus.BAD_REQUEST);
+
+            }
+        }
+
+    @GetMapping("/getExtraDetails")
+   public ResponseEntity<ExtraDetailsResponse>getExtraDetails(@RequestParam("courseId")UUID courseId){
+    if(courseId==null){
+        return new ResponseEntity<>(
+                new ExtraDetailsResponse (
+                        "0", "Null request reciieved", null),
+                HttpStatus.BAD_REQUEST);
+
+    }
+    try{
+        return coursesService.getExtraDetails(courseId);
+    }
+    catch
+            (Exception e){
+
+                return new ResponseEntity<>
+                        (new ExtraDetailsResponse
+                                ("0", "Caught in the catch block" + e.getLocalizedMessage(), null), HttpStatus.BAD_REQUEST);
+
+            }
+        }
+    }
+
+
+
+
+
+
+
+
