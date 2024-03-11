@@ -1,4 +1,4 @@
-package com.leanplatform.MentorshipPlatform.entities;
+package com.leanplatform.MentorshipPlatform.entities.LandingPage;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
