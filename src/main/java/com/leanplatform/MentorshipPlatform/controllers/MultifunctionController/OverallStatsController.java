@@ -1,8 +1,7 @@
 package com.leanplatform.MentorshipPlatform.controllers.MultifunctionController;
 
 
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponse;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.OverallStats.*;
 import com.leanplatform.MentorshipPlatform.services.OverallStatsFeatureService.OverallStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
