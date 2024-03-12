@@ -1,14 +1,14 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.*;
-import com.leanplatform.MentorshipPlatform.entities.Courses;
-import com.leanplatform.MentorshipPlatform.entities.ExtraDetailsOfCourses;
-import com.leanplatform.MentorshipPlatform.entities.UserEntity;
-import com.leanplatform.MentorshipPlatform.mappers.CoursesMapper;
-import com.leanplatform.MentorshipPlatform.repositories.CoursesRepository;
-import com.leanplatform.MentorshipPlatform.repositories.ExtraDetailsCOursesRepository;
-import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
-import com.leanplatform.MentorshipPlatform.services.CoursesService;
+import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.Courses;
+import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.ExtraDetailsOfCourses;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
+import com.leanplatform.MentorshipPlatform.mappers.CourseMapper.CoursesMapper;
+import com.leanplatform.MentorshipPlatform.repositories.CoursesFeatureRepository.CoursesRepository;
+import com.leanplatform.MentorshipPlatform.repositories.CoursesFeatureRepository.ExtraDetailsCOursesRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;
+import com.leanplatform.MentorshipPlatform.services.CoursesService.CoursesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

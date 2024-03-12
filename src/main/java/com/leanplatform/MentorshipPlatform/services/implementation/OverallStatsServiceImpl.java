@@ -1,14 +1,17 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.OverallStats.*;
-import com.leanplatform.MentorshipPlatform.entities.Mentee;
-import com.leanplatform.MentorshipPlatform.entities.Mentor;
-import com.leanplatform.MentorshipPlatform.entities.MentorRequest;
-import com.leanplatform.MentorshipPlatform.mappers.StatsMapper;
-import com.leanplatform.MentorshipPlatform.repositories.*;
-import com.leanplatform.MentorshipPlatform.services.OverallStatsService;
+import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Mentee;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.Mentor;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.MentorRequest;
+import com.leanplatform.MentorshipPlatform.mappers.OverallStatsMapper.StatsMapper;
+import com.leanplatform.MentorshipPlatform.repositories.AvailabilityFeatureRepository.AvailabilityRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.MentorRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.MentorRequestRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.MenteeRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.SessionRepository;
+import com.leanplatform.MentorshipPlatform.services.OverallStatsFeatureService.OverallStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

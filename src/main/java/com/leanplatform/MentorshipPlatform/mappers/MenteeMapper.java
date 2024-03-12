@@ -1,7 +1,7 @@
 package com.leanplatform.MentorshipPlatform.mappers;
 
 import com.leanplatform.MentorshipPlatform.dto.MenteeController.MenteeAccount;
-import com.leanplatform.MentorshipPlatform.entities.Mentee;
+import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Mentee;
 
 public class MenteeMapper {
     public static Mentee convertDtoToEntity(MenteeAccount menteeAccount){

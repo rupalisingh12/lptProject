@@ -3,15 +3,14 @@ package com.leanplatform.MentorshipPlatform.services.implementation;
 import com.leanplatform.MentorshipPlatform.dto.MenteeController.MenteeAccount;
 import com.leanplatform.MentorshipPlatform.dto.MenteeController.MenteeAdditionalDetails;
 import com.leanplatform.MentorshipPlatform.dto.MenteeController.MenteeModified;
-import com.leanplatform.MentorshipPlatform.entities.Mentee;
+import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Mentee;
 import com.leanplatform.MentorshipPlatform.mappers.MenteeMapper;
-import com.leanplatform.MentorshipPlatform.repositories.MenteeRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.MenteeRepository;
 import com.leanplatform.MentorshipPlatform.services.MenteeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 

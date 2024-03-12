@@ -2,8 +2,8 @@ package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.ServicesOfferedController.AddServiceResponse;
 import com.leanplatform.MentorshipPlatform.dto.ServicesOfferedController.ServiceToAdd;
-import com.leanplatform.MentorshipPlatform.entities.ServicesOffered;
-import com.leanplatform.MentorshipPlatform.repositories.ServicesOfferedRepository;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.ServicesOffered;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.ServicesOfferedRepository;
 import com.leanplatform.MentorshipPlatform.services.ServicesOfferedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

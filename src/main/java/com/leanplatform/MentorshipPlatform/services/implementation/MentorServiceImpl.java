@@ -1,32 +1,23 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
-import com.beust.ah.A;
 import com.leanplatform.MentorshipPlatform.dto.AdminController.AddFurtherDetails;
 import com.leanplatform.MentorshipPlatform.dto.AdminController.AdminAddsDetailsResponse;
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.DeleteMentorRequestObject;
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorRequestDeletedResponse;
 import com.leanplatform.MentorshipPlatform.dto.MentorController.*;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponse;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.ActiveMentorsResponseDTO;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponse;
-import com.leanplatform.MentorshipPlatform.dto.OverallStats.RegisteredMentorsResponseDTO;
-import com.leanplatform.MentorshipPlatform.entities.Mentor;
-import com.leanplatform.MentorshipPlatform.entities.MentorRequest;
-import com.leanplatform.MentorshipPlatform.entities.ServicesByMentors;
-import com.leanplatform.MentorshipPlatform.entities.ServicesOffered;
-import com.leanplatform.MentorshipPlatform.mappers.MentorToMentorSearchResponseMapper;
-import com.leanplatform.MentorshipPlatform.mappers.ServicesByMentorsMapper;
-import com.leanplatform.MentorshipPlatform.mappers.StatsMapper;
-import com.leanplatform.MentorshipPlatform.repositories.MentorRepository;
-import com.leanplatform.MentorshipPlatform.repositories.ServicesByMentorsRepository;
-import com.leanplatform.MentorshipPlatform.repositories.ServicesOfferedRepository;
-import com.leanplatform.MentorshipPlatform.services.MentorService;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.Mentor;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.ServicesByMentors;
+import com.leanplatform.MentorshipPlatform.mappers.MentorMapper.MentorToMentorSearchResponseMapper;
+import com.leanplatform.MentorshipPlatform.mappers.MentorMapper.ServicesByMentorsMapper;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.MentorRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.ServicesByMentorsRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.ServicesOfferedRepository;
+import com.leanplatform.MentorshipPlatform.services.MentorService.MentorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
