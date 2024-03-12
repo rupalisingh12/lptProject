@@ -2,8 +2,8 @@ package com.leanplatform.MentorshipPlatform.services.implementation.FeedBackFeat
 import com.leanplatform.MentorshipPlatform.entities.FeedBackFeatureWhole.*;
 import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.*;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
-import com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureMapper.FeedBackFeatureMapper;
-import com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureMapper.SuggestionMapper;
+import com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureFunctionalityMapper.FeedBackFeatureMapper;
+import com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureFunctionalityMapper.SuggestionMapper;
 import com.leanplatform.MentorshipPlatform.repositories.FeedBackFeatureWholeRepository.*;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.FeedBackFeatureWholeService.FeedBackFeatureService;

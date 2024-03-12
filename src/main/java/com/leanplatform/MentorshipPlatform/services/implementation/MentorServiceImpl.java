@@ -7,8 +7,8 @@ import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorReq
 import com.leanplatform.MentorshipPlatform.dto.MentorController.*;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.Mentor;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.ServicesByMentors;
-import com.leanplatform.MentorshipPlatform.mappers.MentorMapper.MentorToMentorSearchResponseMapper;
-import com.leanplatform.MentorshipPlatform.mappers.MentorMapper.ServicesByMentorsMapper;
+import com.leanplatform.MentorshipPlatform.mappers.MentorFunctionalityMapper.MentorToMentorSearchResponseMapper;
+import com.leanplatform.MentorshipPlatform.mappers.MentorFunctionalityMapper.ServicesByMentorsMapper;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.MentorRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.ServicesByMentorsRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.ServicesOfferedRepository;

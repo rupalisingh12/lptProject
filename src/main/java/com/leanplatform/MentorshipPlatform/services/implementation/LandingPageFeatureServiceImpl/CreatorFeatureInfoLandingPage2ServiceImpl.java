@@ -10,7 +10,7 @@ import com.leanplatform.MentorshipPlatform.entities.LandingPage.CreatorFeatureIn
 import com.leanplatform.MentorshipPlatform.entities.FeedBackFeatureWhole.FeedBackFeature;
 import com.leanplatform.MentorshipPlatform.entities.LandingPage.LandingPage2;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
-import com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureMapper.FeedBackFeatureMapper;
+import com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureFunctionalityMapper.FeedBackFeatureMapper;
 import com.leanplatform.MentorshipPlatform.repositories.LandingPageFeatureRepository.CreatorFeatureInfoRepository;
 import com.leanplatform.MentorshipPlatform.repositories.FeedBackFeatureWholeRepository.FeedBackFeatureRepository;
 import com.leanplatform.MentorshipPlatform.repositories.LandingPageFeatureRepository.LandingPage2Repository;

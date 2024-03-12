@@ -5,7 +5,7 @@ import com.leanplatform.MentorshipPlatform.entities.AvailabiliyFeature.Availabil
 import com.leanplatform.MentorshipPlatform.entities.EventTypeFeature.EventType;
 import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Schedule;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
-import com.leanplatform.MentorshipPlatform.mappers.ScheduleMapper.ScheduleMapper;
+import com.leanplatform.MentorshipPlatform.mappers.ScheduleFunctionalityMapper.ScheduleMapper;
 import com.leanplatform.MentorshipPlatform.repositories.AvailabilityFeatureRepository.AvailabilityV2Repository;
 import com.leanplatform.MentorshipPlatform.repositories.EventTypeRepository.EventTypesRepository;
 import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository.ScheduleRepository;

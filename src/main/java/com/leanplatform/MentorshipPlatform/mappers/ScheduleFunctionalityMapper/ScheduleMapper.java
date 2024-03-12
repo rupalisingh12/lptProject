@@ -1,4 +1,4 @@
-package com.leanplatform.MentorshipPlatform.mappers.ScheduleMapper;
+package com.leanplatform.MentorshipPlatform.mappers.ScheduleFunctionalityMapper;
 
 import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.UpdateAvailabilityNewResponseDTO;
 import com.leanplatform.MentorshipPlatform.dto.ScheduleController.*;

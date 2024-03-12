@@ -1,4 +1,4 @@
-package com.leanplatform.MentorshipPlatform.mappers.MentorMapper;
+package com.leanplatform.MentorshipPlatform.mappers.MentorFunctionalityMapper;
 
 import com.leanplatform.MentorshipPlatform.dto.MentorController.MentorSearchResponseDto;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.Mentor;

@@ -10,7 +10,7 @@ import com.leanplatform.MentorshipPlatform.entities.MentorEntity.Mentor;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.MentorRequest;
 import com.leanplatform.MentorshipPlatform.enums.MentorEnums;
 import com.leanplatform.MentorshipPlatform.enums.RequestAction;
-import com.leanplatform.MentorshipPlatform.mappers.MentorMapper.MentorMapper;
+import com.leanplatform.MentorshipPlatform.mappers.MentorFunctionalityMapper.MentorMapper;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.MentorRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.MentorRequestRepository;
 import com.leanplatform.MentorshipPlatform.services.AdminChecksRequestsDtoService;

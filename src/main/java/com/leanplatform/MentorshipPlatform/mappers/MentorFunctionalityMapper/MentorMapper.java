@@ -1,4 +1,4 @@
-package com.leanplatform.MentorshipPlatform.mappers.MentorMapper;
+package com.leanplatform.MentorshipPlatform.mappers.MentorFunctionalityMapper;
 
 import com.leanplatform.MentorshipPlatform.dto.MentorAccountController.MentorRequestObject;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.MentorRequest;

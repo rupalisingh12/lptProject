@@ -1,4 +1,4 @@
-package com.leanplatform.MentorshipPlatform.mappers.CourseMapper;
+package com.leanplatform.MentorshipPlatform.mappers.CourseFeatureMapper;
 
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponseDTO;
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDetailsResponseDTO;

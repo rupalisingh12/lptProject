@@ -7,7 +7,7 @@ import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
 import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Attendee;
 import com.leanplatform.MentorshipPlatform.enums.BookingEnums;
 import com.leanplatform.MentorshipPlatform.mappers.AvailabilityFeatureMapper.AvailabilityV2Mapper;
-import com.leanplatform.MentorshipPlatform.mappers.BookingMapper.BookingMapper;
+import com.leanplatform.MentorshipPlatform.mappers.BookingFunctnalityMapper.BookingMapper;
 import com.leanplatform.MentorshipPlatform.repositories.BookingFeatureRepository.BookingRepository;
 import com.leanplatform.MentorshipPlatform.repositories.EventTypeRepository.EventTypesRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;

@@ -1,4 +1,4 @@
-package com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureMapper;
+package com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureFunctionalityMapper;
 import com.leanplatform.MentorshipPlatform.entities.FeedBackFeatureWhole.*;
 import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.AddContactResponseDTO;
 import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.AddFeedBackDetailsResponseDTO;

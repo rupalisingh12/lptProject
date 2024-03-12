@@ -4,7 +4,7 @@ import com.leanplatform.MentorshipPlatform.dto.CoursesController.*;
 import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.Courses;
 import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.ExtraDetailsOfCourses;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
-import com.leanplatform.MentorshipPlatform.mappers.CourseMapper.CoursesMapper;
+import com.leanplatform.MentorshipPlatform.mappers.CourseFeatureMapper.CoursesMapper;
 import com.leanplatform.MentorshipPlatform.repositories.CoursesFeatureRepository.CoursesRepository;
 import com.leanplatform.MentorshipPlatform.repositories.CoursesFeatureRepository.ExtraDetailsCOursesRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;

@@ -1,4 +1,4 @@
-package com.leanplatform.MentorshipPlatform.mappers.BookingMapper;
+package com.leanplatform.MentorshipPlatform.mappers.BookingFunctnalityMapper;
 
 import com.leanplatform.MentorshipPlatform.dto.BookingController.CreateBookingDTO;
 import com.leanplatform.MentorshipPlatform.dto.BookingController.UserDTO;

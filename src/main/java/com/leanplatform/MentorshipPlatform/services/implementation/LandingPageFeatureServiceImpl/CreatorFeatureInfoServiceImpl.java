@@ -11,8 +11,8 @@ import com.leanplatform.MentorshipPlatform.entities.FeedBackFeatureWhole.FeedBac
 import com.leanplatform.MentorshipPlatform.entities.LandingPage.CreatorFeatureInfo;
 import com.leanplatform.MentorshipPlatform.entities.LandingPage.LandingPage1;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
-import com.leanplatform.MentorshipPlatform.mappers.CourseMapper.CoursesMapper;
-import com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureMapper.FeedBackFeatureMapper;
+import com.leanplatform.MentorshipPlatform.mappers.CourseFeatureMapper.CoursesMapper;
+import com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureFunctionalityMapper.FeedBackFeatureMapper;
 import com.leanplatform.MentorshipPlatform.repositories.CoursesFeatureRepository.CoursesRepository;
 import com.leanplatform.MentorshipPlatform.repositories.FeedBackFeatureWholeRepository.FeedBackFeatureRepository;
 import com.leanplatform.MentorshipPlatform.repositories.LandingPageFeatureRepository.CreatorFeatureInfoRepository;
