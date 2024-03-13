@@ -2,13 +2,12 @@ package com.leanplatform.MentorshipPlatform.services.implementation.LandingPageF
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponse;
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponseDTO;
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddHeadingRequest;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.*;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.BelowApplySection;
 import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailabilityButtonsDto;
 import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.Courses;
+import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.ExtraDetailsOfCourses;
 import com.leanplatform.MentorshipPlatform.entities.FeedBackFeatureWhole.FeedBackFeature;
 import com.leanplatform.MentorshipPlatform.entities.LandingPage.CreatorFeatureInfo;
 import com.leanplatform.MentorshipPlatform.entities.LandingPage.LandingPage1;
@@ -16,6 +15,7 @@ import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
 import com.leanplatform.MentorshipPlatform.mappers.CourseFeatureMapper.CoursesMapper;
 import com.leanplatform.MentorshipPlatform.mappers.FeadBackFeatureFunctionalityMapper.FeedBackFeatureMapper;
 import com.leanplatform.MentorshipPlatform.repositories.CoursesFeatureRepository.CoursesRepository;
+import com.leanplatform.MentorshipPlatform.repositories.CoursesFeatureRepository.ExtraDetailsCOursesRepository;
 import com.leanplatform.MentorshipPlatform.repositories.FeedBackFeatureWholeRepository.FeedBackFeatureRepository;
 import com.leanplatform.MentorshipPlatform.repositories.LandingPageFeatureRepository.CreatorFeatureInfoRepository;
 import com.leanplatform.MentorshipPlatform.repositories.LandingPageFeatureRepository.LandingPage1Repository;
@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService {
@@ -38,6 +39,8 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
     UserRepository userRepository;
     @Autowired
     CoursesRepository coursesRepository;
+    @Autowired
+    ExtraDetailsCOursesRepository extraDetailsCOursesRepository;
     @Autowired
     LandingPage1Repository landingPageRepository;
     @Autowired
@@ -234,14 +237,28 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
             return new ResponseEntity<>(new CreateDetailsForCreatorResponse ("0", "This user does not exist in the db", null), HttpStatus.BAD_REQUEST);
 
         }
+        List<ExtraDetailsResponseDTO>ans=new ArrayList<>();
         String name= userEntity.getName();
         List<Courses> courses=coursesRepository.findByUserNameAndIsEnabled(userName,true);
-        List<AddCoursesResponseDTO>ans=new ArrayList<>();
-        for(int i=0;i<courses.size();i++){
-            AddCoursesResponseDTO addCoursesResponseDTO=  CoursesMapper.convertEntityToDto(courses.get(i),name);
-            ans.add(addCoursesResponseDTO);
 
+
+        for(int j=0;j<courses.size();j++){
+            Courses courses1=courses.get(j);
+           UUID courseId1= courses1.getCourseId();
+            ExtraDetailsOfCourses extraDetailsOfCourses= extraDetailsCOursesRepository.findByCourseId(courseId1);
+            ExtraDetailsResponseDTO extraDetailsResponseDTO= CoursesMapper.convertEntityToDTO1(courses1,extraDetailsOfCourses,name);
+            ans.add(extraDetailsResponseDTO);
         }
+
+
+
+
+//        List<ExtraDetailsResponseDTO>ans=new ArrayList<>();
+//        for(int i=0;i<courses.size();i++){
+//            ExtraDetailsResponseDTO addCoursesResponseDTO=  CoursesMapper.convertEntityToDtoForExtraDetails(courses.get(i),name);
+//            ans.add(addCoursesResponseDTO);
+//
+//        }
 
 
         CreateDetailsForCreatorDto createDetailsForCreatorDto = new CreateDetailsForCreatorDto();
@@ -258,7 +275,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         addCourseResponse2.setTitle(landingPage.getTitle());
         addCourseResponse2.setHeading(landingPage.getHeading());
         addCourseResponse2.setSubHeading(landingPage.getSubHeading());
-        addCourseResponse2.setAddCoursesResponseDTOS(ans);
+        addCourseResponse2.setExtraDetailsResponseDTOS(ans);
         createDetailsForCreatorDto.setAddCourseResponse2(addCourseResponse2);
 //        try {
 //            String ans = landingPage.getHeroDto();

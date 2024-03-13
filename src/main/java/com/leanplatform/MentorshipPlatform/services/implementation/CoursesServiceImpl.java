@@ -54,6 +54,13 @@ public class CoursesServiceImpl implements CoursesService {
                             "Null request recieved ", null
                     ), HttpStatus.BAD_REQUEST);
         }
+       UserEntity user= userRepository.findByUserName(userName);
+        if(user==null){
+            return new ResponseEntity<>(new AddCoursesResponse
+                    ("0",
+                            "The user does not exist in the db ", null
+                    ), HttpStatus.BAD_REQUEST);
+        }
         Courses courses=new Courses();
         courses.setDiscount(addCourseRequest.getDiscount());
         courses.setName(addCourseRequest.getName());
@@ -74,15 +81,8 @@ public class CoursesServiceImpl implements CoursesService {
 
         courses.setIsEnabled(addCourseRequest.getIsEnabled());
         courses.setNoOfSeatsLeft(addCourseRequest.getNoOfSeatsLeft());
-        UserEntity userEntity=userRepository.findByUserName(userName);
-        if(userEntity==null){
-            return new ResponseEntity<>(new AddCoursesResponse
-                    ("0",
-                            "This user does not exist in the db ", null
-                    ), HttpStatus.BAD_REQUEST);
-        }
-        courses.setUserId(userEntity.getUserId());
-        courses.setUserName(userEntity.getUserName());
+        courses.setUserId(user.getUserId());
+        courses.setUserName(user.getUserName());
         coursesRepository.save(courses);
         return new ResponseEntity<>(new AddCoursesResponse("1","The courses details has been saved ",null),HttpStatus.CREATED);
 
@@ -238,19 +238,21 @@ public class CoursesServiceImpl implements CoursesService {
                             HttpStatus.BAD_REQUEST);
         }
         ExtraDetailsOfCourses extraDetailsOfCourses = new ExtraDetailsOfCourses();
-        extraDetailsOfCourses.setAbout(extraDeatilsRequest.getAbout());
-        extraDetailsOfCourses.setField1(extraDeatilsRequest.getField1());
-        extraDetailsOfCourses.setField4(extraDeatilsRequest.getField4());
+       // extraDetailsOfCourses.setAbout(extraDeatilsRequest.getAbout());
         extraDetailsOfCourses.setCourseId(courseId);
-        extraDetailsOfCourses.setField2(extraDeatilsRequest.getField2());
-        extraDetailsOfCourses.setField3(extraDeatilsRequest.getField3());
-        extraDetailsOfCourses.setField6(extraDeatilsRequest.getField6());
-        extraDetailsOfCourses.setField5(extraDeatilsRequest.getField5());
+        extraDetailsOfCourses.setWhoThisCourseIsFor(extraDeatilsRequest.getWhoThisCourseIsFor());
+        extraDetailsOfCourses.setOverview(extraDeatilsRequest.getOverview());
+        extraDetailsOfCourses.setThisCourseIncludes(extraDeatilsRequest.getThisCourseIncludes());
+
+       // extraDetailsOfCourses.setField2(extraDeatilsRequest.getField2());
+       // extraDetailsOfCourses.setField3(extraDeatilsRequest.getField3());
+       // extraDetailsOfCourses.setField6(extraDeatilsRequest.getField6());
+       // extraDetailsOfCourses.setField5(extraDeatilsRequest.getField5());
 
         extraDetailsCOursesRepository.save(extraDetailsOfCourses);
         return new ResponseEntity<>(
                 new ExtraDetailsResponse(
-                        "1", "The course enabledOrdisabled is updated  ", null)
+                        "1", "The extra details has been saved  ", null)
                 , HttpStatus.OK);
 
     }
@@ -274,7 +276,7 @@ public class CoursesServiceImpl implements CoursesService {
         ExtraDetailsResponseDTO extraDetailsResponseDTO= CoursesMapper.convertEntityToDTO1(courses ,extraDetailsOfCourses,name1);
         return new ResponseEntity<>(
                 new ExtraDetailsResponse(
-                        "1", "The course enabledOrdisabled is updated  ",extraDetailsResponseDTO )
+                        "1", "The course extra details are : ",extraDetailsResponseDTO )
                 , HttpStatus.OK);
 
     }

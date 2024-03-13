@@ -8,26 +8,31 @@ import lombok.Setter;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ExtraDetailsResponseDTO {
-    private String instructorName;
+public class CourseResponseCombinedDTO {
+    private UUID courseId;
+    private String name;
     private Double price;
     private String description;
     private Double discount;
-    private String overview;
-    private List<String> whoThisCourseIsFor;
-    private String fileUrls;
-    private String name;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
-    private List<String>thisCourseIncludes;
-
+    private String courseStatus;
+    private String fileUrls;
     private Duration duration;
+    private String instructorName;
     private Double totalNoOfSeats;
     private Double noOfSeatsLeft;
+    private String overview;
+    private List<String> whoThisCourseIsFor;
+
+
+
+
 
 }

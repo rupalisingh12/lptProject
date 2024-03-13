@@ -24,14 +24,10 @@ public class ExtraDetailsOfCourses {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID extraDetailsOfCourses;
-    private String about;
     private UUID courseId;
-    private String field1;
-    private String field2;
-    private String field3;
-    private List<String> field4;
-    private String field5;
-    private List<String> field6;
+    private String overview;
+    private List<String> whoThisCourseIsFor;
+    private List<String>thisCourseIncludes;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @CreationTimestamp

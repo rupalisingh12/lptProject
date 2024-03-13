@@ -1,6 +1,8 @@
 package com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController;
 
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.CourseResponseCombinedDTO;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDetailsResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +18,5 @@ public class AddCourseResponse2 {
     private String title;
     private String heading;
     private String subHeading;
-    private List<AddCoursesResponseDTO> addCoursesResponseDTOS;
+    private List<ExtraDetailsResponseDTO> extraDetailsResponseDTOS;
 }

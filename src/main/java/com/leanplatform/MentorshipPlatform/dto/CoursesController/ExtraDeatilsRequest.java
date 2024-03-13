@@ -12,12 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 public class ExtraDeatilsRequest {
-    private String about;
-    private String field1;
-    private String field2;
-    private String field3;
-    private List<String> field4;
-    private String field5;
-    private List<String> field6;
+    private String overview;
+    private List<String> whoThisCourseIsFor;
+    private List<String>thisCourseIncludes;
+
 
 }

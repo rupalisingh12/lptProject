@@ -1,6 +1,7 @@
 package com.leanplatform.MentorshipPlatform.mappers.CourseFeatureMapper;
 
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.CourseResponseCombinedDTO;
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDetailsResponseDTO;
 import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.Courses;
 import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.ExtraDetailsOfCourses;
@@ -27,26 +28,23 @@ public class CoursesMapper {
     }
     public static ExtraDetailsResponseDTO convertEntityToDTO1(Courses courses , ExtraDetailsOfCourses extraDetailsOfCourses,String name1){
         ExtraDetailsResponseDTO extraDetailsResponseDTO=new ExtraDetailsResponseDTO();
-        extraDetailsResponseDTO.setAbout(extraDetailsOfCourses.getAbout());
-        extraDetailsResponseDTO.setField1(extraDetailsOfCourses.getField1());
-        extraDetailsResponseDTO.setField2(extraDetailsOfCourses.getField2());
-        extraDetailsResponseDTO.setField3(extraDetailsOfCourses.getField3());
         extraDetailsResponseDTO.setDiscount(courses.getDiscount());
         extraDetailsResponseDTO.setDescription(courses.getDescription());
         extraDetailsResponseDTO.setName(courses.getName());
+        extraDetailsResponseDTO.setWhoThisCourseIsFor(extraDetailsOfCourses.getWhoThisCourseIsFor());
+        extraDetailsResponseDTO.setOverview(extraDetailsOfCourses.getOverview());
         extraDetailsResponseDTO.setPrice(courses.getPrice());
         extraDetailsResponseDTO.setDuration(courses.getDuration());
         extraDetailsResponseDTO.setStartDateTime(courses.getStartDateTime());
         extraDetailsResponseDTO.setInstructorName(name1);
-        extraDetailsResponseDTO.setField4(extraDetailsOfCourses.getField4());
-        extraDetailsResponseDTO.setField5(extraDetailsOfCourses.getField5());
-        extraDetailsResponseDTO.setField6(extraDetailsOfCourses.getField6());
         extraDetailsResponseDTO.setEndDateTime(courses.getEndDateTime());
         extraDetailsResponseDTO.setFileUrls(courses.getFileUrls());
+        extraDetailsResponseDTO.setThisCourseIncludes(extraDetailsOfCourses.getThisCourseIncludes());
         extraDetailsResponseDTO.setTotalNoOfSeats(courses.getTotalNoOfSeats());
         extraDetailsResponseDTO.setNoOfSeatsLeft(courses.getNoOfSeatsLeft());
         return  extraDetailsResponseDTO;
 
     }
+
 
 }
