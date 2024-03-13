@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,6 +29,9 @@ public class ExtraDetailsOfCourses {
     private String field1;
     private String field2;
     private String field3;
+    private List<String> field4;
+    private String field5;
+    private List<String> field6;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @CreationTimestamp

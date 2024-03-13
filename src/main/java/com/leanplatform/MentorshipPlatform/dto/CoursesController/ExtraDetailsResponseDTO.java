@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +22,11 @@ public class ExtraDetailsResponseDTO {
     private Double price;
     private String description;
     private Double discount;
+    private List<String> field4;
+    private String field5;
+    private List<String> field6;
+    private String fileUrls;
+    private String name;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Duration duration;

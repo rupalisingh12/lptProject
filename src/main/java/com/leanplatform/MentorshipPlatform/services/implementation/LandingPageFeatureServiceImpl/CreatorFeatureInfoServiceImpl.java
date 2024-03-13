@@ -2,7 +2,9 @@ package com.leanplatform.MentorshipPlatform.services.implementation.LandingPageF
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponse;
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponseDTO;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddHeadingRequest;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.BelowApplySection;
 import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailabilityButtonsDto;
@@ -227,10 +229,16 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         }
 
         CreatorFeatureInfo creatorFeatureInfo = creatorFeatureInfoRepository.findByUserName(userName);
+        UserEntity userEntity= userRepository.findByUserName(userName);
+        if(userEntity==null){
+            return new ResponseEntity<>(new CreateDetailsForCreatorResponse ("0", "This user does not exist in the db", null), HttpStatus.BAD_REQUEST);
+
+        }
+        String name= userEntity.getName();
         List<Courses> courses=coursesRepository.findByUserNameAndIsEnabled(userName,true);
         List<AddCoursesResponseDTO>ans=new ArrayList<>();
         for(int i=0;i<courses.size();i++){
-            AddCoursesResponseDTO addCoursesResponseDTO=  CoursesMapper.convertEntityToDto(courses.get(i));
+            AddCoursesResponseDTO addCoursesResponseDTO=  CoursesMapper.convertEntityToDto(courses.get(i),name);
             ans.add(addCoursesResponseDTO);
 
         }
@@ -239,10 +247,19 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         CreateDetailsForCreatorDto createDetailsForCreatorDto = new CreateDetailsForCreatorDto();
         createDetailsForCreatorDto.setSlot(creatorFeatureInfo.getSlot());
         createDetailsForCreatorDto.setLeadGenForm(creatorFeatureInfo.getLeadGenForm());
-        createDetailsForCreatorDto.setAddCoursesResponseDTO(ans);
+        AddCourseResponse2 addCourseResponse2=new AddCourseResponse2();
+//        addCourseResponse2.setTitle();
+//        createDetailsForCreatorDto.setAddCourseResponse2();
+//        createDetailsForCreatorDto.setAddCoursesResponseDTO(ans);
+
         createDetailsForCreatorDto.setMasterClass(creatorFeatureInfo.getMasterClass());
         LandingPageResponse landingPageResponse = new LandingPageResponse();
         LandingPage1 landingPage = landingPageRepository.findByUserName(userName);
+        addCourseResponse2.setTitle(landingPage.getTitle());
+        addCourseResponse2.setHeading(landingPage.getHeading());
+        addCourseResponse2.setSubHeading(landingPage.getSubHeading());
+        addCourseResponse2.setAddCoursesResponseDTOS(ans);
+        createDetailsForCreatorDto.setAddCourseResponse2(addCourseResponse2);
 //        try {
 //            String ans = landingPage.getHeroDto();
 //           HeroDto heroDto= createDetailsRequestFromJsonString(ans);
@@ -418,10 +435,33 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
                                 "The slot has been updated", null), HttpStatus.OK);
 
     }
+    public ResponseEntity<AddCoursesResponse>AddsHeading( String userName, AddHeadingRequest addHeadingRequest){
+        if (userName == null || addHeadingRequest==null) {
+            return new ResponseEntity<>(new AddCoursesResponse
+                    ("0",
+                            "Null request recieved ", null
+                    ), HttpStatus.BAD_REQUEST);
+
+        }
+        LandingPage1 landingPage = landingPageRepository.findByUserName(userName);
+        if(landingPage==null){
+            return new ResponseEntity<> (new AddCoursesResponse
+                    ("1",
+                            "The landing page of the user does not exist", null), HttpStatus.OK);
+        }
+        landingPage.setTitle(addHeadingRequest.getTitle());
+        landingPage.setSubHeading(addHeadingRequest.getSubheading());
+        landingPage.setHeading(addHeadingRequest.getHeading());
+        landingPageRepository.save(landingPage);
+        return new ResponseEntity<> (new AddCoursesResponse
+                ("1",
+                        "The headings are saved", null), HttpStatus.OK);
+    }
+    }
 
 
 
 
 
 
-}
+

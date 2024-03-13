@@ -1,5 +1,7 @@
 package com.leanplatform.MentorshipPlatform.controllers.LandingPageFeature;
 
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponse;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddHeadingRequest;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.CreateDetailsForCreatorResponse;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.CreateDetailsRequest;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.UpdateSlotRequest;
@@ -73,6 +75,24 @@ public class CreatorFeatureInfoControllerLandingPage1 {
                             null
                     ), HttpStatus.BAD_REQUEST);
 
+
+        }
+    }
+    @PostMapping("/addHeadings")
+    public ResponseEntity<AddCoursesResponse> addHeading(@RequestParam("userName") String userName, @RequestBody AddHeadingRequest addHeadingRequest) {
+        if (userName == null || addHeadingRequest==null) {
+            return new ResponseEntity<>(new AddCoursesResponse
+                    ("0",
+                            "Null request recieved ", null
+                    ), HttpStatus.BAD_REQUEST);
+        }
+        try {
+            return creatorFeatureInfoService.AddsHeading(userName, addHeadingRequest);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new AddCoursesResponse
+                    ("0","Caught in the catch block"+e.getLocalizedMessage()
+                            , null
+                    ), HttpStatus.BAD_REQUEST);
 
         }
     }

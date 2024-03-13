@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,5 +16,8 @@ public class ExtraDeatilsRequest {
     private String field1;
     private String field2;
     private String field3;
+    private List<String> field4;
+    private String field5;
+    private List<String> field6;
 
 }
