@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leanplatform.MentorshipPlatform.dto.CoursesController.*;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.*;
+import com.leanplatform.MentorshipPlatform.entities.CreatorCustomDomain;
+import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailabilityButtonsDto;
+import com.leanplatform.MentorshipPlatform.repositories.CreatorCustomDomainRepository;
 import com.leanplatform.MentorshipPlatform.dto.CreatorFeatureInfoController.BelowApplySection;
 import com.leanplatform.MentorshipPlatform.dto.FeedBackFeatureController.GetAvailabilityButtonsDto;
 import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.Courses;
@@ -45,6 +48,9 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
     LandingPage1Repository landingPageRepository;
     @Autowired
     FeedBackFeatureRepository feedBackFeatureRepository;
+
+    @Autowired
+    CreatorCustomDomainRepository customDomainRepository;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -215,7 +221,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
     }
 
 
-    public ResponseEntity<CreateDetailsForCreatorResponse> GetCreatorPersonalieFeature(String userName) {
+    public ResponseEntity<CreateDetailsForCreatorResponse> GetCreatorPersonalieFeature(String userName,Boolean flag) {
         if (userName == null) {
             return new ResponseEntity<>
                     (new CreateDetailsForCreatorResponse
@@ -223,6 +229,18 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
                                     "Invalid Request", null), HttpStatus.BAD_REQUEST);
 
 
+        }
+        if(flag.equals(true)){
+
+            CreatorCustomDomain customDomain=customDomainRepository.getByDomain(userName);
+            if(customDomain==null){
+                return new ResponseEntity<>
+                        (new CreateDetailsForCreatorResponse
+                                ("0",
+                                        "This user does not exist in creatureFeatureInfo", null), HttpStatus.NOT_FOUND);
+            }
+
+            userName=customDomain.getUsername();
         }
         if(creatorFeatureInfoRepository.findByUserName(userName)==null){
             return new ResponseEntity<>
