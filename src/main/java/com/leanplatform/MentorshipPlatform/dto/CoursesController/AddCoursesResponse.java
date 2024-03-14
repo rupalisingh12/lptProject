@@ -16,6 +16,8 @@ public class AddCoursesResponse {
     private String statusCode;
     private String responseMessage;
     private List<AddCoursesResponseDTO> addCoursesResponseDTO;
+    private DoMeetingResponseDTO doMeetingResponseDTO;
+
 
 
 }

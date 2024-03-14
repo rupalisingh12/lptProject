@@ -474,7 +474,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         if (userName == null || addHeadingRequest==null) {
             return new ResponseEntity<>(new AddCoursesResponse
                     ("0",
-                            "Null request recieved ", null
+                            "Null request recieved ", null,null
                     ), HttpStatus.BAD_REQUEST);
 
         }
@@ -482,7 +482,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         if(landingPage==null){
             return new ResponseEntity<> (new AddCoursesResponse
                     ("1",
-                            "The landing page of the user does not exist", null), HttpStatus.OK);
+                            "The landing page of the user does not exist", null,null), HttpStatus.OK);
         }
         landingPage.setTitle(addHeadingRequest.getTitle());
         landingPage.setSubHeading(addHeadingRequest.getSubheading());
@@ -490,7 +490,7 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
         landingPageRepository.save(landingPage);
         return new ResponseEntity<> (new AddCoursesResponse
                 ("1",
-                        "The headings are saved", null), HttpStatus.OK);
+                        "The headings are saved", null,null), HttpStatus.OK);
     }
     }
 

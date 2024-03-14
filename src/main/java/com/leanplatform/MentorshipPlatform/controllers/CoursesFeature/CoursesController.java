@@ -25,7 +25,7 @@ public class CoursesController {
                 addCourseRequest.getTotalNoOfSeats()==null) {
             return new ResponseEntity<>(new AddCoursesResponse
                     ("0",
-                            "Null request recieved ", null
+                            "Null request recieved ", null,null
                     ), HttpStatus.BAD_REQUEST);
         }
         try {
@@ -33,7 +33,7 @@ public class CoursesController {
         } catch (Exception e) {
             return new ResponseEntity<>(new AddCoursesResponse
                     ("0","Caught in the catch block"+e.getLocalizedMessage()
-                            , null
+                            , null,null
                     ), HttpStatus.BAD_REQUEST);
 
         }
@@ -59,42 +59,42 @@ public class CoursesController {
 //        }
 //    }
     @PutMapping("/updateCourse")
-    public ResponseEntity<AddCoursesResponse>UpdateCourse( @RequestParam("courseId")UUID courseId ,@RequestBody AddCourseRequest addCourseRequest) {
-        if (courseId == null || addCourseRequest == null) {
-            return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<AddCoursesResponse>UpdateCourse( @RequestParam("courseId")UUID courseId ,@RequestBody UpdateCourseRequest updateCourseRequest) {
+        if (courseId == null || updateCourseRequest == null) {
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null,null), HttpStatus.BAD_REQUEST);
         }
         try {
-            return coursesService.updateCourse(courseId, addCourseRequest);
+            return coursesService.updateCourse(courseId, updateCourseRequest);
         } catch (Exception e) {
-            return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null,null), HttpStatus.BAD_REQUEST);
         }
 
     }
     @GetMapping("/getCourses")
     public ResponseEntity<AddCoursesResponse>getCourse(@RequestParam("userName")String userName){
         if(userName==null){
-            return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null,null), HttpStatus.BAD_REQUEST);
 
         }
         try{
            return coursesService.getCourses(userName);
         }
         catch  (Exception e) {
-            return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null,null), HttpStatus.BAD_REQUEST);
 
         }
     }
     @PutMapping("/enableOrDisable")
     public ResponseEntity<AddCoursesResponse>updateENableOrDisabe(@RequestParam("courseId")UUID courseId,@RequestBody AddCourseRequest addCourseRequest){
         if(courseId==null){
-            return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null,null), HttpStatus.BAD_REQUEST);
 
         }
         try{
            return coursesService.enableOrDisableCourse(courseId,addCourseRequest);
         }
         catch  (Exception e) {
-            return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AddCoursesResponse("0", "Caught in the catch block" + e.getLocalizedMessage(), null,null), HttpStatus.BAD_REQUEST);
 
         }
     }
@@ -144,24 +144,40 @@ public class CoursesController {
         }
 
 
-    @GetMapping("/meetingToAddANewCourse")
-    public ResponseEntity<DoMeetingResponse>CreateNewCourseMeeting(@RequestParam("userName")String userName){
-    if(userName==null){
-        return new ResponseEntity<>(new DoMeetingResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+//    @GetMapping("/meetingToAddANewCourse")
+//    public ResponseEntity<DoMeetingResponse>CreateNewCourseMeeting(@RequestParam("userName")String userName) {
+//        if (userName == null) {
+//            return new ResponseEntity<>(new DoMeetingResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+//
+//        }
+//        try {
+//            return coursesService.meetingToAddCourse(userName);
+//        } catch
+//        (Exception e) {
+//
+//            return new ResponseEntity<>
+//                    (new DoMeetingResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+//
+//        }
+//    }
+    @PostMapping("/meetingToAddANewCourse1")
+    public ResponseEntity<DoMeetingResponse>CreateNewCourseMeeting1(@RequestParam("userName")String userName,@RequestBody DoMeetingRequest doMeetingRequest) {
+        if (userName == null) {
+            return new ResponseEntity<>(new DoMeetingResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
 
-    }
-    try{
-        return coursesService.meetingToAddCourse(userName);
-    }
-    catch
-    (Exception e){
+        }
+        try {
+            return coursesService.meetingToAddCourse1(userName,doMeetingRequest);
+        } catch
+        (Exception e) {
 
-        return new ResponseEntity<>
-                (new DoMeetingResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>
+                    (new DoMeetingResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
 
+        }
     }
 }
-    }
+
 
 
 

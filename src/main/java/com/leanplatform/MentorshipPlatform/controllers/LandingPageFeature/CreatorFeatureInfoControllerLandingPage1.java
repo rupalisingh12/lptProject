@@ -83,7 +83,7 @@ public class CreatorFeatureInfoControllerLandingPage1 {
         if (userName == null || addHeadingRequest==null) {
             return new ResponseEntity<>(new AddCoursesResponse
                     ("0",
-                            "Null request recieved ", null
+                            "Null request recieved ", null,null
                     ), HttpStatus.BAD_REQUEST);
         }
         try {
@@ -91,7 +91,7 @@ public class CreatorFeatureInfoControllerLandingPage1 {
         } catch (Exception e) {
             return new ResponseEntity<>(new AddCoursesResponse
                     ("0","Caught in the catch block"+e.getLocalizedMessage()
-                            , null
+                            , null,null
                     ), HttpStatus.BAD_REQUEST);
 
         }

@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DoMeetingResponseDTO {
-
+public class DoMeetingRequest {
     private Boolean shouldShowMeetingOrNot;
 }

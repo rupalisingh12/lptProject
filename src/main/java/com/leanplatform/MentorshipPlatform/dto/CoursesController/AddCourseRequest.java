@@ -26,6 +26,6 @@ public class AddCourseRequest {
     private LocalDateTime duration;
     private Double totalNoOfSeats;
     //do not add
-    private Double noOfSeatsLeft;
+    //private Double noOfSeatsLeft;
     private Boolean isEnabled;
 }

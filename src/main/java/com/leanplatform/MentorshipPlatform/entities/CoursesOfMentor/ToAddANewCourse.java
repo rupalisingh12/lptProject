@@ -21,5 +21,6 @@ public class ToAddANewCourse {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID toAddNewCourseId;
-    private Boolean doMeeting;
+    private String userName;
+    private Boolean shouldShowMeetingOrNot;
 }

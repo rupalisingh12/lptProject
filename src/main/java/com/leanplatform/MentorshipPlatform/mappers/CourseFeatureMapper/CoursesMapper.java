@@ -6,6 +6,8 @@ import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDetailsRes
 import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.Courses;
 import com.leanplatform.MentorshipPlatform.entities.CoursesOfMentor.ExtraDetailsOfCourses;
 
+import java.time.LocalDateTime;
+
 public class CoursesMapper {
     public static AddCoursesResponseDTO convertEntityToDto( Courses course,String name){
         AddCoursesResponseDTO addCoursesResponseDTO =new AddCoursesResponseDTO();
@@ -16,7 +18,13 @@ public class CoursesMapper {
         addCoursesResponseDTO.setStartDateTime(course.getStartDateTime());
         addCoursesResponseDTO.setEndDateTime(course.getEndDateTime());
         addCoursesResponseDTO.setFileUrls(course.getFileUrls());
-        addCoursesResponseDTO.setCourseStatus(course.getCourseStatus());
+        LocalDateTime currentDateTime = LocalDateTime.now();
+       if( currentDateTime.compareTo(course.getEndDateTime()) > 0) {
+           addCoursesResponseDTO.setCourseStatus("inactive");
+       }
+       if(course.getIsEnabled()==false){
+           addCoursesResponseDTO.setCourseStatus("disabled");
+       }
         addCoursesResponseDTO.setPrice(course.getPrice());
         addCoursesResponseDTO.setInstructorName(name);
         addCoursesResponseDTO.setCourseId(course.getCourseId());
