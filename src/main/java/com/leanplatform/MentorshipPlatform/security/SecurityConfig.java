@@ -65,7 +65,7 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize)->
                         authorize
-                                .requestMatchers("/getUserDetails").hasRole("CREATOR")
+                                .requestMatchers("/*","/*/*","/*/*/*","/*/*/*/*").permitAll()
 
                 )
                 .cors().and()
