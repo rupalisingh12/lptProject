@@ -10,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +32,8 @@ public class Courses {
     private Boolean isEnabled;
     private String description;
     private Double discount;
+    private String fileUrls;
+    private String courseStatus;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Duration duration;

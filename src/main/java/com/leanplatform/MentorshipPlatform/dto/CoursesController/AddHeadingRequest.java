@@ -5,16 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ExtraDeatilsRequest {
-    private String overview;
-    private List<String> whoThisCourseIsFor;
-    private List<String>thisCourseIncludes;
-
-
+public class AddHeadingRequest {
+    private String title;
+    private String heading;
+    private String subheading;
 }

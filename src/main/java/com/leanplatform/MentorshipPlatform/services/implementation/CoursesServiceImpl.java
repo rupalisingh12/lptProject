@@ -10,21 +10,36 @@ import com.leanplatform.MentorshipPlatform.repositories.CoursesFeatureRepository
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.CoursesService.CoursesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class CoursesServiceImpl implements CoursesService {
+
     @Autowired
     CoursesRepository coursesRepository;
     @Autowired
     UserRepository userRepository;
+    @Value("${s3.bucket.baseUrl}")
+    String s3BaseUrl;
+    @Value("${aws.bucketName}")
+    private String bucketName;
+    @Autowired
+    S3Client s3Client;
     @Autowired
     ExtraDetailsCOursesRepository extraDetailsCOursesRepository;
 
@@ -39,6 +54,13 @@ public class CoursesServiceImpl implements CoursesService {
                             "Null request recieved ", null
                     ), HttpStatus.BAD_REQUEST);
         }
+       UserEntity user= userRepository.findByUserName(userName);
+        if(user==null){
+            return new ResponseEntity<>(new AddCoursesResponse
+                    ("0",
+                            "The user does not exist in the db ", null
+                    ), HttpStatus.BAD_REQUEST);
+        }
         Courses courses=new Courses();
         courses.setDiscount(addCourseRequest.getDiscount());
         courses.setName(addCourseRequest.getName());
@@ -46,23 +68,47 @@ public class CoursesServiceImpl implements CoursesService {
         courses.setDescription(addCourseRequest.getDescription());
         courses.setStartDateTime(addCourseRequest.getStartDateTime());
         courses.setEndDateTime(addCourseRequest.getEndDateTime());
+        courses.setCourseStatus(addCourseRequest.getCourseStatus());
        Duration duration= Duration.between(courses.getStartDateTime() ,courses.getEndDateTime());
         courses.setDuration(duration);
         courses.setTotalNoOfSeats(addCourseRequest.getTotalNoOfSeats());
+        try {
+            String ans= savePosterInBucketAndCreateUrl(addCourseRequest.getFileUrls());
+            courses.setFileUrls(ans);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         courses.setIsEnabled(addCourseRequest.getIsEnabled());
         courses.setNoOfSeatsLeft(addCourseRequest.getNoOfSeatsLeft());
-        UserEntity userEntity=userRepository.findByUserName(userName);
-        if(userEntity==null){
-            return new ResponseEntity<>(new AddCoursesResponse
-                    ("0",
-                            "Null request recieved ", null
-                    ), HttpStatus.BAD_REQUEST);
-        }
-        courses.setUserId(userEntity.getUserId());
-        courses.setUserName(userEntity.getUserName());
+        courses.setUserId(user.getUserId());
+        courses.setUserName(user.getUserName());
         coursesRepository.save(courses);
         return new ResponseEntity<>(new AddCoursesResponse("1","The courses details has been saved ",null),HttpStatus.CREATED);
 
+    }
+    public  String getFileExtension(MultipartFile file) {
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename != null && originalFilename.contains(".")) {
+            System.out.print(originalFilename.substring(originalFilename.lastIndexOf(".") + 1));
+            return originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+
+        }
+        return null;
+    }
+    public String savePosterInBucketAndCreateUrl(MultipartFile poster) throws IOException {
+        if(poster!=null && !poster.isEmpty())
+        {
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            String fileName = "Image-"  + currentDateTime +"." + getFileExtension(poster);
+            InputStream inputStream=poster.getInputStream();
+            PutObjectRequest request= PutObjectRequest.builder().bucket(bucketName).key(fileName).build();
+
+            s3Client.putObject(request, RequestBody.fromInputStream(inputStream,inputStream.available()));
+            System.out.print(s3BaseUrl + "/" + fileName);
+            return s3BaseUrl + "/" + fileName;
+        }
+        return null;
     }
 //    @Override
 //    public ResponseEntity<AddCoursesResponse> getCousreOfMentor(String userName) {
@@ -102,6 +148,19 @@ public class CoursesServiceImpl implements CoursesService {
        if(addCourseRequest.getIsEnabled()!=null){
            courses.setIsEnabled(addCourseRequest.getIsEnabled());
        }
+       if(addCourseRequest.getStartDateTime()!=null){
+           courses.setStartDateTime(addCourseRequest.getStartDateTime());
+       }
+       if(addCourseRequest.getEndDateTime()!=null){
+           courses.setEndDateTime(addCourseRequest.getEndDateTime());
+       }
+       if(addCourseRequest.getCourseStatus()!=null){
+           courses.setCourseStatus(addCourseRequest.getCourseStatus());
+       }
+       if(addCourseRequest.getTotalNoOfSeats()!=null){
+           courses.setTotalNoOfSeats(addCourseRequest.getTotalNoOfSeats());
+       }
+
        coursesRepository.save(courses);
        return new ResponseEntity<>(
                new AddCoursesResponse(
@@ -115,10 +174,16 @@ public class CoursesServiceImpl implements CoursesService {
             return new ResponseEntity<>(new AddCoursesResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
 
         }
+       UserEntity userEntity= userRepository.findByUserName(userName);
+        if(userEntity==null){
+            return new ResponseEntity<>(new AddCoursesResponse("0", "This user does not exist in the db", null), HttpStatus.BAD_REQUEST);
+
+        }
+       String name= userEntity.getName();
        List<Courses> courses= coursesRepository.findByUserName(userName);
         List<AddCoursesResponseDTO>ans=new ArrayList<>();
         for(int i=0;i<courses.size();i++){
-            AddCoursesResponseDTO addCoursesResponseDTO=  CoursesMapper.convertEntityToDto(courses.get(i));
+            AddCoursesResponseDTO addCoursesResponseDTO=  CoursesMapper.convertEntityToDto(courses.get(i),name);
             ans.add(addCoursesResponseDTO);
 
         }
@@ -173,17 +238,21 @@ public class CoursesServiceImpl implements CoursesService {
                             HttpStatus.BAD_REQUEST);
         }
         ExtraDetailsOfCourses extraDetailsOfCourses = new ExtraDetailsOfCourses();
-        extraDetailsOfCourses.setAbout(extraDeatilsRequest.getAbout());
-        extraDetailsOfCourses.setField1(extraDeatilsRequest.getField1());
-
+       // extraDetailsOfCourses.setAbout(extraDeatilsRequest.getAbout());
         extraDetailsOfCourses.setCourseId(courseId);
-        extraDetailsOfCourses.setField2(extraDeatilsRequest.getField2());
-        extraDetailsOfCourses.setField3(extraDeatilsRequest.getField3());
+        extraDetailsOfCourses.setWhoThisCourseIsFor(extraDeatilsRequest.getWhoThisCourseIsFor());
+        extraDetailsOfCourses.setOverview(extraDeatilsRequest.getOverview());
+        extraDetailsOfCourses.setThisCourseIncludes(extraDeatilsRequest.getThisCourseIncludes());
+
+       // extraDetailsOfCourses.setField2(extraDeatilsRequest.getField2());
+       // extraDetailsOfCourses.setField3(extraDeatilsRequest.getField3());
+       // extraDetailsOfCourses.setField6(extraDeatilsRequest.getField6());
+       // extraDetailsOfCourses.setField5(extraDeatilsRequest.getField5());
 
         extraDetailsCOursesRepository.save(extraDetailsOfCourses);
         return new ResponseEntity<>(
                 new ExtraDetailsResponse(
-                        "1", "The course enabledOrdisabled is updated  ", null)
+                        "1", "The extra details has been saved  ", null)
                 , HttpStatus.OK);
 
     }
@@ -201,10 +270,13 @@ public class CoursesServiceImpl implements CoursesService {
         }
         ExtraDetailsOfCourses extraDetailsOfCourses= extraDetailsCOursesRepository.findByCourseId(courseId);
         Courses courses= coursesRepository.findByCourseId(courseId);
-        ExtraDetailsResponseDTO extraDetailsResponseDTO= CoursesMapper.convertEntityToDTO1(courses ,extraDetailsOfCourses);
+        String userName1=courses.getUserName();
+        UserEntity userEntity=userRepository.findByUserName(userName1);
+       String name1= userEntity.getName();
+        ExtraDetailsResponseDTO extraDetailsResponseDTO= CoursesMapper.convertEntityToDTO1(courses ,extraDetailsOfCourses,name1);
         return new ResponseEntity<>(
                 new ExtraDetailsResponse(
-                        "1", "The course enabledOrdisabled is updated  ",extraDetailsResponseDTO )
+                        "1", "The course extra details are : ",extraDetailsResponseDTO )
                 , HttpStatus.OK);
 
     }

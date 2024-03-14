@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class AddCoursesResponseDTO {
+public class CourseResponseCombinedDTO {
     private UUID courseId;
     private String name;
     private Double price;
@@ -28,6 +28,11 @@ public class AddCoursesResponseDTO {
     private String instructorName;
     private Double totalNoOfSeats;
     private Double noOfSeatsLeft;
+    private String overview;
+    private List<String> whoThisCourseIsFor;
+
+
+
 
 
 }

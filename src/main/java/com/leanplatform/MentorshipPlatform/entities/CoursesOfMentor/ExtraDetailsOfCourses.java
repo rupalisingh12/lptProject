@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,11 +24,10 @@ public class ExtraDetailsOfCourses {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID extraDetailsOfCourses;
-    private String about;
     private UUID courseId;
-    private String field1;
-    private String field2;
-    private String field3;
+    private String overview;
+    private List<String> whoThisCourseIsFor;
+    private List<String>thisCourseIncludes;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @CreationTimestamp

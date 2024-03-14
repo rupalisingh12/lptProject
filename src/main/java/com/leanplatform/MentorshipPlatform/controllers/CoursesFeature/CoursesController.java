@@ -1,9 +1,6 @@
 package com.leanplatform.MentorshipPlatform.controllers.CoursesFeature;
 
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCourseRequest;
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponse;
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDeatilsRequest;
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDetailsResponse;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.*;
 import com.leanplatform.MentorshipPlatform.services.CoursesService.CoursesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +17,7 @@ public class CoursesController {
     //what if a mentor tries to save the same course( with all the deatils same ) again
     // what should happen, should it geted saved or what do we expect
     @PostMapping("/addCourses")
-    public ResponseEntity<AddCoursesResponse> addNewCourses(@RequestParam("userName") String userName, @RequestBody AddCourseRequest addCourseRequest) {
+    public ResponseEntity<AddCoursesResponse> addNewCourses(@RequestParam("userName") String userName, @ModelAttribute AddCourseRequest addCourseRequest) {
         if (userName == null || addCourseRequest == null
                 || addCourseRequest.getName()==null ||
                 addCourseRequest.getPrice()==null || addCourseRequest.getDescription()==null ||
@@ -146,6 +143,8 @@ public class CoursesController {
             }
         }
     }
+
+
 
 
 

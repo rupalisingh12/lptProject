@@ -46,6 +46,9 @@ public class LandingPage1 {
     @Column(length = 5000)
     private String finalGoDto;
     private UUID userId;
+    private String title;
+    private String heading;
+    private String subHeading;
     private String landingPageId; //the id which is creattor ging to choose out of the two landingPage
     @CreationTimestamp
     private LocalDateTime createdAt;
