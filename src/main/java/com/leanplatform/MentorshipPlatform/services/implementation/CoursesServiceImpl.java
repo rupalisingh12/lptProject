@@ -73,7 +73,7 @@ public class CoursesServiceImpl implements CoursesService {
         courses.setDuration(duration);
         courses.setTotalNoOfSeats(addCourseRequest.getTotalNoOfSeats());
         try {
-            String ans= savePosterInBucketAndCreateUrl(addCourseRequest.getFileUrls());
+            String ans= savePosterInBucketAndCreateUrl(addCourseRequest.getImage());
             courses.setFileUrls(ans);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -138,6 +138,7 @@ public class CoursesServiceImpl implements CoursesService {
        if(courseId==null || addCourseRequest==null){
            return new ResponseEntity<>(new AddCoursesResponse("0","Null request reciieved",null),HttpStatus.BAD_REQUEST);
        }
+       //add a null check
       Courses courses= coursesRepository.findByCourseId(courseId);
        if(addCourseRequest.getPrice()!=null){
            courses.setPrice(addCourseRequest.getPrice());
@@ -205,6 +206,7 @@ public class CoursesServiceImpl implements CoursesService {
 
        }
        Courses courses =coursesRepository.findByCourseId(courseId);
+       //invalid,id check
        if(courses!=null){
            courses.setIsEnabled(addCourseRequest.getIsEnabled());
            coursesRepository.save(courses);
@@ -230,6 +232,7 @@ public class CoursesServiceImpl implements CoursesService {
 
 
         }
+        //invalid id course check
        ExtraDetailsOfCourses extraDetailsOfCourses1= extraDetailsCOursesRepository.findByCourseId(courseId);
         if(extraDetailsOfCourses1!=null){
             return new ResponseEntity<>
@@ -268,6 +271,8 @@ public class CoursesServiceImpl implements CoursesService {
                     HttpStatus.BAD_REQUEST);
 
         }
+
+        //invalid id check
         ExtraDetailsOfCourses extraDetailsOfCourses= extraDetailsCOursesRepository.findByCourseId(courseId);
         Courses courses= coursesRepository.findByCourseId(courseId);
         String userName1=courses.getUserName();
@@ -279,6 +284,21 @@ public class CoursesServiceImpl implements CoursesService {
                         "1", "The course extra details are : ",extraDetailsResponseDTO )
                 , HttpStatus.OK);
 
+    }
+    public ResponseEntity<DoMeetingResponse>meetingToAddCourse(String userName){
+        if(userName==null){
+            return new ResponseEntity<>(new DoMeetingResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+
+        }
+        List<Courses> userName1= coursesRepository.findByUserName(userName);
+        if(userName1.isEmpty()){
+            DoMeetingResponseDTO doMeetingResponseDTO=new DoMeetingResponseDTO();
+            doMeetingResponseDTO.setDoMeeting(true);
+
+
+            return new ResponseEntity<>(new DoMeetingResponse  ("1", "The domeeting is", doMeetingResponseDTO), HttpStatus.BAD_REQUEST);
+
+        }
     }
 
 

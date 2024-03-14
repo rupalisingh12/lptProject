@@ -142,7 +142,27 @@ public class CoursesController {
 
             }
         }
+
+
+    @GetMapping("/meetingToAddANewCourse")
+    public ResponseEntity<DoMeetingResponse>CreateNewCourseMeeting(@RequestParam("userName")String userName){
+    if(userName==null){
+        return new ResponseEntity<>(new DoMeetingResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+
     }
+    try{
+        return coursesService.meetingToAddCourse(userName);
+    }
+    catch
+    (Exception e){
+
+        return new ResponseEntity<>
+                (new DoMeetingResponse("0", "Null request reciieved", null), HttpStatus.BAD_REQUEST);
+
+    }
+}
+    }
+
 
 
 

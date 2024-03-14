@@ -1,9 +1,6 @@
 package com.leanplatform.MentorshipPlatform.services.CoursesService;
 
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCourseRequest;
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.AddCoursesResponse;
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDeatilsRequest;
-import com.leanplatform.MentorshipPlatform.dto.CoursesController.ExtraDetailsResponse;
+import com.leanplatform.MentorshipPlatform.dto.CoursesController.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +16,6 @@ public interface CoursesService {
    ResponseEntity<ExtraDetailsResponse>addExtraDetailsOfCourse(UUID courseId , ExtraDeatilsRequest extraDeatilsRequest );
 
     ResponseEntity<ExtraDetailsResponse>getExtraDetails(UUID courseId);
+    ResponseEntity<DoMeetingResponse>meetingToAddCourse(String userName);
 
 }

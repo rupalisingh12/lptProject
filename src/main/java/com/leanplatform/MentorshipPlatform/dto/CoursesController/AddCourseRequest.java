@@ -4,8 +4,6 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,14 +15,17 @@ public class AddCourseRequest {
     private String name;
     private Double price;
     private String description;
+    //look a this functionality
     private String courseStatus;
     private Double discount;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private String courseName;
-    private MultipartFile fileUrls;
+    private MultipartFile image;
+    //do not add
     private LocalDateTime duration;
     private Double totalNoOfSeats;
+    //do not add
     private Double noOfSeatsLeft;
     private Boolean isEnabled;
 }
