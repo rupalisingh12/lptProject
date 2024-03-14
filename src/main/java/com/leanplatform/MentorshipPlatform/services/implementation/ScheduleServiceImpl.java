@@ -1,15 +1,15 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.ScheduleController.*;
-import com.leanplatform.MentorshipPlatform.entities.AvailabilityV2;
-import com.leanplatform.MentorshipPlatform.entities.EventType;
-import com.leanplatform.MentorshipPlatform.entities.Schedule;
-import com.leanplatform.MentorshipPlatform.entities.UserEntity;
-import com.leanplatform.MentorshipPlatform.mappers.ScheduleMapper;
-import com.leanplatform.MentorshipPlatform.repositories.AvailabilityV2Repository;
-import com.leanplatform.MentorshipPlatform.repositories.EventTypesRepository;
-import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository;
-import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
+import com.leanplatform.MentorshipPlatform.entities.AvailabiliyFeature.AvailabilityV2;
+import com.leanplatform.MentorshipPlatform.entities.EventTypeFeature.EventType;
+import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Schedule;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
+import com.leanplatform.MentorshipPlatform.mappers.ScheduleFunctionalityMapper.ScheduleMapper;
+import com.leanplatform.MentorshipPlatform.repositories.AvailabilityFeatureRepository.AvailabilityV2Repository;
+import com.leanplatform.MentorshipPlatform.repositories.EventTypeRepository.EventTypesRepository;
+import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository.ScheduleRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

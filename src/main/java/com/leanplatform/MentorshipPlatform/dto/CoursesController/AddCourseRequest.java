@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class AddCourseRequest {
-    private UUID courseId;
+   // private UUID courseId;
     private String name;
     private Double price;
     private String description;
@@ -23,4 +23,5 @@ public class AddCourseRequest {
     private LocalDateTime duration;
     private Double totalNoOfSeats;
     private Double noOfSeatsLeft;
+    private Boolean isEnabled;
 }

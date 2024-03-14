@@ -2,16 +2,15 @@ package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.UserController.UserGetResponse;
 import com.leanplatform.MentorshipPlatform.dto.UserController.UserGetResponseDto;
-import com.leanplatform.MentorshipPlatform.entities.UserEntity;
-import com.leanplatform.MentorshipPlatform.mappers.UserMapper;
-import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
+import com.leanplatform.MentorshipPlatform.mappers.MentorFunctionalityMapper.UserMapper;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

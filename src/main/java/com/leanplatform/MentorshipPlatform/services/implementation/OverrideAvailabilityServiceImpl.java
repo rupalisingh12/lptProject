@@ -1,13 +1,11 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.OverrideAvailabilityController.*;
-import com.leanplatform.MentorshipPlatform.entities.OverrideAvailability;
-import com.leanplatform.MentorshipPlatform.mappers.AvailabilityV2Mapper;
-import com.leanplatform.MentorshipPlatform.mappers.OverrideAvailabilityMapper;
-import com.leanplatform.MentorshipPlatform.mappers.Slot;
-import com.leanplatform.MentorshipPlatform.mappers.Slot2;
-import com.leanplatform.MentorshipPlatform.repositories.OverrideAvailabilityRepository;
-import com.leanplatform.MentorshipPlatform.services.OverrideAvailabilityService;
+import com.leanplatform.MentorshipPlatform.entities.OverrideAvailabilityFeature.OverrideAvailability;
+import com.leanplatform.MentorshipPlatform.mappers.AvailabilityFeatureMapper.AvailabilityV2Mapper;
+import com.leanplatform.MentorshipPlatform.mappers.OverrideAvailabilityMapper.OverrideAvailabilityMapper;
+import com.leanplatform.MentorshipPlatform.repositories.OverrideFeatureRepository.OverrideAvailabilityRepository;
+import com.leanplatform.MentorshipPlatform.services.OverrideAvailabilityFeatureService.OverrideAvailabilityService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.time.LocalDate;
 @Service

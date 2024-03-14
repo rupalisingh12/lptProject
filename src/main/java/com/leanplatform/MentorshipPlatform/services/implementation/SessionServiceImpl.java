@@ -1,8 +1,17 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.SessionController.*;
-import com.leanplatform.MentorshipPlatform.entities.*;
-import com.leanplatform.MentorshipPlatform.repositories.*;
+import com.leanplatform.MentorshipPlatform.entities.AvailabiliyFeature.Availability;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.Mentor;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.ServicesByMentors;
+import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Mentee;
+import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Session;
+import com.leanplatform.MentorshipPlatform.repositories.AvailabilityFeatureRepository.AvailabilityRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.MentorRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.ServicesByMentorsRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.MenteeRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.ServicesOfferedRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.SessionRepository;
 import com.leanplatform.MentorshipPlatform.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

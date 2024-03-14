@@ -1,16 +1,13 @@
 package com.leanplatform.MentorshipPlatform.dto.BookingController;
 
-import com.leanplatform.MentorshipPlatform.entities.Attendee;
-import com.leanplatform.MentorshipPlatform.entities.UserEntity;
+import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Attendee;
 import com.leanplatform.MentorshipPlatform.enums.BookingEnums;
-import com.twilio.rest.chat.v1.service.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

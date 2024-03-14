@@ -1,6 +1,6 @@
 package com.leanplatform.MentorshipPlatform.dto.AvailabilityController;
 
-import com.leanplatform.MentorshipPlatform.entities.Availability;
+import com.leanplatform.MentorshipPlatform.entities.AvailabiliyFeature.Availability;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

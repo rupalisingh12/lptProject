@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -13,7 +15,7 @@ import lombok.Setter;
 public class AddCoursesResponse {
     private String statusCode;
     private String responseMessage;
-    private  AddCoursesResponseDTO addCoursesResponseDTO;
+    private List<AddCoursesResponseDTO> addCoursesResponseDTO;
 
 
 }

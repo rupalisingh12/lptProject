@@ -8,7 +8,7 @@ import com.leanplatform.MentorshipPlatform.mappers.CustomForm.FormStructureConve
 import com.leanplatform.MentorshipPlatform.repositories.CustomForm.FormResponseRepository;
 import com.leanplatform.MentorshipPlatform.repositories.CustomForm.FormStructureRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MasterConfig.MasterConfigRepository;
-import com.leanplatform.MentorshipPlatform.repositories.UserRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;
 import com.leanplatform.MentorshipPlatform.services.CustomForm.FormStructureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

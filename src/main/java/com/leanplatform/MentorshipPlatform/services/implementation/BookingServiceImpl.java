@@ -1,12 +1,19 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.BookingController.*;
-import com.leanplatform.MentorshipPlatform.entities.*;
+import com.leanplatform.MentorshipPlatform.entities.BookingFeature.Booking;
+import com.leanplatform.MentorshipPlatform.entities.EventTypeFeature.EventType;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
+import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Attendee;
 import com.leanplatform.MentorshipPlatform.enums.BookingEnums;
-import com.leanplatform.MentorshipPlatform.mappers.AvailabilityV2Mapper;
-import com.leanplatform.MentorshipPlatform.mappers.BookingMapper;
-import com.leanplatform.MentorshipPlatform.repositories.*;
-import com.leanplatform.MentorshipPlatform.services.BookingService;
+import com.leanplatform.MentorshipPlatform.mappers.AvailabilityFeatureMapper.AvailabilityV2Mapper;
+import com.leanplatform.MentorshipPlatform.mappers.BookingFunctnalityMapper.BookingMapper;
+import com.leanplatform.MentorshipPlatform.repositories.BookingFeatureRepository.BookingRepository;
+import com.leanplatform.MentorshipPlatform.repositories.EventTypeRepository.EventTypesRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.AttendeeRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.LocationRepository;
+import com.leanplatform.MentorshipPlatform.services.BookingFeatureService.BookingService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +27,16 @@ import java.util.*;
 
 @Service
 public class BookingServiceImpl implements BookingService {
-    @Autowired BookingRepository bookingRepository;
-    @Autowired UserRepository userRepository;
-    @Autowired LocationRepository location;
-    @Autowired AttendeeRepository attendeeRepository;
-    @Autowired EventTypesRepository eventTypesRepository;
+    @Autowired
+    BookingRepository bookingRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    LocationRepository location;
+    @Autowired
+    AttendeeRepository attendeeRepository;
+    @Autowired
+    EventTypesRepository eventTypesRepository;
 
 
     @Transactional

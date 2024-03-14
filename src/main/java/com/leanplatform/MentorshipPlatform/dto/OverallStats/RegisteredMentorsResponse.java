@@ -1,6 +1,5 @@
 package com.leanplatform.MentorshipPlatform.dto.OverallStats;
 
-import com.leanplatform.MentorshipPlatform.entities.MentorRequest;
 import lombok.*;
 
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.MentorController.*;
-import com.leanplatform.MentorshipPlatform.entities.ServicesByMentors;
-import com.leanplatform.MentorshipPlatform.entities.ServicesOffered;
-import com.leanplatform.MentorshipPlatform.repositories.ServicesByMentorsRepository;
-import com.leanplatform.MentorshipPlatform.repositories.ServicesOfferedRepository;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.ServicesByMentors;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.ServicesOffered;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.ServicesByMentorsRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.ServicesOfferedRepository;
 import com.leanplatform.MentorshipPlatform.services.ServicesByMentorsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

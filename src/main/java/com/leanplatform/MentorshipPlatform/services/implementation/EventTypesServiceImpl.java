@@ -2,14 +2,14 @@ package com.leanplatform.MentorshipPlatform.services.implementation;
 
 import com.leanplatform.MentorshipPlatform.dto.EventTypesController.*;
 
-import com.leanplatform.MentorshipPlatform.entities.AvailabilityV2;
-import com.leanplatform.MentorshipPlatform.entities.EventType;
-import com.leanplatform.MentorshipPlatform.entities.Schedule;
-import com.leanplatform.MentorshipPlatform.mappers.EventMapper;
-import com.leanplatform.MentorshipPlatform.repositories.AvailabilityV2Repository;
-import com.leanplatform.MentorshipPlatform.repositories.EventTypesRepository;
-import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository;
-import com.leanplatform.MentorshipPlatform.services.EventTypesService;
+import com.leanplatform.MentorshipPlatform.entities.AvailabiliyFeature.AvailabilityV2;
+import com.leanplatform.MentorshipPlatform.entities.EventTypeFeature.EventType;
+import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Schedule;
+import com.leanplatform.MentorshipPlatform.mappers.EventTypeMapper.EventMapper;
+import com.leanplatform.MentorshipPlatform.repositories.AvailabilityFeatureRepository.AvailabilityV2Repository;
+import com.leanplatform.MentorshipPlatform.repositories.EventTypeRepository.EventTypesRepository;
+import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository.ScheduleRepository;
+import com.leanplatform.MentorshipPlatform.services.EventTypeService.EventTypesService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
