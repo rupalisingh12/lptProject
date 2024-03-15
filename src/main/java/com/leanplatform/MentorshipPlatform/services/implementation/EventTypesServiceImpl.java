@@ -4,12 +4,17 @@ import com.leanplatform.MentorshipPlatform.dto.EventTypesController.*;
 
 import com.leanplatform.MentorshipPlatform.entities.AvailabiliyFeature.AvailabilityV2;
 import com.leanplatform.MentorshipPlatform.entities.EventTypeFeature.EventType;
+import com.leanplatform.MentorshipPlatform.entities.LandingPage.CreatorFeatureInfo;
+import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
 import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Schedule;
 import com.leanplatform.MentorshipPlatform.mappers.EventTypeMapper.EventMapper;
 import com.leanplatform.MentorshipPlatform.repositories.AvailabilityFeatureRepository.AvailabilityV2Repository;
 import com.leanplatform.MentorshipPlatform.repositories.EventTypeRepository.EventTypesRepository;
+import com.leanplatform.MentorshipPlatform.repositories.LandingPageFeatureRepository.CreatorFeatureInfoRepository;
+import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;
 import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository.ScheduleRepository;
 import com.leanplatform.MentorshipPlatform.services.EventTypeService.EventTypesService;
+
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +28,10 @@ public class EventTypesServiceImpl implements EventTypesService {
     @Autowired EventTypesRepository eventTypesRepository;
     @Autowired
     ScheduleRepository scheduleRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    CreatorFeatureInfoRepository creatorFeatureInfoRepository;
     @Autowired
     AvailabilityV2Repository availabilityV2Repository;
     @Override
@@ -74,21 +83,40 @@ public class EventTypesServiceImpl implements EventTypesService {
                     (
                             "0",
                             "Invalid Request" ,
-                            null
+                            null,null
                     ), HttpStatus.BAD_REQUEST);
         }
+      UserEntity userEntity= userRepository.findByUserId(userId);
+        if(userEntity==null){
+            return new ResponseEntity<>(new GetAllEventResponse
+                    (
+                            "0",
+                            "This user does not exist in the db" ,
+                            null,null
+                    ), HttpStatus.BAD_REQUEST);
+        }
+       String userName1= userEntity.getUserName();
+        CreatorFeatureInfo creatorFeatureInfo= creatorFeatureInfoRepository.findByUserName(userName1);
+        slotTrueOrFalse s1=new slotTrueOrFalse();
+        if(creatorFeatureInfo.getSlot()!=null) {
+            s1.setSlot(creatorFeatureInfo.getSlot());
+        }
+        else{
+            s1.setSlot(null);
+        }
+
         List<EventType> eventType= eventTypesRepository.findAllByUserId(userId);
         if (eventType.isEmpty()) {
             return new ResponseEntity<>(new GetAllEventResponse
                     ("1",
                             "No events found or a given user or no no userId exist with this userId exist ",
-                            null), HttpStatus.OK);
+                            null,null), HttpStatus.OK);
         }
         //use a for loop ,send only one object
         List<CreateEventDTO> createEventDTOList = EventMapper.convertEntityToDTO(eventType);
         return new ResponseEntity<>(new GetAllEventResponse
                 ("1",
-                        "The list of events is:",createEventDTOList), HttpStatus.OK);
+                        "The list of events is:",createEventDTOList,s1), HttpStatus.OK);
 
 
 

@@ -43,7 +43,7 @@ public class EventTypesController {
                     (
                             "0",
                             "Invalid Request" ,
-                            null
+                            null,null
                     ), HttpStatus.BAD_REQUEST);
         }
             try {
@@ -52,7 +52,7 @@ public class EventTypesController {
                 return new ResponseEntity<>(new GetAllEventResponse
                         (                            "0",
                                 "Invalid Request - caught in catch block" ,
-                                null
+                                null,null
                         ),HttpStatus.BAD_REQUEST);
             }
         }

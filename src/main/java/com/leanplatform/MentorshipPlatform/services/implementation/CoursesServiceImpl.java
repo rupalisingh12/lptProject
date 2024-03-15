@@ -263,6 +263,14 @@ public class CoursesServiceImpl implements CoursesService {
 
 
         }
+        Courses courses=coursesRepository.findByCourseId(courseId);
+        if(courses==null){
+            return new ResponseEntity<>
+
+            (new ExtraDetailsResponse
+                    ("0", "This courseId does not exist in the db", null),
+                    HttpStatus.BAD_REQUEST);
+        }
 
         //invalid id course check
         ExtraDetailsOfCourses extraDetailsOfCourses1 = extraDetailsCOursesRepository.findByCourseId(courseId);
