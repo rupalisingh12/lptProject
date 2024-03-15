@@ -36,20 +36,90 @@ public class CoursesMapper {
     }
     public static ExtraDetailsResponseDTO convertEntityToDTO1(Courses courses , ExtraDetailsOfCourses extraDetailsOfCourses,String name1){
         ExtraDetailsResponseDTO extraDetailsResponseDTO=new ExtraDetailsResponseDTO();
-        extraDetailsResponseDTO.setDiscount(courses.getDiscount());
-        extraDetailsResponseDTO.setDescription(courses.getDescription());
-        extraDetailsResponseDTO.setName(courses.getName());
+        if(courses.getDiscount()!=null) {
+            extraDetailsResponseDTO.setDiscount(courses.getDiscount());
+        }
+        else{
+            extraDetailsResponseDTO.setDiscount(null);
+        }
+        if(courses.getDescription()!=null) {
+            extraDetailsResponseDTO.setDescription(courses.getDescription());
+        }
+        else{
+            extraDetailsResponseDTO.setDescription(null);
+        }
+        if(courses.getName()!=null) {
+            extraDetailsResponseDTO.setName(courses.getName());
+        }
+        else{
+            extraDetailsResponseDTO.setName(null);
+        }
+        if(extraDetailsOfCourses.getWhoThisCourseIsFor()!=null){
         extraDetailsResponseDTO.setWhoThisCourseIsFor(extraDetailsOfCourses.getWhoThisCourseIsFor());
-        extraDetailsResponseDTO.setOverview(extraDetailsOfCourses.getOverview());
-        extraDetailsResponseDTO.setPrice(courses.getPrice());
-        extraDetailsResponseDTO.setDuration(courses.getDuration());
-        extraDetailsResponseDTO.setStartDateTime(courses.getStartDateTime());
-        extraDetailsResponseDTO.setInstructorName(name1);
-        extraDetailsResponseDTO.setEndDateTime(courses.getEndDateTime());
-        extraDetailsResponseDTO.setFileUrls(courses.getFileUrls());
-        extraDetailsResponseDTO.setThisCourseIncludes(extraDetailsOfCourses.getThisCourseIncludes());
-        extraDetailsResponseDTO.setTotalNoOfSeats(courses.getTotalNoOfSeats());
-        extraDetailsResponseDTO.setNoOfSeatsLeft(courses.getNoOfSeatsLeft());
+        }
+        else{
+            extraDetailsResponseDTO.setWhoThisCourseIsFor(null);
+        }
+        if(extraDetailsOfCourses.getOverview()!=null) {
+            extraDetailsResponseDTO.setOverview(extraDetailsOfCourses.getOverview());
+        }
+        else{
+            extraDetailsResponseDTO.setOverview(null);
+        }
+        if(courses.getPrice()!=null) {
+            extraDetailsResponseDTO.setPrice(courses.getPrice());
+        }
+        else{
+            extraDetailsResponseDTO.setPrice(null);
+        }
+        if(courses.getDuration()!=null) {
+            extraDetailsResponseDTO.setDuration(courses.getDuration());
+        }
+        else{
+            extraDetailsResponseDTO.setDuration(null);
+        }
+        if(courses.getStartDateTime()!=null) {
+            extraDetailsResponseDTO.setStartDateTime(courses.getStartDateTime());
+        }
+        else{
+            extraDetailsResponseDTO.setStartDateTime(null);
+        }
+        if(name1!=null) {
+            extraDetailsResponseDTO.setInstructorName(name1);
+        }
+        else{
+            extraDetailsResponseDTO.setInstructorName(null);
+        }
+        if(courses.getEndDateTime()!=null) {
+            extraDetailsResponseDTO.setEndDateTime(courses.getEndDateTime());
+        }
+        else{
+            extraDetailsResponseDTO.setEndDateTime(null);
+        }
+        if(courses.getFileUrls()!=null) {
+            extraDetailsResponseDTO.setFileUrls(courses.getFileUrls());
+        }
+        else{
+            extraDetailsResponseDTO.setFileUrls(null);
+        }
+        if(extraDetailsOfCourses.getThisCourseIncludes()!=null) {
+            extraDetailsResponseDTO.setThisCourseIncludes(extraDetailsOfCourses.getThisCourseIncludes());
+        }
+        else{
+            extraDetailsResponseDTO.setThisCourseIncludes(null);
+        }
+        if(courses.getTotalNoOfSeats()!=null) {
+            extraDetailsResponseDTO.setTotalNoOfSeats(courses.getTotalNoOfSeats());
+        }
+        else{
+            extraDetailsResponseDTO.setTotalNoOfSeats(null);
+        }
+        if(courses.getTotalNoOfSeats()!=null) {
+            extraDetailsResponseDTO.setNoOfSeatsLeft(courses.getNoOfSeatsLeft());
+        }
+        else{
+            extraDetailsResponseDTO.setNoOfSeatsLeft(null);
+        }
         return  extraDetailsResponseDTO;
 
     }

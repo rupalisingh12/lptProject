@@ -89,7 +89,7 @@ public class CoursesServiceImpl implements CoursesService {
             throw new RuntimeException(e);
         }
 
-        courses.setIsEnabled(addCourseRequest.getIsEnabled());
+        courses.setIsEnabled(true);
 
         //courses.setNoOfSeatsLeft(addCourseRequest.getNoOfSeatsLeft());
         courses.setUserId(user.getUserId());
