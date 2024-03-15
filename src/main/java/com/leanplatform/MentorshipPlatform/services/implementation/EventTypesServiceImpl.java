@@ -97,12 +97,14 @@ public class EventTypesServiceImpl implements EventTypesService {
         }
        String userName1= userEntity.getUserName();
         CreatorFeatureInfo creatorFeatureInfo= creatorFeatureInfoRepository.findByUserName(userName1);
-        slotTrueOrFalse s1=new slotTrueOrFalse();
-        if(creatorFeatureInfo.getSlot()!=null) {
-            s1.setSlot(creatorFeatureInfo.getSlot());
-        }
-        else{
-            s1.setSlot(null);
+        slotTrueOrFalse s1 = new slotTrueOrFalse();
+        if(creatorFeatureInfo!=null) {
+             s1 = new slotTrueOrFalse();
+            if (creatorFeatureInfo.getSlot() != null) {
+                s1.setSlot(creatorFeatureInfo.getSlot());
+            } else {
+                s1.setSlot(null);
+            }
         }
 
         List<EventType> eventType= eventTypesRepository.findAllByUserId(userId);
