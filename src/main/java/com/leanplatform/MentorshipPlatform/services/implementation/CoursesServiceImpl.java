@@ -373,7 +373,7 @@ public class CoursesServiceImpl implements CoursesService {
             toAddANewCourse.setShouldShowMeetingOrNot(doMeetingRequest.getShouldShowMeetingOrNot());
             toAddANewCourseRepository.save(toAddANewCourse);
         }
-        return new ResponseEntity<>(new DoMeetingResponse("0", "The isBandeKoMeetingDikhaniHaiYaNahi has been saved", null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new DoMeetingResponse("1", "The details has been saved", null), HttpStatus.BAD_REQUEST);
 
 
 

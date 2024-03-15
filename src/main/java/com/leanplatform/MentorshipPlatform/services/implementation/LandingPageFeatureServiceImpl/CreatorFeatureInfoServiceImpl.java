@@ -264,8 +264,10 @@ public class CreatorFeatureInfoServiceImpl implements CreatorFeatureInfoService 
             Courses courses1=courses.get(j);
            UUID courseId1= courses1.getCourseId();
             ExtraDetailsOfCourses extraDetailsOfCourses= extraDetailsCOursesRepository.findByCourseId(courseId1);
-            ExtraDetailsResponseDTO extraDetailsResponseDTO= CoursesMapper.convertEntityToDTO1(courses1,extraDetailsOfCourses,name);
-            ans.add(extraDetailsResponseDTO);
+            if(extraDetailsOfCourses!=null) {
+                ExtraDetailsResponseDTO extraDetailsResponseDTO = CoursesMapper.convertEntityToDTO1(courses1, extraDetailsOfCourses, name);
+                ans.add(extraDetailsResponseDTO);
+            }
         }
 
 
