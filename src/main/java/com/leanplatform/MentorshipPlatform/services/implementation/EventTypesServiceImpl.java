@@ -58,6 +58,7 @@ public class EventTypesServiceImpl implements EventTypesService {
         //eventType.setTitle(createEventRequestObject.getTitle());
         eventType.setDescription(createEventRequestObject.getDescription());
         eventType.setUserId(userId);
+        eventType.setNoOfStudents(createEventRequestObject.getNoOfStudents());
         eventType.setHidden(true);
         EventType eventType1= eventTypesRepository.save(eventType);
         CreateEventDTO createEventDTO=new CreateEventDTO();

@@ -97,7 +97,7 @@ public class BookingController {
 }
 
 
-
+    // we are not using this api to delete the booking, we use update booking to update the status of the booking
     @DeleteMapping("bookings/{bookingId}")
     public ResponseEntity<DeleteBookingRespone>deleteBookings(@PathVariable UUID bookingId, @RequestParam(name = "userId") UUID userId){
         if(bookingId==null || userId==null){

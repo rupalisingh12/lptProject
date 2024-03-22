@@ -14,6 +14,7 @@ public class CreateEventRequestObject {
     private String title;
     private Double price;
     private String description;
+    private Long noOfStudents;
    // private Double price;
 
 }

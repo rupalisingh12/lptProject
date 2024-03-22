@@ -10,10 +10,8 @@ import org.hibernate.boot.Metadata;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
 @Entity
 @Table
 @NoArgsConstructor
@@ -32,7 +30,7 @@ public class Booking {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private UUID eventTypeId; //(This is coming from EventType table);
-   // private List<Attendee> attendees;( the coloumn of a table can not be a list)
+   // private List<Attendee> attendees;
   // private UUID metaDataId;
    private  BookingEnums status;
    private LocalDate date;

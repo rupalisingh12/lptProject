@@ -4,6 +4,8 @@ import com.leanplatform.MentorshipPlatform.dto.AvailabilityV2Controller.CreateAv
 import com.leanplatform.MentorshipPlatform.entities.AvailabiliyFeature.AvailabilityV2;
 import com.leanplatform.MentorshipPlatform.entities.BookingFeature.Booking;
 
+import com.leanplatform.MentorshipPlatform.entities.BookingFeature.BookingSlotCountTable;
+import com.leanplatform.MentorshipPlatform.entities.EventTypeFeature.EventType;
 import com.leanplatform.MentorshipPlatform.entities.OverrideAvailabilityFeature.OverrideAvailability;
 import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Schedule;
 import com.leanplatform.MentorshipPlatform.enums.BookingEnums;
@@ -13,6 +15,7 @@ import com.leanplatform.MentorshipPlatform.mappers.AvailabilityFeatureMapper.Slo
 import com.leanplatform.MentorshipPlatform.repositories.AvailabilityFeatureRepository.AvailabilityV2Repository;
 import com.leanplatform.MentorshipPlatform.repositories.AvailabilityFeatureRepository.DaysRepository;
 import com.leanplatform.MentorshipPlatform.repositories.BookingFeatureRepository.BookingRepository;
+import com.leanplatform.MentorshipPlatform.repositories.BookingFeatureRepository.BookingSlotCountTableRepository;
 import com.leanplatform.MentorshipPlatform.repositories.EventTypeRepository.EventTypesRepository;
 import com.leanplatform.MentorshipPlatform.repositories.OverrideFeatureRepository.OverrideAvailabilityRepository;
 import com.leanplatform.MentorshipPlatform.repositories.ScheduleRepository.ScheduleRepository;
@@ -41,7 +44,8 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
     DaysRepository daysRepository;
     @Autowired
     BookingRepository bookingRepository;
-
+    @Autowired
+    BookingSlotCountTableRepository bookingSlotCountTableRepository;
     @Autowired
     EventTypesRepository eventTypesRepository;
     @Autowired
@@ -154,7 +158,7 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     ), HttpStatus.BAD_REQUEST);
 
         }
-
+           EventType eventType= eventTypesRepository.findByEventId(eventTypeId);
         UUID scheduleId1 = eventTypesRepository.findScheduleIdByEventTypeId(eventTypeId);
         if(scheduleId1==null){
             return new ResponseEntity<>(new GetAllAvailabilitiesResponse
@@ -167,6 +171,7 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
         List<Long>days=availabilityNewRepository.findAllDayByScheduleId(scheduleId1);
         //list
         List<List<Slot>> finalSetList = new ArrayList<>();
+
         //list
         List<List<SlotTimeDate>>finalTimeDateList=new ArrayList<>();
         //list to add days which has avaiability in (working hours)
@@ -186,18 +191,26 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
             if(overrideAvailability!=null && overrideAvailability.getSlotIds().size()!=0) {
                 Set<Long> slotIDsList = overrideAvailability.getSlotIds();
                 Set<Long> listToNotImpactOriginalList = new HashSet<>(slotIDsList);
-                List<Booking> booking = bookingRepository.findAllByUserIdAndDate(userId, i);
-                if (booking.size() != 0) {
-                    for (int j = 0; j < booking.size(); j++) {
-                        Booking booking1 = booking.get(j);
-                        // Set slotIDsList= availabilityNew.getSlotIds();
-                        if (booking1.getStatus() == BookingEnums.ACCEPTED) {
-                            Set<Long> slotIDsList1 = booking1.getSlotIds();
-                            listToNotImpactOriginalList.removeAll(slotIDsList1);
-                        } else {
-                            //do not substract from the list
-                        }
+                //List<Booking> booking = bookingRepository.findAllByUserIdAndDate(userId, i);
+               List<BookingSlotCountTable>bookingSlotCountTableList=  bookingSlotCountTableRepository.findByDateAndEventTypeId(i,eventTypeId);
+
+//                if(bookingSlotCountTableList.isEmpty()){
+//                    List<Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(listToNotImpactOriginalList);
+//                }
+                if(!bookingSlotCountTableList.isEmpty()){
+                    for(int j=0;j<bookingSlotCountTableList.size();j++){
+                        BookingSlotCountTable bookingSlotCountTable=bookingSlotCountTableList.get(j);
+                       Long slotCount= bookingSlotCountTable.getCount();
+                       if(slotCount==eventType.getNoOfStudents()){
+                           Long slotId= bookingSlotCountTable.getSlotId();
+                           listToNotImpactOriginalList.remove(slotId);
+                       }
+                       else{
+
+                       }
+
                     }
+
                 }
                 if (!listToNotImpactOriginalList.contains((long) -1)) {
                    List<Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(listToNotImpactOriginalList);
@@ -224,20 +237,24 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     Set<Long>listToNotImpactOriginalList=new HashSet<>(slotIDsList);
                     //fetch only date ,fetch only dateTime
                     List<Booking> booking = bookingRepository.findAllByUserIdAndDate(userId, i);
-                    if (booking.size()!=0) {
-                        for (int j = 0; j < booking.size(); j++) {
-                            Booking booking1 = booking.get(j);
-                            // Set slotIDsList= availabilityNew.getSlotIds();
-                            if(booking1.getStatus()== BookingEnums.ACCEPTED) {
-                                Set<Long> slotIDsList1 = booking1.getSlotIds();
-                                listToNotImpactOriginalList.removeAll(slotIDsList1);
+                    List<BookingSlotCountTable>bookingSlotCountTableList=  bookingSlotCountTableRepository.findByDateAndEventTypeId(i,eventTypeId);
+
+                    if(!bookingSlotCountTableList.isEmpty()){
+                        for(int j=0;j<bookingSlotCountTableList.size();j++){
+                            BookingSlotCountTable bookingSlotCountTable=bookingSlotCountTableList.get(j);
+                            Long slotCount= bookingSlotCountTable.getCount();
+                            if(slotCount==eventType.getNoOfStudents()){
+                                Long slotId= bookingSlotCountTable.getSlotId();
+                                listToNotImpactOriginalList.remove(slotId);
+
                             }
                             else{
-                                //do not subtract it from the list
-                            }
-                        }
-                    }
 
+                            }
+
+                        }
+
+                    }
                         List<Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(listToNotImpactOriginalList);
                         finalSetList.add(slotsLists);
                         dates.add(i);
