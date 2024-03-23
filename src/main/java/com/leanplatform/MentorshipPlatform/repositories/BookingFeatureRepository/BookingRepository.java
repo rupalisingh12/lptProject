@@ -34,6 +34,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     @Query("SELECT b FROM Booking b WHERE b.userId = :userId AND b.date = :date")
     List<Booking> findAllByUserIdAndDate(@Param("userId") UUID userId, @Param("date") LocalDate date);
+    @Query("SELECT b FROM Booking b WHERE b.eventTypeId = :eventTypeId AND b.date = :date")
+    List<Booking>findByEventIdAndDate(@Param("eventTypeId") UUID eventTypeId, @Param("date") LocalDate date);
 
     @Query("SELECT b FROM Booking b WHERE b.userId = :userId AND b.date = :date")
     List<Booking> findByUserIdAndDate(@Param("userId") UUID userId, @Param("date") LocalDate date);

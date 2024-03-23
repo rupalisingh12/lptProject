@@ -191,12 +191,28 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
             if(overrideAvailability!=null && overrideAvailability.getSlotIds().size()!=0) {
                 Set<Long> slotIDsList = overrideAvailability.getSlotIds();
                 Set<Long> listToNotImpactOriginalList = new HashSet<>(slotIDsList);
-                //List<Booking> booking = bookingRepository.findAllByUserIdAndDate(userId, i);
+               // List<Booking> booking = bookingRepository.findAllByUserIdAndDate(userId, i);
+                List<Booking> booking = bookingRepository.findByEventIdAndDate(eventTypeId,i);
                List<BookingSlotCountTable>bookingSlotCountTableList=  bookingSlotCountTableRepository.findByDateAndEventTypeId(i,eventTypeId);
 
 //                if(bookingSlotCountTableList.isEmpty()){
 //                    List<Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(listToNotImpactOriginalList);
 //                }
+                if(bookingSlotCountTableList.isEmpty()){
+                    if (booking.size()!=0) {
+                        for (int j = 0; j < booking.size(); j++) {
+                            Booking booking1 = booking.get(j);
+                            // Set slotIDsList= availabilityNew.getSlotIds();
+                            if(booking1.getStatus()== BookingEnums.ACCEPTED) {
+                                Set<Long> slotIDsList1 = booking1.getSlotIds();
+                                listToNotImpactOriginalList.removeAll(slotIDsList1);
+                            }
+                            else{
+                                //do not subtract it from the list
+                            }
+                        }
+                    }
+                }
                 if(!bookingSlotCountTableList.isEmpty()){
                     for(int j=0;j<bookingSlotCountTableList.size();j++){
                         BookingSlotCountTable bookingSlotCountTable=bookingSlotCountTableList.get(j);
@@ -236,9 +252,25 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     //now store this in a new list so that the original list does get impacted
                     Set<Long>listToNotImpactOriginalList=new HashSet<>(slotIDsList);
                     //fetch only date ,fetch only dateTime
-                    List<Booking> booking = bookingRepository.findAllByUserIdAndDate(userId, i);
+                   // List<Booking> booking = bookingRepository.findAllByUserIdAndDate(userId, i);
+                    List<Booking> booking = bookingRepository.findByEventIdAndDate(eventTypeId,i);
                     List<BookingSlotCountTable>bookingSlotCountTableList=  bookingSlotCountTableRepository.findByDateAndEventTypeId(i,eventTypeId);
 
+                    if(bookingSlotCountTableList.isEmpty()){
+                        if (booking.size()!=0) {
+                            for (int j = 0; j < booking.size(); j++) {
+                                Booking booking1 = booking.get(j);
+                                // Set slotIDsList= availabilityNew.getSlotIds();
+                                if(booking1.getStatus()== BookingEnums.ACCEPTED) {
+                                    Set<Long> slotIDsList1 = booking1.getSlotIds();
+                                    listToNotImpactOriginalList.removeAll(slotIDsList1);
+                                }
+                                else{
+                                    //do not subtract it from the list
+                                }
+                            }
+                        }
+                    }
                     if(!bookingSlotCountTableList.isEmpty()){
                         for(int j=0;j<bookingSlotCountTableList.size();j++){
                             BookingSlotCountTable bookingSlotCountTable=bookingSlotCountTableList.get(j);

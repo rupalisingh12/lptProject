@@ -140,24 +140,30 @@ public class BookingServiceImpl implements BookingService {
 //                  bookingSlotCountTableRepository.save(bookingSlotCountTable);
 //              }
 //          }
-        ArrayList<Long>ans=new ArrayList<>();
-        for(int h=0;h<bookingSlotCountTableList.size();h++){
-            BookingSlotCountTable bookingSlotCountTable=bookingSlotCountTableList.get(h);
-           Long slotId= bookingSlotCountTable.getSlotId();
-           ans.add(slotId);
-        }
-        List<Long> result = new ArrayList<>(listOfSlots);
-        result.removeAll(ans);
-        //now we set the slot in bookingSlotCountTable which were not alreasy present in bookingSLotCOunTable
-        for(int i=0;i<result.size();i++){
-           // result.get(i);
-            BookingSlotCountTable bookingSlotCountTable = new BookingSlotCountTable();
-            bookingSlotCountTable.setDate(bookingRequest.getStart().toLocalDate());
-            bookingSlotCountTable.setEventTypeId(bookingRequest.getEventTypeId());
-            bookingSlotCountTable.setSlotId(result.get(i));
-            bookingSlotCountTable.setCount((long)1);
-            bookingSlotCountTableRepository.save(bookingSlotCountTable);
 
+       EventType eventType1= eventTypesRepository.findByEventId(bookingRequest.getEventTypeId());
+        Long noOfStudents=  eventType1.getNoOfStudents();
+        if(noOfStudents!=1) {
+
+            ArrayList<Long> ans = new ArrayList<>();
+            for (int h = 0; h < bookingSlotCountTableList.size(); h++) {
+                BookingSlotCountTable bookingSlotCountTable = bookingSlotCountTableList.get(h);
+                Long slotId = bookingSlotCountTable.getSlotId();
+                ans.add(slotId);
+            }
+            List<Long> result = new ArrayList<>(listOfSlots);
+            result.removeAll(ans);
+            //now we set the slot in bookingSlotCountTable which were not alreasy present in bookingSLotCOunTable
+            for (int i = 0; i < result.size(); i++) {
+                // result.get(i);
+                BookingSlotCountTable bookingSlotCountTable = new BookingSlotCountTable();
+                bookingSlotCountTable.setDate(bookingRequest.getStart().toLocalDate());
+                bookingSlotCountTable.setEventTypeId(bookingRequest.getEventTypeId());
+                bookingSlotCountTable.setSlotId(result.get(i));
+                bookingSlotCountTable.setCount((long) 1);
+                bookingSlotCountTableRepository.save(bookingSlotCountTable);
+
+            }
         }
 
 
