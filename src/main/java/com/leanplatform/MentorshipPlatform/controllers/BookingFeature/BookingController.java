@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -110,6 +111,22 @@ public class BookingController {
             return new ResponseEntity<>(new DeleteBookingRespone("0", "Caught in catch block"), HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/getMenteeWhoBookedSameSlot")
+    public ResponseEntity<GetMenteeWhoBookedSameSlotResponse> getMenteeSameSlot(@RequestParam(name="eventTypeId")UUID eventTypeId , @RequestParam(name="startTime") LocalDateTime startTime,@RequestParam (name="endTime")LocalDateTime endTime ) {
+        if(eventTypeId==null || startTime==null || endTime==null ){
+            return new ResponseEntity<>(new
+                    GetMenteeWhoBookedSameSlotResponse ("0", "Invalid Request",null), HttpStatus.BAD_REQUEST);
+        }
+        try{
+            return bookingService.getMentee(eventTypeId,startTime,endTime);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(new  GetMenteeWhoBookedSameSlotResponse("0", "Caught in catch block",null), HttpStatus.BAD_REQUEST);
+
+        }
+
+    }
+
 
 }
 

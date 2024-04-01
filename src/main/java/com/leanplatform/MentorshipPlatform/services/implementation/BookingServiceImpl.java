@@ -18,6 +18,7 @@ import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepositor
 import com.leanplatform.MentorshipPlatform.services.BookingFeatureService.BookingService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -59,23 +60,28 @@ public class BookingServiceImpl implements BookingService {
         LocalTime startTime1 = bookingRequest.getStart().toLocalTime();
         LocalTime endTime1 = endTime.toLocalTime();
         Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTime1, endTime1);
-//        ArrayList<Long>ans=new ArrayList<>();
-//        for(int h=0;h<bookingSlotCountTableList.size();h++){
-//            BookingSlotCountTable bookingSlotCountTable=bookingSlotCountTableList.get(h);
-//           Long slotId= bookingSlotCountTable.getSlotId();
-//           ans.add(slotId);
-//        }
-//        List<Long> result = new ArrayList<>(listOfSlots);
-//        result.removeAll(ans);
-//        for(int i=0;i<result.size();i++){
-//           // result.get(i);
-//            BookingSlotCountTable bookingSlotCountTable = new BookingSlotCountTable();
-//            bookingSlotCountTable.setDate(bookingRequest.getStart().toLocalDate());
-//            bookingSlotCountTable.setEventTypeId(bookingRequest.getEventTypeId());
-//            bookingSlotCountTable.setSlotId(result.get(i));
-//            bookingSlotCountTable.setCount((long)0);
-//
-//        }
+        List<Booking> bookingList =bookingRepository.findBookingsByCriteria(bookingRequest.getEventTypeId(), bookingRequest.getStart().toLocalDate(),bookingRequest.getResponse().getEmail());
+        for(int i=0;i<bookingList.size();i++){
+            Booking booking= bookingList.get(i);
+            if(booking.getStatus().equals(BookingEnums.ACCEPTED)) {
+                Set<Long> slotIds = booking.getSlotIds();
+                Set<Long> commonElements = new HashSet<>(listOfSlots);
+                // Retain only the common elements in the copy
+                commonElements.retainAll(slotIds);
+                if (!commonElements.isEmpty()) {
+                    return new ResponseEntity<>(new CreateBookingResponse
+                            (
+                                    "0",
+                                    "This mentee has booked the same slot for a same eventTypeId and same date .",
+                                    null
+                            ), HttpStatus.BAD_REQUEST);
+
+                } else {
+                    //continue
+                }
+            }
+
+        }
 
         for(int i=0;i<bookingSlotCountTableList.size();i++) {
             BookingSlotCountTable bookingSlotCountTable = bookingSlotCountTableList.get(i);
@@ -111,37 +117,7 @@ public class BookingServiceImpl implements BookingService {
           }
           //now for the elements that are not present in the bookingSloCountTable but are present in the listOfSlots ,
         //we are going to create a new entry fo those slotIds and set their count as 1;
-//          ArrayList<Long>ans=new ArrayList<>();;
-//          for(int k=0;k<bookingSlotCountTableList.size();k++){
-//             BookingSlotCountTable bookingSlotCountTable= bookingSlotCountTableList.get(k);
-//           Long slotId1=  bookingSlotCountTable.getSlotId();
-//           ans.add(slotId1);
-//          }
-//       // List<Long> result = getUniqueElements(ans ,listOfSlots );
-//        List<Long> slotList = new ArrayList<>(listOfSlots);
-//          if(bookingSlotCountTableList.isEmpty() && !slotList.isEmpty()){
-//              for(int i=0;i<listOfSlots.size();i++) {
-//                  Long slotId = slotList.get(i);
-//                  BookingSlotCountTable bookingSlotCountTable = new BookingSlotCountTable();
-//                  bookingSlotCountTable.setDate(bookingRequest.getStart().toLocalDate());
-//                  bookingSlotCountTable.setSlotId(slotId);
-//                  bookingSlotCountTable.setEventTypeId(bookingRequest.getEventTypeId());
-//                  bookingSlotCountTable.setCount((long) 1);
-//                  bookingSlotCountTableRepository.save(bookingSlotCountTable);
-//              }
-//          }
-//          else{
-//              List<Long> result = getUniqueElements(ans ,listOfSlots );
-//              for(int h=0;h<result.size();h++){
-//                  BookingSlotCountTable bookingSlotCountTable=new BookingSlotCountTable();
-//                  bookingSlotCountTable.setDate(bookingRequest.getStart().toLocalDate());
-//                  bookingSlotCountTable.setEventTypeId(bookingRequest.getEventTypeId());
-//                  bookingSlotCountTable.setCount((long)1);
-//                  bookingSlotCountTableRepository.save(bookingSlotCountTable);
-//              }
-//          }
-
-       EventType eventType1= eventTypesRepository.findByEventId(bookingRequest.getEventTypeId());
+        EventType eventType1= eventTypesRepository.findByEventId(bookingRequest.getEventTypeId());
         Long noOfStudents=  eventType1.getNoOfStudents();
         if(noOfStudents!=1) {
 
@@ -165,10 +141,116 @@ public class BookingServiceImpl implements BookingService {
 
             }
         }
+        if(noOfStudents==1){
+            List<Booking>bookings= bookingRepository.findByEventIdAndDate(bookingRequest.getEventTypeId(),bookingRequest.getStart().toLocalDate());
+            if(!bookings.isEmpty()){
+                for(int i=0;i<bookings.size();i++){
+                  Booking booking1 = bookings.get(i);
+                    BookingEnums bookingEnums= booking1.getStatus();
+                    bookingEnums.compareTo(BookingEnums.ACCEPTED);
+                    Booking ans = bookings.get(i);
+                    Set<Long> s = ans.getSlotIds();
+                    Set<Long> commonElements = new HashSet<>(listOfSlots);
+                    // Retain only the common elements in the copy
+                    commonElements.retainAll(s);
+                    if (!commonElements.isEmpty()) {
+                        return new ResponseEntity<>(new CreateBookingResponse
+                                (
+                                        "0",
+                                        "Booking already exists for this mentor and slotId.",
+                                        null
+                                ), HttpStatus.BAD_REQUEST);
+
+                    } else {
+                        //continue
+                    }
 
 
+                }
+            }
+            else{
+//                List<Booking> bookingList =bookingRepository.findBookingsByCriteria(bookingRequest.getEventTypeId(), bookingRequest.getStart().toLocalDate(),bookingRequest.getResponse().getEmail());
+//                for(int i=0;i<bookingList.size();i++){
+//                    Booking booking= bookingList.get(i);
+//                    if(booking.getStatus().equals(BookingEnums.ACCEPTED)) {
+//                        Set<Long> slotIds = booking.getSlotIds();
+//                        Set<Long> commonElements = new HashSet<>(listOfSlots);
+//                        // Retain only the common elements in the copy
+//                        commonElements.retainAll(slotIds);
+//                        if (!commonElements.isEmpty()) {
+//                            return new ResponseEntity<>(new CreateBookingResponse
+//                                    (
+//                                            "0",
+//                                            "This mentee has booked the same slot for a same eventTypeId and same date .",
+//                                            null
+//                                    ), HttpStatus.BAD_REQUEST);
+//
+//                        } else {
+//                            //continue
+//                        }
+//                    }
+//
+//                }
+                Booking booking = new Booking();
+                booking.setUserId(userId);
+                booking.setDescription(bookingRequest.getDescription());
+                booking.setEventTypeId(bookingRequest.getEventTypeId());
+                //to put title name we
+                UserEntity userEntity = userRepository.findByUserId(userId);
+                String name = userEntity.getName();
+                String name1 = bookingRequest.getResponse().getName();
+                booking.setTitle(eventType.getTitle()+" between " + name + " and " + name1);
+                //to put startTime
+                booking.setStartTime(bookingRequest.getStart());
+                //put date
+                LocalDate date = bookingRequest.getStart().toLocalDate();
+                booking.setDate(date);
+                booking.setSlotIds(listOfSlots);
+                //put endTime
+                LocalDateTime endTime11=bookingRequest.getStart().plusMinutes(eventType.getLength());
+                booking.setEndTime(endTime11);
+                //put attendees
+                List<Attendee>attendeesList=new ArrayList<>();
+                Attendee attendee1 = new Attendee();
+                attendee1.setEmail(bookingRequest.getResponse().getEmail());
+                attendee1.setName(bookingRequest.getResponse().getName());
+                attendeesList.add(attendee1);
+                //put status
+                booking.setStatus(BookingEnums.ACCEPTED);
+                Booking booking1 = bookingRepository.save(booking);
+                attendee1.setBookingId(booking1.getBookingId());
+                attendeeRepository.save(attendee1);
+                List<Attendee> attendee = attendeeRepository.findByBookingId(booking1.getBookingId());
+                UserEntity userE = userRepository.findByUserId(userId);
+                CreateBookingDTO createBookingDTO1 = BookingMapper.convertEntityToDto(booking, userE, attendeesList);
+                return new ResponseEntity<>(new
+                        CreateBookingResponse("1",
+                        "Booking Created", createBookingDTO1), HttpStatus.OK);
 
-
+            }
+        }
+//        List<Booking> bookingList =bookingRepository.findBookingsByCriteria(bookingRequest.getEventTypeId(), bookingRequest.getStart().toLocalDate(),bookingRequest.getResponse().getEmail());
+//        for(int i=0;i<bookingList.size();i++){
+//           Booking booking= bookingList.get(i);
+//           if(booking.getStatus().equals(BookingEnums.ACCEPTED)) {
+//               Set<Long> slotIds = booking.getSlotIds();
+//               Set<Long> commonElements = new HashSet<>(listOfSlots);
+//               // Retain only the common elements in the copy
+//               commonElements.retainAll(slotIds);
+//               if (!commonElements.isEmpty()) {
+//                   return new ResponseEntity<>(new CreateBookingResponse
+//                           (
+//                                   "0",
+//                                   "This mentee has booked the same slot for a same eventTypeId and same date .",
+//                                   null
+//                           ), HttpStatus.BAD_REQUEST);
+//
+//               } else {
+//                   //continue
+//               }
+//           }
+//
+//        }
             Booking booking = new Booking();
             booking.setUserId(userId);
             booking.setDescription(bookingRequest.getDescription());
@@ -344,11 +426,31 @@ public class BookingServiceImpl implements BookingService {
 
 
     }
+    @Override
+    public ResponseEntity<GetMenteeWhoBookedSameSlotResponse>getMentee(UUID eventTypeId, LocalDateTime startTime,LocalDateTime endTime){
+        if(eventTypeId==null || startTime==null || endTime==null ){
+            return new ResponseEntity<>(new
+                    GetMenteeWhoBookedSameSlotResponse ("0", "Invalid Request",null), HttpStatus.BAD_REQUEST);
+        }
+        List<Attendee> attendeesList= attendeeRepository.findAttendeesByCriteria( eventTypeId, startTime,  endTime,BookingEnums.ACCEPTED);
+       ArrayList<AttendeeDetailsDTO>attendeeDetailsDTOSList=new ArrayList<>();
+        for(int i=0;i<attendeesList.size();i++){
+           Attendee attendee = attendeesList.get(i);
+            AttendeeDetailsDTO attendeeDetailsDTO= BookingMapper.convertEntityToDtoA1(attendee);
+            attendeeDetailsDTOSList.add(attendeeDetailsDTO);
 
-
+        }
+        return new ResponseEntity<>(new
+                GetMenteeWhoBookedSameSlotResponse ("1", "The attendee List is",attendeeDetailsDTOSList), HttpStatus.OK);
 
 
     }
+
+
+
+
+
+}
 
 
 

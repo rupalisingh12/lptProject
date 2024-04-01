@@ -29,9 +29,7 @@ public class Booking {
     private String title;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private UUID eventTypeId; //(This is coming from EventType table);
-   // private List<Attendee> attendees;
-  // private UUID metaDataId;
+    private UUID eventTypeId;
    private  BookingEnums status;
    private LocalDate date;
    private UUID locationId;
@@ -46,8 +44,6 @@ public class Booking {
     private LocalDateTime modifiedAt;
 
 
-
-    //  private BookingEnums status;
 
 
 

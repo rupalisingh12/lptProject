@@ -1,5 +1,6 @@
 package com.leanplatform.MentorshipPlatform.mappers.BookingFunctnalityMapper;
 
+import com.leanplatform.MentorshipPlatform.dto.BookingController.AttendeeDetailsDTO;
 import com.leanplatform.MentorshipPlatform.dto.BookingController.CreateBookingDTO;
 import com.leanplatform.MentorshipPlatform.dto.BookingController.UserDTO;
 import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Attendee;
@@ -61,6 +62,13 @@ public class BookingMapper {
 
 
 
+    }
+    public static AttendeeDetailsDTO convertEntityToDtoA1(Attendee attendee){
+        AttendeeDetailsDTO attendeeDetailsDTO=new AttendeeDetailsDTO();
+        attendeeDetailsDTO.setAttendeeId(attendee.getAttendeeId());
+        attendeeDetailsDTO.setName(attendee.getName());
+        attendeeDetailsDTO.setEmailId(attendee.getEmail());
+        return  attendeeDetailsDTO;
     }
 //    public static CreateBookingDTO convertEntityToDtoGetBooking(Booking booking){
 //        CreateBookingDTO createBookingDTO = new CreateBookingDTO();

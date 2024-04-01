@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -39,6 +40,9 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     @Query("SELECT b FROM Booking b WHERE b.userId = :userId AND b.date = :date")
     List<Booking> findByUserIdAndDate(@Param("userId") UUID userId, @Param("date") LocalDate date);
+    @Query("SELECT b FROM Booking b WHERE b.eventTypeId = :eventTypeId AND b.date = :date AND b.bookingId IN (SELECT a.bookingId FROM Attendee a WHERE a.email = :emailId)")
+    List<Booking> findBookingsByCriteria(@Param("eventTypeId") UUID eventTypeId, @Param("date") LocalDate date, @Param("emailId") String emailId);
+
 }
 
 

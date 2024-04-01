@@ -111,15 +111,7 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
         }
         ArrayList<AvailabilityV2>list=new ArrayList<>();
         List<AvailabilityV2> availabilityNewList=availabilityNewRepository.findByScheduleId(createAvailabilityNewRequest.getScheduleId());
-//        for(int h=0;h<createAvailabilityNewRequest.getDays().size();h++){
-//            Long day1 = createAvailabilityNewRequest.getDays().get(h);
-//            AvailabilityNew availabilityNew1 = availabilityNewRepository.findByScheduleIdAndDay(createAvailabilityNewRequest.getScheduleId(), day1);
-//            list.add(availabilityNew1);
-//
-//        }
-//
 
-   //  CreateAvailabilityNewResponseDTO createAvailabilityNewResponseDTO = AvailabilityNewMapper.convertDtoToEntity(createAvailabilityNewRequest);
         UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityV2Mapper.convertDtoToEntityListOfAvailability(availabilityNewList);
 
         return new ResponseEntity<>
@@ -134,15 +126,7 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
     @Override
     public ResponseEntity<GetAllAvailabilitiesResponse> getAllAvailability(String userName, UUID userId, UUID eventTypeId, LocalDate dateFrom, LocalDate dateTo
     ) {
-//        LocalDateTime startDateTime = LocalDateTime.of(2023, 12, 1, 0, 0);
-//        LocalDateTime endDateTime = LocalDateTime.of(2023, 12, 12, 23, 59, 59);
 
-//        List<Booking> bookings = bookingRepository.findBookingsBetweenDates(startDateTime, endDateTime);
-//        for(int i=0;i<bookings.size();i++){
-//            Booking booking1=bookings.get(i);
-
-//        }
-       // availabilityNewRepository.findDistinctSlotIdByScheduleId()
         if(userName==null || userId==null || eventTypeId==null || dateTo==null || dateFrom==null){
             return new ResponseEntity<>(new GetAllAvailabilitiesResponse
                     (
@@ -195,9 +179,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                 List<Booking> booking = bookingRepository.findByEventIdAndDate(eventTypeId,i);
                List<BookingSlotCountTable>bookingSlotCountTableList=  bookingSlotCountTableRepository.findByDateAndEventTypeId(i,eventTypeId);
 
-//                if(bookingSlotCountTableList.isEmpty()){
-//                    List<Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(listToNotImpactOriginalList);
-//                }
                 if(bookingSlotCountTableList.isEmpty()){
                     if (booking.size()!=0) {
                         for (int j = 0; j < booking.size(); j++) {
@@ -226,7 +207,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                        }
 
                     }
-
                 }
                 if (!listToNotImpactOriginalList.contains((long) -1)) {
                    List<Slot> slotsLists = AvailabilityV2Mapper.catchSlotIdsListAndConvertIntoStartTimeEndTime(listToNotImpactOriginalList);
@@ -236,12 +216,8 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                    finalTimeDateList.add(slotTimeDateList);
                  }
 
-
-
             }
             else {
-
-
                 AvailabilityV2 availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId1, dayValueIntegerFinal);
                 if (availabilityNew == null) {
                     //go to the next date;
@@ -278,7 +254,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                             if(slotCount==eventType.getNoOfStudents()){
                                 Long slotId= bookingSlotCountTable.getSlotId();
                                 listToNotImpactOriginalList.remove(slotId);
-
                             }
                             else{
 
@@ -311,14 +286,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
     }
     @Override
    public ResponseEntity<UpdateAvailabiliityNewResponse>updateAvailabilitys(UUID scheduleId,UUID userId,UpdateAvailabilityNewRequest updateAvailabilityNewRequest) {
-        //List<AvailabilityNew> avilabilityNew1 = availabilityNewRepository.findByScheduleId(scheduleId);
-       // AvailabilityNew availabilityNew = null;
-       // AvailabilityNew availabilityNewtue = null;
-     //   AvailabilityNew availabilityNewWed = null;
-       // AvailabilityNew availabilityNewThur = null;
-       // AvailabilityNew availabilityNewFri = null;
-        //AvailabilityNew availabilityNewSat = null;
-     //   AvailabilityNew availabilityNewSun = null;
         if(scheduleId==null || userId==null || updateAvailabilityNewRequest==null ){
             return new ResponseEntity<>(new UpdateAvailabiliityNewResponse
                     (
@@ -346,17 +313,12 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
         if (updateAvailabilityNewRequest.getMon() != null) {
             AvailabilityV2 availabilityNew = availabilityNewRepository.findByScheduleIdAndDay(scheduleId, (long) 1);
             if (availabilityNew != null) {
-                // Set<Long> listOfSlots=null;
                 Set<Long> ans = new HashSet<>();
                 for (int i = 0; i < updateAvailabilityNewRequest.getMon().size(); i++) {
-                    //Set<Set<Long>> ans=new HashSet<>();
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getMon().get(i);
                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
-                    //availabilityNew.setSlotIds(listOfSlots);
                     System.out.print(ans);
-                   // availabilityNew.setSlotIds(ans);
-                  //  availabilityNewRepository.save(availabilityNew);
                 }
                 availabilityNew.setSlotIds(ans);
                 availabilityNewRepository.save(availabilityNew);
@@ -370,8 +332,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getMon().get(i);
                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
-                  //  availabilityNew1.setSlotIds(ans);
-                   // availabilityNewRepository.save(availabilityNew1);
                 }
                 availabilityNew1.setSlotIds(ans);
                 availabilityNewRepository.save(availabilityNew1);
@@ -395,7 +355,7 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getTue().get(i);
                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
-                    //availabilityNew.setSlotIds(listOfSlots);
+
                 }
                 availabilityNewtue.setSlotIds(ans);
                 availabilityNewRepository.save(availabilityNewtue);
@@ -410,8 +370,7 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getTue().get(i);
                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
-//                    availabilityNew1.setSlotIds(ans);
-//                    availabilityNewRepository.save(availabilityNew1);
+//
 
                 }
                 availabilityNew1.setSlotIds(ans);
@@ -439,7 +398,7 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getWed().get(i);
                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
-                    // availabilityNew.setSlotIds(listOfSlots);
+
                 }
                 availabilityNewWed.setSlotIds(ans);
                 availabilityNewRepository.save(availabilityNewWed);
@@ -451,12 +410,10 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     availabilityNew1.setDay((long) 3);
                     availabilityNew1.setScheduleId(scheduleId);
                     for (int i = 0; i < updateAvailabilityNewRequest.getWed().size(); i++) {
-                        //Set<Set<Long>> ans=new HashSet<>();
                         Slot startTimeEndTime = updateAvailabilityNewRequest.getWed().get(i);
                         Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                         ans.addAll(listOfSlots);
-//                        availabilityNew1.setSlotIds(ans);
-//                        availabilityNewRepository.save(availabilityNew1);
+
 
 
                    }
@@ -502,8 +459,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getThur().get(i);
                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
-//                    availabilityNew1.setSlotIds(ans);
-//                    availabilityNewRepository.save(availabilityNew1);
 
 
                 }
@@ -532,7 +487,7 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getFri().get(i);
                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
-                    // availabilityNew.setSlotIds(listOfSlots);
+
                 }
                 availabilityNewFri.setSlotIds(ans);
                 availabilityNewRepository.save(availabilityNewFri);
@@ -546,8 +501,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getFri().get(i);
                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
-//                    availabilityNew1.setSlotIds(ans);
-//                    availabilityNewRepository.save(availabilityNew1);
 
                 }
                 availabilityNew1.setSlotIds(ans);
@@ -574,7 +527,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                      Slot startTimeEndTime = updateAvailabilityNewRequest.getSat().get(i);
                      Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                      ans.addAll(listOfSlots);
-                     //  availabilityNew.setSlotIds(listOfSlots);
                  }
                  availabilityNewSat.setSlotIds(ans);
                  availabilityNewRepository.save(availabilityNewSat);
@@ -584,12 +536,9 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                  availabilityNew1.setDay((long) 6);
                  availabilityNew1.setScheduleId(scheduleId);
                  for (int i = 0; i < updateAvailabilityNewRequest.getSat().size(); i++) {
-                     //Set<Set<Long>> ans=new HashSet<>();
                      Slot startTimeEndTime = updateAvailabilityNewRequest.getSat().get(i);
                      Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                      ans.addAll(listOfSlots);
-//                     availabilityNew1.setSlotIds(ans);
-//                     availabilityNewRepository.save(availabilityNew1);
 
 
                  }
@@ -632,9 +581,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
                     Slot startTimeEndTime = updateAvailabilityNewRequest.getSun().get(i);
                     Set<Long> listOfSlots = AvailabilityV2Mapper.convertStartTimeEndTimeIntoSlotIds(startTimeEndTime.getStartTime(), startTimeEndTime.getEndTime());
                     ans.addAll(listOfSlots);
-//                    availabilityNew1.setSlotIds(ans);
-//                    availabilityNewRepository.save(availabilityNew1);
-
 
                 }
                 availabilityNew1.setSlotIds(ans);
@@ -655,7 +601,6 @@ public class AvailabilityV2ServiceImpl implements AvailabilityV2Service {
         List<AvailabilityV2> avilabilityNew1 = availabilityNewRepository.findByScheduleId(scheduleId);
 
         UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO = AvailabilityV2Mapper.convertDtoToEntityListOfAvailability(avilabilityNew1);
-     //   UpdateAvailabilityNewResponseDTO updateAvailabilityNewResponseDTO=null;
         return new ResponseEntity<>(new UpdateAvailabiliityNewResponse("1",
                 "Availability Updated:", updateAvailabilityNewResponseDTO), HttpStatus.OK);
 

@@ -22,7 +22,6 @@ public class Attendee {
     private UUID attendeeId;
     private String email;
     private String name;
-  //  private String phoneNumber;
     private UUID bookingId;
     @CreationTimestamp
     private LocalDateTime createdAt;
