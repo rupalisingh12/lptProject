@@ -1,5 +1,8 @@
 package com.leanplatform.MentorshipPlatform.mappers.BookingFunctnalityMapper;
 
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.leanplatform.MentorshipPlatform.dto.BookingController.AttendeeDetailsDTO;
 import com.leanplatform.MentorshipPlatform.dto.BookingController.CreateBookingDTO;
 import com.leanplatform.MentorshipPlatform.dto.BookingController.UserDTO;
@@ -70,6 +73,14 @@ public class BookingMapper {
         attendeeDetailsDTO.setEmailId(attendee.getEmail());
         return  attendeeDetailsDTO;
     }
+    Event event = new Event();
+
+
+
+
+
+
+
 //    public static CreateBookingDTO convertEntityToDtoGetBooking(Booking booking){
 //        CreateBookingDTO createBookingDTO = new CreateBookingDTO();
 //        createBookingDTO.setUserId(userEntity.getUserId());
