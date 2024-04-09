@@ -1,5 +1,6 @@
 package com.leanplatform.MentorshipPlatform;
 
+import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.util.DateTime;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import static com.leanplatform.MentorshipPlatform.CalendarQuickstart.*;
 
@@ -45,7 +47,9 @@ public class MentorshipPlatformApplication {
 	public static void main(String[] args) throws GeneralSecurityException, IOException {
 
 		SpringApplication.run(MentorshipPlatformApplication.class, args);
-		CalendarQuickstart.createCalendarEvent();
+
+	 //	CalendarQuickstart.returnGetCredentials();
+		//CalendarQuickstart.createCalendarEvent();
 
 		// List the next 10 events from the primary calendar.
 //		DateTime now = new DateTime(System.currentTimeMillis());

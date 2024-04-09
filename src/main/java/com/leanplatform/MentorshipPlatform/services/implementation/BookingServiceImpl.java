@@ -1,28 +1,44 @@
 package com.leanplatform.MentorshipPlatform.services.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leanplatform.MentorshipPlatform.CalendarQuickstart;
 import com.leanplatform.MentorshipPlatform.dto.BookingController.*;
+import com.leanplatform.MentorshipPlatform.entities.AccessToken;
 import com.leanplatform.MentorshipPlatform.entities.BookingFeature.Booking;
 import com.leanplatform.MentorshipPlatform.entities.BookingFeature.BookingSlotCountTable;
 import com.leanplatform.MentorshipPlatform.entities.EventTypeFeature.EventType;
 import com.leanplatform.MentorshipPlatform.entities.MentorEntity.UserEntity;
 import com.leanplatform.MentorshipPlatform.entities.MultifunctionEntity.Attendee;
+import com.leanplatform.MentorshipPlatform.entities.User.Creator;
 import com.leanplatform.MentorshipPlatform.enums.BookingEnums;
 import com.leanplatform.MentorshipPlatform.mappers.AvailabilityFeatureMapper.AvailabilityV2Mapper;
 import com.leanplatform.MentorshipPlatform.mappers.BookingFunctnalityMapper.BookingMapper;
+import com.leanplatform.MentorshipPlatform.repositories.BookingFeatureRepository.AccessTokenRepository;
 import com.leanplatform.MentorshipPlatform.repositories.BookingFeatureRepository.BookingRepository;
 import com.leanplatform.MentorshipPlatform.repositories.BookingFeatureRepository.BookingSlotCountTableRepository;
 import com.leanplatform.MentorshipPlatform.repositories.EventTypeRepository.EventTypesRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MentorRepository.UserRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.AttendeeRepository;
 import com.leanplatform.MentorshipPlatform.repositories.MultifunctionalRepository.LocationRepository;
+import com.leanplatform.MentorshipPlatform.repositories.User.CreatorRepository;
 import com.leanplatform.MentorshipPlatform.services.BookingFeatureService.BookingService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import java.io.InputStreamReader;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -37,13 +53,23 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    private CreatorRepository creatorRepository;
+    @Autowired
+    AccessTokenRepository accessTokenRepository;
+    @Autowired
     LocationRepository location;
     @Autowired
     AttendeeRepository attendeeRepository;
     @Autowired
     EventTypesRepository eventTypesRepository;
+    @Autowired CalendarQuickstart calendarQuickstart;
+    String clientId = "418895730508-igvn95potkq4b0626s3hsise209i5rbr.apps.googleusercontent.com";
+    String clientSecret = "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";
+  //  String code = "YOUR_AUTHORIZATION_CODE"; // Replace with your actual authorization code
+    String redirectUri = "http://localhost:8888/Callback"; // Make sure this matches one of your registered redirect URIs
 
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     @Transactional
     @Override
     public ResponseEntity<CreateBookingResponse>createAbooking(BookingRequest bookingRequest, UUID userId) {
@@ -222,6 +248,13 @@ public class BookingServiceImpl implements BookingService {
                 attendeeRepository.save(attendee1);
                 List<Attendee> attendee = attendeeRepository.findByBookingId(booking1.getBookingId());
                 UserEntity userE = userRepository.findByUserId(userId);
+                try {
+                    calendarQuickstart.createCalendarEvent(userId, attendee,booking);
+                } catch (GeneralSecurityException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 CreateBookingDTO createBookingDTO1 = BookingMapper.convertEntityToDto(booking, userE, attendeesList);
                 return new ResponseEntity<>(new
                         CreateBookingResponse("1",
@@ -282,6 +315,13 @@ public class BookingServiceImpl implements BookingService {
             attendeeRepository.save(attendee1);
             List<Attendee> attendee = attendeeRepository.findByBookingId(booking1.getBookingId());
             UserEntity userE = userRepository.findByUserId(userId);
+           try {
+            calendarQuickstart.createCalendarEvent(userId, attendee,booking );
+           } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+           } catch (IOException e) {
+            throw new RuntimeException(e);
+           }
             CreateBookingDTO createBookingDTO1 = BookingMapper.convertEntityToDto(booking, userE, attendeesList);
             return new ResponseEntity<>(new
                     CreateBookingResponse("1",
@@ -445,12 +485,101 @@ public class BookingServiceImpl implements BookingService {
 
 
     }
+    public ResponseEntity<GetMenteeWhoBookedSameSlotResponse>CreateMeetingLink(UUID userId){
+
+        try {
+            List<Attendee> attendee =null;
+             Booking booking=null;
+            calendarQuickstart.createCalendarEvent(userId,attendee,booking);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ResponseEntity<>(new
+                GetMenteeWhoBookedSameSlotResponse ("1", "The attendee List is",null), HttpStatus.OK);
+
+    }
+    public  ResponseEntity<getAccessToken>getAccessTokenAndRefreshToken(getACcessTokenPayLoad getACcessTokenPayLoad){
+        if(getACcessTokenPayLoad==null){
+            return new ResponseEntity<>(new getAccessToken
+                     ("0", "Invalid Request"), HttpStatus.BAD_REQUEST);
+        }
+        AccessToken accessTokenTable=new AccessToken();
+       // accessTokenTable.setAccessToken(getACcessTokenPayLoad.getAccess_token());
+        accessTokenTable.setTokenType(getACcessTokenPayLoad.getToken_type());
+        accessTokenTable.setRefreshToken(getACcessTokenPayLoad.getRefresh_token());
+        accessTokenTable.setUserId(accessTokenTable.getUserId());
+        accessTokenTable.setScope(accessTokenTable.getScope());
+
+        return new ResponseEntity<>(new  getAccessToken
+                ("1", "The attendee List is"), HttpStatus.OK);
+
+
+
+    }
+    public ResponseEntity<AccessTokenResponse>getCodeAndCOnvertItToAccesToken(String code) {
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        String username=authentication.getName();
+        Creator creator = creatorRepository.findByEmail(username);
+        UUID creatorId =creator.getId();
+        try {
+            URL url = new URL("https://oauth2.googleapis.com/token");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setDoOutput(true);
+
+            // Construct the request body
+            String requestBody = "client_id=" + clientId +
+                    "&client_secret=" + clientSecret +
+                    "&code=" + code +
+                    "&redirect_uri=" + redirectUri +
+                    "&grant_type=authorization_code";
+
+            try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+                outputStream.write(requestBody.getBytes(StandardCharsets.UTF_8));
+            }
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                // Parse the response JSON into GetAccessToken object
+                AccessTokenResponse getAccessToken = objectMapper.readValue(response.toString(), AccessTokenResponse.class);
+
+                // Return the response entity with parsed GetAccessToken
+                AccessToken accessTokenTable=new AccessToken();
+                accessTokenTable.setRefreshToken(getAccessToken.getRefreshToken());
+                accessTokenTable.setUserId(creatorId);
+                accessTokenRepository.save(accessTokenTable);
+
+                return ResponseEntity.ok(getAccessToken);
+            } else {
+                // Handle error response
+                return ResponseEntity.status(responseCode).build(); // Return appropriate error response
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception appropriately
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Return appropriate error response
+        }
+
+    }
+
+
+    }
 
 
 
 
 
-}
 
 
 
