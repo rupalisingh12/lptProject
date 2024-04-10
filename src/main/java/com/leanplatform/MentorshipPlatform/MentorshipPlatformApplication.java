@@ -71,7 +71,7 @@ public class MentorshipPlatformApplication {
 //				}
 //				System.out.printf("%s (%s)\n", event.getSummary(), start);
 //			}
-		
+
 //		}
 		//create event
 
