@@ -145,6 +145,7 @@ public class BookingServiceImpl implements BookingService {
         //we are going to create a new entry fo those slotIds and set their count as 1;
         EventType eventType1= eventTypesRepository.findByEventId(bookingRequest.getEventTypeId());
         Long noOfStudents=  eventType1.getNoOfStudents();
+        if(noOfStudents!=null){
         if(noOfStudents!=1) {
 
             ArrayList<Long> ans = new ArrayList<>();
@@ -194,7 +195,7 @@ public class BookingServiceImpl implements BookingService {
 
                 }
             }
-            else{
+            else {
 //                List<Booking> bookingList =bookingRepository.findBookingsByCriteria(bookingRequest.getEventTypeId(), bookingRequest.getStart().toLocalDate(),bookingRequest.getResponse().getEmail());
 //                for(int i=0;i<bookingList.size();i++){
 //                    Booking booking= bookingList.get(i);
@@ -217,6 +218,7 @@ public class BookingServiceImpl implements BookingService {
 //                    }
 //
 //                }
+            }
                 Booking booking = new Booking();
                 booking.setUserId(userId);
                 booking.setDescription(bookingRequest.getDescription());
