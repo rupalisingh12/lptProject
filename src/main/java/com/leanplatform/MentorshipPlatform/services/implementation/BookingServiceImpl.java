@@ -56,6 +56,7 @@ public class BookingServiceImpl implements BookingService {
         List<BookingSlotCountTable> bookingSlotCountTableList= bookingSlotCountTableRepository.findByDateAndEventTypeId(bookingRequest.getStart().toLocalDate(),bookingRequest.getEventTypeId());
       //  Integer length1 = eventTypesRepository.findEventTypeLengthByEventId(bookingRequest.getEventTypeId());
         EventType eventType=eventTypesRepository.findByEventId(bookingRequest.getEventTypeId());
+        //add a null point exception
         LocalDateTime endTime = bookingRequest.getStart().plusMinutes(eventType.getLength());
         LocalTime startTime1 = bookingRequest.getStart().toLocalTime();
         LocalTime endTime1 = endTime.toLocalTime();
