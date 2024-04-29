@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Mentorship-Platform" options="-parameters --add-exports java.xml/com.sun.org.apache.xalan.internal.xsltc.compiler=ALL-UNNAMED" />
+      <module name="Mentorship-Platform" options="-parameters" />
     </option>
   </component>
 </project>
